@@ -1,3 +1,4 @@
 Hours Worked: 17:00 MST- 
 Created this repository and added the first commit "README.md"
-Installed Anaconda on system 
+Installed Anaconda on system; troubleshot installation issues. 
+Identified and selected datasets for the astronomy pipeline:.tar files containing snapshots of MW, M31 and M33. The tar files are too big to be uploaded on this repository without affecting functionality and thus will stay on my system. 
