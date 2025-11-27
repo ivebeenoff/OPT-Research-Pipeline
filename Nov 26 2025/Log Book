@@ -1,8 +1,7 @@
 Hours Worked: 17:00 MST- 
 Created this repository and added the first commit "README.md"
 Installed Anaconda on system; troubleshot installation issues. 
-Identified and selected datasets: `.tar` files containing snapshots of MW, M31, and M33.  
-Noted that the files are large and not to be included in this repository to maintain functionality, but are to be stored locally instead for use in the pipeline.  
-Identified that each snapshot in the datasets contains particle type, mass (1e10 solar masses), positions (x, y, z in kpc), and velocities (vx, vy, vz in km/s).
+Identified and selected datasets: `.tar` files containing snapshots of MW, M31, and M33. Noted that the files are large and not to be included in this repository to maintain functionality, but are to be stored locally instead for use in the pipeline.    
 Updated README for the repository; added information about how the folders are organized. 
-Created the folder "deliverables" in the repo. 
+Created the folders "deliverables" and "datasets" in the repo. 
+Uploaded 2 snapshots from the datasets for each galaxy (i.e. MW, M31 & M33) to this folder for reference. Identified that each snapshot in the datasets contains particle type, mass (1e10 solar masses), positions (x, y, z in kpc), and velocities (vx, vy, vz in km/s).
