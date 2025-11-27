@@ -1,4 +1,4 @@
-Hours Worked: 17:00 MST- 
+Hours Worked: 3 hours
 Created this repository and added the first commit "README.md"
 Installed Anaconda on system; troubleshot installation issues. 
 Identified and selected datasets: `.tar` files containing snapshots of MW, M31, and M33. Noted that the files are large and not to be included in this repository to maintain functionality, but are to be stored locally instead for use in the pipeline.    
