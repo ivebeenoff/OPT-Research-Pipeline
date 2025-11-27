@@ -5,3 +5,4 @@ Identified and selected datasets: `.tar` files containing snapshots of MW, M31, 
 Updated README for the repository; added information about how the folders are organized. 
 Created the folders "deliverables" and "datasets" in the repo. 
 Uploaded 2 snapshots from the datasets for each galaxy (i.e. MW, M31 & M33) to this folder for reference. Identified that each snapshot in the datasets contains particle type, mass (1e10 solar masses), positions (x, y, z in kpc), and velocities (vx, vy, vz in km/s).
+Uploaded ReadFile.py as the first module of the pipeline, implementing a function to load simulation snapshot files and extract time, particle count, and structured data for further analysis.
