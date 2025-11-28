@@ -1,3 +1,5 @@
+# Module to compute 3D center of mass positions and velocities for galaxy simulation snapshots
+
 import numpy as np
 import astropy.units as u
 from ReadFile import Read
