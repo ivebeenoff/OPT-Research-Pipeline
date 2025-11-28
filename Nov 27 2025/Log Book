@@ -1,4 +1,5 @@
-Hours Worked:  
+Hours Worked: 3 hours 
 Identified potential research questions and goals given the simualted datasets at hand. 
 Expanded some of those research questions into research strategies in the form of handwritten notes.Uploaded notes to this folder.
-Collected research papers relevant to the project and added them to this folder as well as a separate folder entitled "Research Papers"/
+Drafted and uploaded a document (Potential Novel Methodologies for Halo Shape Analysis.txt) outlining feasible novel methodologies for quantifying the 3D shape of the merged MW+M31 dark matter halo
+Wrote CenterOfMass.py module for future use in the pipeline to compute 3D galaxy center positions and velocities from simulation snapshots. Uploaded it to the deliverables folder. 
