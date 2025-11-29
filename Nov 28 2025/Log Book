@@ -1,1 +1,2 @@
 Discovered the EDGE paper for future reference and review of literature, added it to this folder and the dedicated research paper folder
+Wrote new code to calculate the center of mass of the merging galaxies in the file "CenterOfMass2". The updated code recalculates positions each iteration, making the COM refinement more accurate and stable. Added the file to deliverables and today's folder. 
