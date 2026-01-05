@@ -1,1 +1,120 @@
+Hours Worked: 10 hours
+Project: Milky Way – Andromeda (M31) Merger Simulation
+Date: Jan 5 2026
+Author: Abhinav Vatsa
+
+Objective of the Day
+--------------------
+The project needs to demonstrate independent research capability,
+numerical modeling, and scientifically meaningful analysis using a realistic
+astrophysical system: the Milky Way–M31 merger based on data sent by the HST.
+
+Summary of Work Completed
+-------------------------
+A full gravity-only N-body simulation and analysis pipeline was built from scratch
+in Python. The pipeline spans initial condition generation, numerical integration,
+statistical phase-space analysis, and physically interpretable diagnostics.
+
+The work completed today is equivalent to a full research sprint and would normally
+be spread across multiple development sessions.
+
+Detailed Work Log
+-----------------
+
+1. Research Framing and Problem Definition
+   - Defined a project scope that is:
+     • Scientifically legitimate
+     • Computationally non-trivial
+     • Feasible without proprietary data or supercomputing resources
+   - Selected the MW–M31 merger as the physical system.
+   - Identified a novel analysis angle: dynamical irreversibility and disk heating,
+     rather than only merger timescales or morphology.
+
+2. Physical Assumptions and Model Design
+   - Chose a collisionless, gravity-only framework.
+   - Explicitly excluded gas physics to control complexity.
+   - Modeled each galaxy using:
+     • An exponential stellar disk
+     • A Hernquist dark matter halo
+   - Defined clear component tags for later analysis:
+     0 = Milky Way disk
+     1 = Milky Way halo
+     2 = M31 disk
+     3 = M31 halo
+
+3. Initial Condition Generation
+   - Implemented a Hernquist sphere generator for dark matter halos.
+   - Implemented an exponential disk generator with rotational support.
+   - Assigned particle masses consistently to conserve total mass.
+   - Offset M31 spatially and kinematically to create an approaching merger setup.
+   - Ensured all particles carry full phase-space information and metadata.
+
+4. Numerical Integration (N-body Solver)
+   - Implemented a leapfrog (kick–drift–kick) integrator.
+   - Implemented softened Newtonian gravity to avoid numerical divergences.
+   - Selected timestep and softening parameters appropriate for galaxy-scale dynamics.
+   - Built a loop to evolve the system for multiple gigayears.
+   - Stored full snapshots at each timestep for post-processing.
+
+5. Phase-Space Representation
+   - Designed a coarse-graining procedure for 6D phase space
+     (x, y, z, vx, vy, vz).
+   - Used multidimensional histograms to approximate the distribution function.
+   - Normalized phase-space densities for information-theoretic analysis.
+
+6. Irreversibility Metric (Core Analysis Contribution)
+   - Implemented a time-reversal comparison between early and late snapshots.
+   - Used Kullback–Leibler divergence to quantify time asymmetry.
+   - Computed irreversibility separately for:
+     • Stellar disks
+     • Dark matter halos
+   - Established a quantitative way to identify when the merger becomes
+     dynamically irreversible.
+
+7. Disk Heating Diagnostics
+   - Implemented vertical velocity dispersion (σ_z²) as a heating metric.
+   - Tracked the evolution of disk heating across the merger timeline.
+   - Linked heating growth to irreversibility onset.
+
+8. Visualization and Outputs
+   - Generated time-series plots of:
+     • Disk vs halo irreversibility
+     • Disk vertical heating
+   - Produced figures suitable for reports, presentations, or GitHub repositories.
+   - Ensured outputs are interpretable without requiring domain-specific explanation.
+
+9. Documentation and Reporting
+   - Wrote a formal project summary text file describing the pipeline.
+   - Structured explanations to align with OPT reporting expectations.
+   - Framed the work in a way that demonstrates:
+     • Independent research capability
+     • Numerical and statistical sophistication
+     • Physical insight
+
+Technical Skills Demonstrated
+-----------------------------
+- Computational physics
+- Numerical integration methods
+- N-body gravitational dynamics
+- Statistical mechanics and information theory
+- Scientific Python (NumPy, SciPy, Matplotlib)
+- Research documentation and project structuring
+
+Outcome
+-------
+By the end of today’s work, a complete, executable, and well-documented research
+pipeline exists. The project is suitable for:
+- OPT reporting
+- GitHub portfolio inclusion
+- Discussion in technical interviews
+- Extension into a higher-resolution or ML-augmented study
+
+Next Steps (Planned)
+--------------------
+- Performance optimization (tree codes or vectorization)
+- Separation of MW vs M31 frame diagnostics
+- Machine learning classification of merger stages
+- Conversion into a formal research-style report or README
+
+End of Log Entry
 
