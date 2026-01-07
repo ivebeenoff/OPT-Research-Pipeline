@@ -1,0 +1,141 @@
+MANUSCRIPT FINALIZATION, COMPLIANCE, AND RNAAS SUBMISSION
+Hours Worked: 11 hours
+
+This phase encompassed the complete preparation, verification, compliance checking, and successful submission of the MW–M31 Research Note to Research Notes of the American Astronomical Society (RNAAS).
+
+Work performed included:
+
+Journal compliance verification
+
+Carefully reviewed RNAAS author guidelines, including:
+
+1500-word total limit (including abstract, captions, references)
+
+Single-figure restriction (no tables)
+
+First-person style rules for single-author papers
+
+Non–peer-reviewed, rapid-publication nature of RNAAS
+
+Verified manuscript suitability for RNAAS (incremental methodological contribution rather than novel theory).
+
+LaTeX class and formatting validation
+
+Confirmed correct use of \documentclass[RNAAS,twocolumn]{aastex631}.
+
+Ensured proper two-column formatting and spacing consistent with RNAAS.
+
+Adjusted column separation and figure placement to maximize figure visibility while remaining compliant.
+
+Verified that the figure appears large and legible on its own page in the compiled PDF.
+
+Figure handling and diagnostics
+
+Debugged figure-related issues, including:
+
+Two-column figure* behavior
+
+Placement relative to section breaks
+
+Ensuring the figure caption fit within RNAAS constraints
+
+Verified that the figure rendered correctly in both Overleaf and the AAS auto-compiled submission PDF.
+
+Warning triage and acceptance
+
+Investigated Overleaf warnings (e.g., underfull \hbox messages).
+
+Determined these were cosmetic line-breaking warnings with no effect on output quality or journal acceptance.
+
+Confirmed that no fatal or submission-blocking LaTeX errors were present.
+
+Bibliography integrity checks
+
+Reviewed BibTeX file for:
+
+Correct journal names and formatting
+
+Software citations (NumPy, matplotlib, Python, Jupyter)
+
+ADS-compatible astronomy references
+
+Verified that:
+
+Bibliography compiled correctly into the PDF
+
+Absence of .bib file from the visible submission file list was expected behavior (bibliography embedded into compiled PDF by the portal).
+
+Submission portal metadata completion
+
+Correctly populated all required submission fields:
+
+Topical corridor: Galaxies and Cosmology
+
+Ethics statement acknowledgment
+
+Funding body: No
+
+MAST data: No
+
+IPAC data: No
+
+Confirmed accuracy of title, abstract, author information, and affiliation.
+
+Unified Astronomy Thesaurus (UAT) classification
+
+Selected and curated an appropriate UAT concept list:
+
+Milky Way Galaxy
+
+Andromeda Galaxy
+
+Galaxy dark matter halos
+
+Galaxy mergers
+
+Galaxy dynamics
+
+Galaxy structure
+
+Computational methods
+
+Ensured the list balanced completeness with concision and matched the scientific scope of the manuscript.
+
+Digital assets declaration
+
+Confirmed absence of:
+
+Machine-readable tables
+
+Figure sets
+
+Animated or interactive figures
+
+External datasets requiring DOI citation
+
+Left Digital Assets section appropriately empty, consistent with a single static figure RNAAS note.
+
+Final compiled-PDF review
+
+Conducted a full visual inspection of the auto-generated submission PDF:
+
+Verified title page formatting
+
+Confirmed abstract length and placement
+
+Checked math rendering, symbols, and typography
+
+Confirmed figure numbering, caption text, and references
+
+Ensured no truncation, spacing errors, or formatting anomalies.
+
+Final approval and submission
+
+Approved the compiled manuscript after confirming full compliance.
+
+Submitted the Research Note successfully through the AAS portal.
+
+Verified that all required submission checkpoints were completed and acknowledged.
+
+Outcome:
+The manuscript was submitted in a fully compliant, publication-ready form with no outstanding technical, formatting, or policy issues. This phase finalized the project for archival publication and ADS indexing.
