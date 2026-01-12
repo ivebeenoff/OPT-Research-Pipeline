@@ -1,0 +1,89 @@
+\section{Methodology}
+\label{sec:methodology}
+
+We perform an idealised, collisionless $N$-body simulation of the
+Milky Way (MW)–Andromeda (M31) merger to study phase-space irreversibility
+and stellar disk heating. The simulation is designed to isolate the effects
+of gravitational dynamics in an isolated system, without baryonic dissipation
+or cosmological expansion. All quantities are expressed in units of kiloparsecs (kpc) for length, km\,s$^{-1}$ for velocity, M$_\odot$ for mass, and Gyr for time.
+
+\subsection{Initial Conditions}
+
+Each galaxy is represented by two collisionless components: a dark matter halo
+and a stellar disk. 
+
+\begin{itemize}
+    \item \textbf{Dark Matter Halos:} Halos follow a Hernquist density profile
+    \citep{Hernquist1990}:
+    \begin{equation}
+        \rho(r) = \frac{M_{\rm halo}}{2\pi} \frac{a}{r(r+a)^3},
+    \end{equation}
+    where $M_{\rm halo}$ is the total halo mass and $a$ is the scale radius.
+    Particles are sampled using inverse transform sampling, and initial velocities are set to zero (cold halo approximation). 
+    
+    \item \textbf{Stellar Disks:} Disks follow an exponential radial surface density
+    \begin{equation}
+        \Sigma(R) = \frac{M_{\rm disk}}{2\pi R_d^2} \exp(-R/R_d),
+    \end{equation}
+    and a Gaussian vertical profile with scale height $z_0$. Particles are assigned approximate circular velocities assuming a dominant central mass, ensuring initial rotational support.
+\end{itemize}
+
+The MW is initialized with a stellar disk of mass $6\times10^{10}$\,M$_\odot$
+and a dark matter halo of mass $10^{12}$\,M$_\odot$. M31 is initialized with
+a disk of mass $8\times10^{10}$\,M$_\odot$ and a halo of mass $1.5\times10^{12}$\,M$_\odot$.
+The galaxies are initially separated by 780\,kpc along the $x$-axis, with a relative approach velocity of $120$\,km\,s$^{-1}$.
+
+\subsection{Dynamical Evolution}
+
+Particle positions and velocities are evolved using a direct-summation
+gravitational force calculation with Plummer-equivalent softening,
+$\epsilon = 0.5$\,kpc, to prevent numerical divergences at small separations.
+The acceleration of particle $i$ is
+\begin{equation}
+    \mathbf{a}_i = -G \sum_{j\neq i} \frac{m_j (\mathbf{r}_i - \mathbf{r}_j)}
+    {(|\mathbf{r}_i - \mathbf{r}_j|^2 + \epsilon^2)^{3/2}},
+\end{equation}
+where $G$ is the gravitational constant, and $m_j$ and $\mathbf{r}_j$ are the mass and position of particle $j$.
+
+Time integration is performed with a symplectic leapfrog scheme:
+\begin{align}
+    \mathbf{v}_{i}^{n+1/2} &= \mathbf{v}_i^n + \frac{\Delta t}{2} \mathbf{a}_i^n, \\
+    \mathbf{r}_{i}^{n+1} &= \mathbf{r}_i^n + \Delta t \mathbf{v}_{i}^{n+1/2}, \\
+    \mathbf{v}_{i}^{n+1} &= \mathbf{v}_{i}^{n+1/2} + \frac{\Delta t}{2} \mathbf{a}_i^{n+1},
+\end{align}
+with a fixed timestep $\Delta t = 50$\,Myr. The total evolution spans 120 timesteps ($\sim6$\,Gyr).
+
+\subsection{Phase-Space Analysis}
+
+To quantify dynamical irreversibility, we compute coarse-grained 6D phase-space
+distributions for disk and halo particles. Positions and velocities are binned
+into $N_{\rm bins} = 24$ bins per dimension. The normalized histogram $P(\mathbf{r},\mathbf{v})$ represents the probability density in phase space. 
+
+Time-reversal asymmetry is measured using the Kullback–Leibler (KL) divergence between forward and backward snapshots:
+\begin{equation}
+    D_{\rm KL}(P||Q) = \sum_i P_i \log \frac{P_i}{Q_i},
+\end{equation}
+where $P_i$ and $Q_i$ are the probabilities in the $i$th phase-space cell for the forward and backward snapshots, respectively. The KL divergence is computed separately for disk and halo components.
+
+\subsection{Disk Heating Diagnostics}
+
+Stellar disk heating is quantified using the vertical velocity dispersion:
+\begin{equation}
+    \sigma_z^2 = \frac{1}{N} \sum_{i=1}^N (v_{z,i} - \bar{v}_z)^2,
+\end{equation}
+where $v_{z,i}$ is the vertical velocity of particle $i$ and $\bar{v}_z$ is the mean vertical velocity of the disk.
+
+\subsection{Implementation Notes}
+
+The simulation is implemented in Python using \texttt{numpy} arrays and \texttt{scipy} for statistical operations. Snapshots of particle positions and velocities are stored at each timestep for post-processing. Visualization of KL divergence and disk heating over time is performed using \texttt{matplotlib}.
+
+\subsection{Limitations}
+
+The simulation is idealized and neglects:
+\begin{itemize}
+    \item Gas dynamics, star formation, and feedback processes
+    \item Cosmological context and large-scale structure
+    \item Optimized force computation; direct summation scales as $O(N^2)$
+\end{itemize}
+Consequently, the results are suitable for **qualitative studies of dynamical irreversibility and disk heating**, rather than predictive modeling of the Local Group.
+
