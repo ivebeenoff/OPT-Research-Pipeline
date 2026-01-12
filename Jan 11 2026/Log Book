@@ -1,1 +1,128 @@
+Date: 11 January 2026
+Total Hours Worked: 7.5 hrs
 
+Activity 1: Refactoring MW–M31 Merger Simulation Code
+Duration: 4.0 hrs
+
+Objective:
+To restructure and document the existing Python code for the Milky Way–Andromeda merger simulation to meet publication standards (MNRAS norms), improving readability, modularity, and alignment with the methodology for phase-space irreversibility and disk heating analysis.
+
+Tasks Completed:
+
+Analysis of Original Script:
+
+Reviewed all functions and global constants.
+
+Identified sections mixing scientific computation, teaching commentary, and workflow instructions.
+
+Assessed where names, docstrings, and code structure could be aligned with MNRAS publication standards.
+
+Header and Documentation Revision:
+
+Rewrote the module header to clearly state the scientific scope, assumptions, units, and intended use.
+
+Removed references to educational/OPT context.
+
+Clarified units (kpc, km/s, M$_\odot$, Gyr) and assumptions (collisionless, non-cosmological).
+
+Function Refactoring:
+
+Renamed functions with physics- and method-oriented names:
+
+hernquist_sphere → sample_hernquist_halo
+
+exponential_disk → sample_exponential_disk
+
+acceleration → compute_accelerations
+
+leapfrog → leapfrog_step
+
+analyze → analyse_irreversibility_and_heating
+
+Cleaned up docstrings to describe what the function does physically, not why it exists.
+
+Separated initial condition generation, dynamics, phase-space analysis, physical diagnostics, and analysis pipeline into clear logical sections.
+
+Numerical and Physical Parameters:
+
+Standardized constants: SOFTENING, N_STEPS, PHASESPACE_BINS.
+
+Ensured timestep and softening were clearly documented.
+
+Verified force computation and leapfrog integrator reflected standard astrophysical formulations.
+
+Analysis and Diagnostics:
+
+Confirmed KL divergence calculation was applied separately to disk and halo.
+
+Verified vertical velocity dispersion calculation for disk heating was physically consistent.
+
+Cleaned plotting section and ensured variable names were descriptive (disk_kl, halo_kl, disk_heating).
+
+Outcome:
+
+Produced a single, cohesive, publication-ready Python script.
+
+Script is modular, physics-focused, MNRAS-ready, and could serve as supplementary material.
+
+Fully documented assumptions, limitations, and units.
+
+Activity 2: Writing MNRAS-Style Methodology LaTeX
+Duration: 3.5 hrs
+
+Objective:
+To write a detailed, journal-ready methodology section in LaTeX that describes the MW–M31 merger simulation, phase-space analysis, and disk heating diagnostics, aligning directly with the refactored code.
+
+Tasks Completed:
+
+Structuring Section:
+
+Organized into subsections: Initial Conditions, Dynamical Evolution, Phase-Space Analysis, Disk Heating Diagnostics, Implementation Notes, Limitations.
+
+Ensured each subsection corresponds directly to a set of functions or calculations in the code.
+
+Incorporating Equations:
+
+Hernquist density profile equation for dark matter halos.
+
+Exponential disk surface density and vertical profile.
+
+Newtonian softened acceleration formula.
+
+Leapfrog integrator equations.
+
+KL divergence definition for phase-space irreversibility.
+
+Vertical velocity dispersion for disk heating.
+
+Writing Text:
+
+Described scientific purpose and assumptions in neutral, journal-appropriate language.
+
+Made explicit which processes are included/excluded (collisionless, no gas/star formation, isolated system).
+
+Documented units consistently.
+
+Emphasized that simulation is qualitative, for methodological exploration.
+
+Quality Checks:
+
+Ensured all equations are consistent with code implementation.
+
+Verified clarity and alignment with MNRAS methodology standards.
+
+Outcome:
+
+Completed a LaTeX methodology section fully aligned with the refactored simulation code.
+
+Ready to insert directly into a draft MNRAS manuscript.
+
+Provides clear documentation of numerical methods, assumptions, and diagnostics for reviewers.
+
+Next Steps:
+
+Consider splitting the Python code into modular files (ic.py, dynamics.py, analysis.py, plot.py) for repository submission.
+
+Prepare results figures for KL divergence and disk heating evolution to complement the methodology section.
+
+Add reproducibility notes (random seeds, parameter dictionaries) to support publication.
