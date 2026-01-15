@@ -1,1 +1,160 @@
+Total Hours Worked: 12 hours
+(Includes ~1 hour devoted to writing and polishing this detailed logbook entry)
+Project: Phase-Space Irreversibility and Stellar Disk Heating in an Idealised MW–M31 Merger
+Author: Abhinav Vatsa
+Date: January 13
+Work Type: Numerical framework development, structural refactor, and documentation
+
+⸻
+
+Objective
+
+The objective of this work session was to design, expand, and document a collisionless N-body simulation framework for studying the emergence of macroscopic irreversibility and stellar disk heating in an idealised Milky Way–Andromeda merger. Emphasis was placed on conceptual rigor, physical transparency, and modular code architecture rather than execution efficiency or numerical validation.
+
+⸻
+
+Summary of Work Completed
+
+The original monolithic prototype was systematically refactored into a layered, research-grade numerical framework. The resulting codebase now resembles a documented simulation platform suitable for inclusion in a thesis appendix or methods paper, rather than a standalone exploratory script.
+
+All changes were made with the intent that the code be read, audited, and extended, regardless of whether it is immediately executed.
+
+⸻
+
+1. Formalization of Simulation Configuration
+
+A dedicated SimulationConfig dataclass was introduced to consolidate all numerical and discretization parameters, including:
+	•	Gravitational softening length
+	•	Time step size and total number of integration steps
+	•	Phase-space coarse-graining resolution
+	•	Snapshot cadence
+	•	Optional diagnostic flags
+
+Rationale:
+Centralizing numerical parameters improves reproducibility, enables controlled numerical experiments, and makes explicit the discretization choices that influence irreversibility measurements.
+
+⸻
+
+2. Explicit Galaxy Component Abstractions
+
+A GalaxyComponent dataclass was created to represent individual galactic structures (stellar disks and dark matter halos). Each component explicitly encodes:
+	•	Physical identity and semantic name
+	•	Particle count and total mass
+	•	Structural scale lengths and heights
+	•	Component IDs for downstream filtering and diagnostics
+
+Rationale:
+This abstraction separates physical intent from numerical realization, allowing diagnostics to be applied cleanly to specific galactic subcomponents during analysis.
+
+⸻
+
+3. Initial Condition Factory
+
+An InitialConditionFactory class was implemented to generate idealised galaxy components using explicit sampling routines:
+	•	Exponential stellar disks with approximate rotational support
+	•	Hernquist dark matter halos initialized in a deliberately cold, non-equilibrium state
+
+No distribution-function solvers or equilibrium assumptions are embedded.
+
+Rationale:
+The use of non-equilibrium initial conditions is intentional, as it enhances phase mixing and secular evolution, making emergent irreversibility more pronounced and physically interpretable.
+
+⸻
+
+4. Gravity Solver Abstraction
+
+A GravitySolver class was introduced to encapsulate direct-summation Newtonian gravity with Plummer softening. The solver:
+	•	Uses explicit \mathcal{O}(N^2) force evaluation
+	•	Avoids algorithmic asymmetries or approximations
+	•	Preserves formal time reversibility
+
+Rationale:
+A naive force solver ensures that observed irreversibility arises from coarse-graining and chaotic mixing rather than from algorithmic artifacts.
+
+⸻
+
+5. Symplectic Time Integration
+
+A LeapfrogIntegrator class was implemented using a kick–drift–kick scheme. This integrator:
+	•	Is symplectic and formally time-reversible
+	•	Allows for velocity-reversal experiments
+	•	Separates force evaluation from time stepping
+
+Rationale:
+Using a symplectic integrator ensures that irreversibility diagnostics probe physical phase-space evolution rather than integrator-induced dissipation.
+
+⸻
+
+6. Phase-Space Diagnostics and Irreversibility Metrics
+
+A PhaseSpaceMetrics class was created to manage:
+	•	Construction of coarse-grained six-dimensional phase-space density histograms
+	•	Computation of Kullback–Leibler divergence between forward and reversed distributions
+
+Rationale:
+KL divergence serves as a quantitative proxy for information loss under coarse-graining, providing a statistical-mechanics–motivated measure of macroscopic irreversibility.
+
+⸻
+
+7. Disk Heating and Angular Momentum Diagnostics
+
+A DiskDiagnostics utility class was added to compute:
+	•	Vertical velocity dispersion as a measure of disk thickening
+	•	Particle-wise L_z to track angular momentum diffusion
+
+These diagnostics are designed to be applied selectively to disk particles via component IDs.
+
+Rationale:
+Disk heating provides a physically intuitive manifestation of merger-driven irreversibility, complementing abstract phase-space measures.
+
+⸻
+
+8. Conserved Quantity Bookkeeping
+
+A ConservedQuantities class was implemented to compute global kinetic energy, potential energy, and total energy for numerical validation purposes.
+
+Rationale:
+Although not yet used in production runs, these routines allow future separation of physical entropy growth from numerical energy drift.
+
+⸻
+
+9. High-Level Merger Orchestration
+
+A MergerSimulation controller class was created to:
+	•	Assemble Milky Way and Andromeda components
+	•	Impose initial separation and bulk velocity offsets
+	•	Manage forward time integration and snapshot storage
+
+Analysis is intentionally deferred to post-processing workflows.
+
+Rationale:
+This structure mirrors professional simulation pipelines, where numerical evolution and scientific analysis are decoupled.
+
+⸻
+
+10. Documentation and Scientific Commentary
+
+Extensive docstrings and inline commentary were added throughout the codebase to:
+	•	Explicitly state physical assumptions
+	•	Clarify non-equilibrium design choices
+	•	Document limitations and simplifications
+	•	Indicate intended future extensions
+
+Rationale:
+The code is designed to function as a scientific document, readable and interpretable independent of execution.
+
+⸻
+
+Current Status
+	•	The framework now constitutes a complete, documented numerical experiment platform for idealised galaxy mergers.
+	•	No claims regarding numerical convergence, performance, or physical results are made at this stage.
+	•	The code is suitable for inclusion in a thesis appendix, methods section, or project repository.
+
+⸻
+
+Planned Next Steps (Not Yet Executed)
+	•	Explicit time-reversal experiments via velocity inversion
+	•	Radially resolved disk heating diagnostics
+	•	Sensitivity studies of softening length and coarse-graining scale
+	•	Control simulations of isolated disks
 
