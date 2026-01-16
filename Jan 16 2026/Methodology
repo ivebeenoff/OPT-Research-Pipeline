@@ -1,0 +1,110 @@
+\section{Methodology}
+
+We perform an idealized, collisionless $N$-body experiment designed to isolate
+the emergence of macroscopic irreversibility and stellar disk heating during a
+major galaxy merger. The simulation is intentionally constructed to preserve
+formal time reversibility at the algorithmic level, such that any observed
+irreversibility can be attributed to phase-space coarse-graining, numerical
+discretization, and dynamical mixing rather than explicit dissipation.
+
+\subsection{Physical Setup}
+
+The system models a simplified Milky Way--Andromeda (MW--M31) merger composed of
+four collisionless components: stellar disks and dark matter halos for each
+galaxy. Each component is represented by an ensemble of equal-mass particles.
+No gas dynamics, star formation, or feedback processes are included.
+
+Dark matter halos follow a Hernquist density profile with scale length $a$ and
+total mass $M$. Particle positions are sampled directly from the analytic
+cumulative distribution function. Halo velocities are initialized to zero,
+placing the halos in a deliberately cold, non-equilibrium configuration. This
+choice maximizes subsequent phase mixing and enhances sensitivity to
+irreversibility diagnostics.
+
+Stellar disks follow an exponential surface density profile with scale length
+$R_d$ and a Gaussian vertical distribution with scale height $h_z$. Disk
+particles are assigned azimuthal velocities corresponding to approximate
+centrifugal support,
+\begin{equation}
+v_\phi(R) = \sqrt{\frac{G M}{R + \epsilon}},
+\end{equation}
+where $\epsilon$ is a small regularization term. The disks are not constructed
+to be in detailed equilibrium; secular heating and diffusion arising from this
+imbalance are treated as part of the experiment rather than as numerical error.
+
+The two galaxies are initially separated by $780\,\mathrm{kpc}$ along the
+$x$-axis. Andromeda is given an initial bulk velocity of
+$-120\,\mathrm{km\,s^{-1}}$ along the $x$ direction, producing an idealized
+head-on encounter.
+
+\subsection{Gravitational Dynamics}
+
+Gravitational forces are computed using direct summation of Newtonian gravity
+with Plummer softening,
+\begin{equation}
+\Phi(r) = -\frac{G m}{\sqrt{r^2 + \epsilon^2}},
+\end{equation}
+where $\epsilon$ is the softening length. The force solver scales as
+$\mathcal{O}(N^2)$ and is intentionally naive to ensure transparency and strict
+determinism.
+
+Time integration is performed using a kick--drift--kick leapfrog scheme, which
+is symplectic and formally time reversible. This choice ensures that any
+macroscopic arrow of time observed in the simulation does not originate from
+the integrator itself.
+
+\subsection{Numerical Configuration}
+
+The system is evolved for $120$ timesteps with a fixed timestep of
+$50\,\mathrm{Myr}$. All particles have equal mass within each component.
+Snapshots are recorded at every timestep for post-processing analysis.
+
+Global conserved quantities, including total energy and angular momentum, are
+tracked for numerical validation. While small violations arise from force
+softening and floating-point truncation, these effects remain subdominant
+compared to the irreversible trends revealed by coarse-grained diagnostics.
+
+\subsection{Phase-Space Irreversibility}
+
+Irreversibility is quantified using coarse-grained phase-space measures.
+At each snapshot, the six-dimensional phase-space distribution
+$(\mathbf{x},\mathbf{v})$ is discretized into a fixed Cartesian grid with
+$N_\mathrm{bin}^6$ cells. The resulting histogram provides an estimate of the
+coarse-grained phase-space density $f(\mathbf{x},\mathbf{v})$.
+
+To measure divergence between distributions at different times, we compute the
+Kullback--Leibler (KL) divergence,
+\begin{equation}
+D_{\mathrm{KL}}(P \| Q) = \sum_i P_i \ln \frac{P_i}{Q_i},
+\end{equation}
+where $P$ and $Q$ are normalized phase-space density estimates. Growth of
+$D_{\mathrm{KL}}$ under formally reversible dynamics is interpreted as evidence
+of emergent macroscopic irreversibility driven by phase mixing and coarse
+graining.
+
+\subsection{Disk Heating Diagnostics}
+
+Stellar disk heating is quantified using kinematic measures. In particular, we
+compute the vertical velocity dispersion,
+\begin{equation}
+\sigma_z^2 = \mathrm{Var}(v_z),
+\end{equation}
+as a function of time. Increases in $\sigma_z$ correspond to disk thickening and
+loss of ordered motion.
+
+We also track the $z$-component of specific angular momentum,
+\begin{equation}
+L_z = x v_y - y v_x,
+\end{equation}
+to characterize angular momentum redistribution during the merger.
+
+\subsection{Design Philosophy}
+
+The code prioritizes physical interpretability and methodological clarity over
+computational efficiency. All assumptions are implemented explicitly rather
+than implicitly. The simulation is intended not as a realistic reproduction of
+the Local Group merger, but as a controlled dynamical laboratory for studying
+the emergence of irreversibility in collisionless self-gravitating systems.
+
+All scientific analysis is performed in post-processing to maintain a strict
+separation between dynamics and diagnostics.
