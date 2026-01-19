@@ -1,0 +1,86 @@
+Total Hours Worked: 7 hours
+(0.5 hours spent preparing this log book entry) 
+Project: Phase-Space Irreversibility and Stellar Disk Heating in an Idealised MW–M31 Merger
+Author: Abhinav Vatsa
+Date: January 19
+Work Type: Scientific framing, experimental design, and LaTeX documentation
+
+⸻
+
+Objective
+
+The objective of this work session was to transition the project from a code- and methodology-complete state to a scientifically framed numerical experiment. Emphasis was placed on explicitly defining research questions, experimental protocols, diagnostics, and validation criteria in formal LaTeX suitable for a paper or thesis chapter.
+
+⸻
+
+Summary of Work Completed
+
+The simulation framework was complemented with a full set of scientific narrative sections that articulate why the code exists, how it is to be used experimentally, and how results should be interpreted and validated. No changes were made to the numerical implementation itself; all work focused on conceptual clarity, experimental rigor, and documentation.
+
+⸻
+
+1. Scientific Questions and Hypotheses
+
+A dedicated LaTeX section was written to formalize the scientific aims of the project, including:
+	•	The role of coarse-graining in producing macroscopic irreversibility in collisionless systems
+	•	The compatibility of entropy growth with Liouville’s theorem
+	•	The relationship between phase-space divergence and stellar disk heating
+	•	The emergence of irreversible behavior under formally time-reversible dynamics
+
+Hypotheses were explicitly stated to distinguish expected physical behavior from numerical artifacts.
+
+⸻
+
+2. Experimental Design Specification
+
+A complete experimental design section was drafted, detailing:
+	•	Isolated galaxy control simulations
+	•	Milky Way–Andromeda merger simulations
+	•	Sensitivity tests with respect to phase-space coarse-graining resolution
+
+The design explicitly holds numerical parameters fixed across runs to isolate physical effects from discretization-induced diffusion.
+
+⸻
+
+3. Diagnostics and Observables Definition
+
+A formal diagnostics section was written to define all measured quantities, including:
+	•	Construction of coarse-grained six-dimensional phase-space distributions
+	•	Use of Kullback–Leibler divergence as a quantitative measure of macroscopic irreversibility
+	•	Vertical velocity dispersion as a proxy for stellar disk heating
+	•	Angular momentum tracking for assessing orbital redistribution
+
+Physical interpretation of each diagnostic was emphasized.
+
+⸻
+
+4. Validation and Numerical Consistency Criteria
+
+A validation section was written to document:
+	•	Monitoring of total energy and angular momentum conservation
+	•	The role of symplectic integration in preserving formal reversibility
+	•	Comparison between merger runs and isolated control runs
+	•	Criteria for distinguishing physical phase mixing from numerical diffusion
+
+This section establishes the credibility framework for future results.
+
+⸻
+
+5. LaTeX Integration and Structural Consistency
+
+All newly written sections were integrated into a cohesive LaTeX structure consistent with a journal article or thesis chapter, maintaining neutral scientific tone and reproducibility-focused language.
+
+⸻
+
+Current Status
+	•	The project now includes a complete scientific framing in addition to a fully documented numerical framework.
+	•	The work is ready for result generation, plotting, and analysis without further conceptual restructuring.
+	•	No numerical results or claims have been introduced at this stage.
+
+⸻
+
+Planned Next Steps (Not Yet Executed)
+	•	Generation of phase-space entropy and disk heating evolution plots
+	•	Explicit time-reversal experiments using velocity inversion
+	•	Inclusion of results and discussion sections
+	•	Sensitivity studies of softening length and timestep size
