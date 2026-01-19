@@ -1,0 +1,128 @@
+%=========================================================
+\section{Scientific Questions and Hypotheses}
+%=========================================================
+
+The apparent contradiction between microscopic reversibility and macroscopic
+irreversibility has long been a central problem in statistical mechanics and
+dynamical astronomy. Collisionless stellar systems obey Hamiltonian dynamics,
+for which Liouville's theorem guarantees conservation of fine-grained
+phase-space density. Nevertheless, real galaxies undergo processes such as
+violent relaxation, phase mixing, and secular heating, all of which exhibit a
+clear arrow of time.
+
+Galaxy mergers provide a natural laboratory for studying this tension. They
+involve strong, time-dependent gravitational potentials, rapid orbital
+rearrangement, and large-scale redistribution of orbital actions, all while
+remaining formally collisionless. The Milky Way--Andromeda merger, in
+particular, offers a physically motivated yet idealisable system in which
+irreversibility can be examined in a controlled setting.
+
+This work addresses the following scientific questions:
+
+\begin{itemize}
+    \item Can macroscopic irreversibility be quantified in a collisionless
+    N-body system evolved with a formally time-reversible, symplectic
+    integrator?
+    \item Does coarse-grained phase-space information diverge monotonically
+    during a major galaxy merger?
+    \item To what extent is observed irreversibility sensitive to the choice of
+    coarse-graining scale and numerical resolution?
+    \item How does the growth of phase-space divergence relate to physically
+    observable consequences such as stellar disk heating?
+\end{itemize}
+
+We hypothesize that while fine-grained phase-space density remains conserved in
+principle, coarse-grained phase-space measures will exhibit systematic
+divergence during the merger phase. Furthermore, we expect this divergence to
+correlate with irreversible increases in stellar velocity dispersion, even in
+the absence of dissipation, feedback, or stochastic forces.
+
+%=========================================================
+\section{Experimental Design}
+%=========================================================
+
+The numerical experiments are designed to isolate physical sources of
+irreversibility from numerical artifacts. All simulations employ identical
+numerical schemes, force solvers, and integration parameters unless explicitly
+varied for sensitivity studies.
+
+Three classes of simulations are performed:
+
+\begin{enumerate}
+    \item \textbf{Isolated Control Simulations}: A Milky Way--like disk--halo
+    system evolved in isolation to establish baseline numerical diffusion,
+    phase-space drift, and energy conservation properties.
+    \item \textbf{Merger Simulations}: A head-on Milky Way--Andromeda merger
+    initialized with a separation of 780~kpc and an initial relative velocity
+    of 120~km~s$^{-1}$, chosen to approximate a bound encounter while remaining
+    computationally tractable.
+    \item \textbf{Resolution and Coarse-Graining Tests}: Repeated merger runs
+    using different phase-space binning resolutions to assess the dependence
+    of irreversibility measures on coarse-graining scale.
+\end{enumerate}
+
+All simulations are evolved forward in time using a fixed timestep leapfrog
+integrator. Snapshots of the full six-dimensional phase-space state are recorded
+at regular intervals and stored for post-processing. No attempt is made to
+re-equilibrate the system during evolution; deviations from equilibrium are
+treated as physically meaningful drivers of phase mixing and secular evolution.
+
+%=========================================================
+\section{Diagnostics and Observables}
+%=========================================================
+
+\subsection{Coarse-Grained Phase-Space Irreversibility}
+
+At each stored snapshot, the full six-dimensional phase-space distribution is
+constructed from particle positions and velocities. This distribution is
+coarse-grained into a fixed number of bins along each dimension, producing a
+normalized phase-space density function $P(\mathbf{x}, \mathbf{v})$.
+
+Macroscopic irreversibility is quantified using the Kullback--Leibler divergence
+between an initial reference distribution $P_0$ and a time-evolved distribution
+$P_t$:
+\begin{equation}
+    D_{\mathrm{KL}}(P_0 || P_t) =
+    \sum_i P_{0,i} \ln \left( \frac{P_{0,i}}{P_{t,i}} \right).
+\end{equation}
+
+The KL divergence measures the distinguishability of two probability
+distributions under coarse-graining. An increase in $D_{\mathrm{KL}}$ reflects
+loss of information about the initial phase-space configuration, even when the
+underlying microscopic dynamics remain reversible.
+
+\subsection{Stellar Disk Heating}
+
+Disk heating is quantified using the vertical velocity dispersion,
+\begin{equation}
+    \sigma_z^2 = \langle v_z^2 \rangle - \langle v_z \rangle^2,
+\end{equation}
+which provides a physically intuitive measure of disk thickening and orbital
+decoherence. This diagnostic is computed selectively for disk particles using
+component identifiers, allowing isolation of disk-specific evolution from halo
+dynamics.
+
+In addition, the $z$-component of angular momentum is tracked on a per-particle
+basis to assess the redistribution of orbital actions during the merger and its
+relation to irreversible heating.
+
+%=========================================================
+\section{Validation and Numerical Consistency}
+%=========================================================
+
+To ensure that observed irreversibility is not an artifact of numerical error,
+global conserved quantities are monitored throughout all simulations. Total
+kinetic energy, potential energy, and angular momentum are computed at each
+snapshot and compared against their initial values.
+
+The leapfrog integrator employed is symplectic and time-reversible, ensuring
+that the numerical scheme does not introduce explicit dissipation. Residual
+energy drift remains small compared to the magnitude of phase-space divergence
+observed during merger phases.
+
+Isolated control simulations exhibit significantly reduced entropy growth and
+disk heating relative to merger runs, confirming that the dominant source of
+irreversibility arises from physical phase mixing driven by time-dependent
+gravitational potentials rather than numerical diffusion alone. These tests
+establish the reliability of the diagnostics and provide a baseline against
+which merger-induced irreversibility can be assessed.
