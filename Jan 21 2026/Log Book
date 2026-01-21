@@ -1,1 +1,46 @@
+Hours Worked
+Total: 8.5 hours
+• Code design and implementation: 7.75 hours
+• Logbook preparation and verification: 0.75 hours
+
+⸻
+
+RESEARCH LOGBOOK
+
+Project: Phase-Space Irreversibility and Stellar Disk Heating in an Idealised Milky Way–Andromeda Merger
+Researcher: Abhinav Vatsa
+Date: January 21st 2026
+
+⸻
+
+OBJECTIVE
+
+Extend the numerical pipeline for a collisionless Milky Way–Andromeda merger simulation to include trajectory management, irreversibility diagnostics, disk heating metrics, angular momentum transport, and numerical validation, while maintaining physical transparency and modular design.
+
+⸻
+
+WORK COMPLETED
+	1.	Integrated all simulation components into a single executable pipeline with consistent phase-space state definitions.
+	2.	Implemented snapshot and trajectory management to store time-resolved system states independent of runtime execution.
+	3.	Implemented coarse-grained six-dimensional phase-space density estimation and entropy evolution for quantitative irreversibility analysis.
+	4.	Implemented stellar disk heating diagnostics, including vertical scale-height evolution and full velocity-dispersion tracking.
+	5.	Implemented component-resolved angular momentum tracking to quantify angular momentum redistribution during the merger.
+	6.	Implemented total energy computation and energy time-series diagnostics for numerical stability and symplectic integrity assessment.
+	7.	Implemented time-reversal (Loschmidt) experiments via velocity inversion and RMS phase-space separation metrics.
+	8.	Developed a post-processing orchestration layer aggregating all diagnostics into a reproducible analysis pipeline.
+	9.	Verified unit consistency, mass conservation, and internal data-flow integrity across all modules.
+
+⸻
+
+OUTCOME
+
+A complete, research-grade simulation and analysis framework capable of quantifying macroscopic irreversibility, disk heating, angular momentum transport, and numerical fidelity in idealised galaxy merger experiments.
+
+⸻
+
+NEXT STEPS
+
+• Time-symmetric control experiments
+• Resolution and coarse-graining sensitivity studies
+• Publication-quality diagnostic plots
 
