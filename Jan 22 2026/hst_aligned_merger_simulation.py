@@ -24,7 +24,7 @@ from scipy.stats import entropy
 from dataclasses import dataclass
 from typing import List
 
-# Import user-provided COM module for MW/M31 tracking
+# Import COM module for MW/M31 tracking (Customizable for other COM modules, only the filename needs to be changed)
 from CenterOfMass2 import CenterOfMass2
 
 # =============================================================================
