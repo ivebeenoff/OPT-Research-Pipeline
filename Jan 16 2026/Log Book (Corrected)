@@ -1,1 +1,53 @@
+Hours Worked: 2.0 hours
+Date: January 15, 2026
+Correction Uploaded: January 23, 2026
+This correction was added to account for the fact that the wrong date was initially uploaded for the log book and the folder, purely by accident. 
 
+⸻
+
+Research Logbook Entry
+
+Project Title:
+Phase-Space Irreversibility and Stellar Disk Heating in an Idealised Milky Way–Andromeda Merger
+
+Author:
+Abhinav Vatsa
+
+⸻
+
+Objective
+
+Condense and formalize the simulation code into a LaTeX methodology section suitable for AAS Research Notes (RNAAS), ensuring physical fidelity, methodological clarity, and appropriate scholarly tone.
+
+⸻
+
+Work Performed
+	1.	Code Analysis
+	•	Reviewed the full N-body code and identified the physical meaning of each module.
+	•	Mapped numerical components (force solver, integrator, diagnostics) to their astrophysical interpretations.
+	2.	Methodology Structuring
+	•	Designed a methods section aligned with AAS conventions.
+	•	Organized content into clear subsections covering physical setup, dynamics, numerics, and diagnostics.
+	3.	Scientific Writing
+	•	Translated implementation details into formal astrophysical language.
+	•	Explicitly stated idealizations and non-equilibrium assumptions.
+	•	Ensured claims remain conservative and reproducible.
+	4.	Mathematical Specification
+	•	Included equations directly reflecting code behavior (softened gravity, circular velocity, KL divergence, disk heating metrics).
+	•	Avoided introducing physics not present in the simulation.
+	5.	Irreversibility Framing
+	•	Emphasized formal time reversibility of the integrator.
+	•	Framed irreversibility as emergent from coarse-graining and phase mixing, not explicit dissipation.
+	6.	AAS Readiness Check
+	•	Verified scope, length, and tone for RNAAS submission.
+	•	Confirmed separation between dynamics and post-processing analysis.
+
+⸻
+
+Outcome
+
+Produced a polished LaTeX methodology section ready for inclusion in an AAS Research Notes manuscript, accurately documenting the simulation design and diagnostics.
+
+⸻
+
+End of Logbook Entry
