@@ -1,1 +1,167 @@
+Research Log Book
 
+Hours Worked: 8 hours
+Date: January 22, 2026
+Researcher: Abhinav Vatsa
+Project: HST-Aligned Milky Way–Andromeda Merger Simulation
+
+
+Objective Definition & Scope Lock
+
+Clarified that the simulation is intended as a controlled, diagnostic N-body experiment, not a full cosmological or hydrodynamical model.
+
+Defined the scientific focus:
+
+Phase-space irreversibility
+
+Disk heating and thickening
+
+Angular momentum redistribution
+
+Established that HST proper-motion constraints (MW–M31 separation and relative velocity) must anchor the initial conditions.
+
+Decided to import and preserve an existing Center-of-Mass (COM) module (CenterOfMass2) rather than rewriting COM logic.
+
+Outcome: Clear experimental scope and methodological boundaries established.
+
+Pipeline Architecture Review
+
+Audited the overall structure of the simulation pipeline:
+
+Initial condition factory
+
+Gravity solver
+
+Leapfrog integrator
+
+Trajectory storage
+
+Diagnostics and post-processing
+
+Verified strengths:
+
+Modular, readable design
+
+Symplectic integration
+
+Explicit tracking of conserved quantities
+
+Identified acceptable limitations:
+
+Direct O(N²) gravity (appropriate at current particle counts)
+
+Placeholder halo velocity initialization (documented for future refinement)
+
+Outcome: Pipeline deemed structurally sound and scientifically defensible.
+
+HST Constraint Integration Strategy
+
+Determined that observational constraints should be applied at the galaxy center-of-mass level, not per particle.
+
+Selected HST-aligned parameters:
+
+Initial separation: ~780 kpc
+
+Relative velocity vector: (−109, +20, 0) km/s
+
+Designed a workflow where:
+
+Galaxies are generated independently
+
+Actual COMs are measured numerically
+
+A global shift is applied to M31 particles only
+
+Outcome: Observations constrain initial conditions without overfitting the microphysics.
+
+Center-of-Mass Module Integration
+
+Imported CenterOfMass2 without modification.
+
+Used disk particle types for stable COM estimation.
+
+Ensured unit consistency between COM outputs and simulation state vectors.
+
+Embedded COM calculations directly inside the initialization routine.
+
+Outcome: COM positions and velocities are measured, not assumed.
+
+Initial Condition Validation
+
+Reviewed exponential disk generation:
+
+Correct radial distributions
+
+Reasonable scale heights
+
+Reviewed Hernquist halo sampling:
+
+Correct cumulative radial profile
+
+Explicitly documented the absence of equilibrium halo velocities as a known limitation.
+
+Outcome: Initial conditions are internally consistent and suitable for collisionless diagnostics.
+
+Integrator and Gravity Consistency Checks
+
+Verified leapfrog integration sequence:
+
+Half-step velocity update
+
+Full-step position update
+
+Acceleration recomputation
+
+Confirmed gravitational softening applied uniformly.
+
+Chose timestep based on disk crossing times and energy stability considerations.
+
+Outcome: Numerical scheme appropriate for multi-Gyr evolution.
+
+Diagnostic Framework Construction
+
+Implemented phase-space entropy using coarse-grained 6D histograms.
+
+Defined disk heating metrics:
+
+Vertical RMS scale height
+
+Velocity dispersion tensor
+
+Implemented angular momentum tracking on a per-component basis.
+
+Added total energy computation for long-term stability assessment.
+
+Outcome: Diagnostics correspond directly to physical interpretation.
+
+Snapshot and Trajectory Management
+
+Selected in-memory snapshot storage as default.
+
+Added optional snapshot export for external visualization or analysis.
+
+Ensured snapshot cadence is configurable via a stride parameter.
+
+Outcome: Flexible balance between resolution, memory use, and analysis depth.
+
+End-to-End Execution Review
+
+Walked through the full execution path:
+
+Initialization → integration → trajectory → diagnostics
+
+Verified MW–M31 separation tracking via COM measurements at each snapshot.
+
+Ensured plotting and analysis are cleanly separated from simulation logic.
+
+Outcome: Pipeline is reproducible, debuggable, and interpretable.
+
+Documentation and Finalization
+
+Finalized header documentation and feature summary.
+
+Ensured comments explain physical intent, not just implementation details.
+
+Prepared the codebase for academic review or advisor inspection.
+
+Outcome: Simulation pipeline finalized and professionally documented.
