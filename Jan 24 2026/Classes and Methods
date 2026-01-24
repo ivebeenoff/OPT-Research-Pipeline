@@ -1,1 +1,236 @@
+Dataclasses
+1. SimulationConfig
 
+Fields only (no methods):
+
+softening_length
+
+timestep
+
+n_steps
+
+phasespace_bins
+
+snapshot_stride
+
+enable_energy_tracking
+
+enable_angular_momentum_tracking
+
+save_snapshots
+
+Description: 
+
+Operations performed:
+
+
+2. GalaxyComponent
+
+Fields only (no methods):
+
+name
+
+component_id
+
+total_mass
+
+particle_count
+
+scale_length
+
+scale_height
+
+component_type
+
+Description: 
+
+Operations performed:
+
+3. Snapshot
+
+Fields only (no methods):
+
+state
+
+time
+
+step
+
+Description: 
+
+Operations performed:
+
+
+Core Simulation Classes
+
+4. InitialConditionFactory
+
+Static methods:
+
+hernquist_halo(component)
+
+exponential_disk(component)
+
+Description: 
+
+Operations performed:
+
+
+5. GravitySolver
+
+Methods:
+
+__init__(softening)
+
+accelerations(pos, m)
+
+Description: 
+
+Operations performed:
+
+6. LeapfrogIntegrator
+
+Methods:
+
+__init__(solver)
+
+step(state, dt)
+
+Description: 
+
+Operations performed:
+
+7. Trajectory
+
+Methods:
+
+__init__()
+
+add(state, time, step)
+
+times()
+
+Phase-Space & Diagnostics
+
+Description: 
+
+Operations performed:
+
+8. PhaseSpaceMetrics
+
+Methods:
+
+__init__(bins)
+
+density(state)
+
+9. EntropyEvolution
+
+Methods:
+
+__init__(bins)
+
+entropy(state)
+
+series(traj)
+
+Description: 
+
+Operations performed:
+
+
+10. DiskHeatingTracker
+
+Methods:
+
+scale_height(state) (static)
+
+velocity_dispersion(state) (static)
+
+track(traj, disk_id)
+
+Description: 
+
+Operations performed:
+
+
+11. AngularMomentumBudget
+
+Methods:
+
+total_Lz(state) (static)
+
+component_Lz(traj, component_id)
+
+Description: 
+
+Operations performed:
+
+
+12. ConservedQuantities
+
+Methods:
+
+total_energy(state, softening) (static)
+
+Description: 
+
+Operations performed:
+
+
+13. EnergyDiagnostics
+
+Methods:
+
+__init__(softening)
+
+series(traj)
+
+Description: 
+
+Operations performed:
+
+
+Merger Orchestration
+14. MergerSimulation
+
+Methods:
+
+__init__(config)
+
+initialize()
+
+run()
+
+Description: 
+
+Operations performed:
+
+
+15. PostProcessingPipeline
+
+Methods:
+
+__init__(config)
+
+run(traj)
+
+Description: 
+
+Operations performed:
+
+
+Externally Imported & Used
+16. CenterOfMass2 (external module)
+
+Methods used:
+
+__init__(state, ptype)
+
+COM_P()
+
+COM_V(x_COM, y_COM, z_COM)
+
+Description: 
+
+Operations performed:
