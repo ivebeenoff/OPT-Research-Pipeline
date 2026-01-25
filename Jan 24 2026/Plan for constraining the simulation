@@ -1,1 +1,187 @@
+===========================================================
+HST-CONSTRAINED MW–M31 MERGER SIMULATION STRATEGY
+===========================================================
+
+Project:
+Constraining an N-body Milky Way–Andromeda merger simulation using
+public HST proper motion measurements (van der Marel et al. 2012 and
+subsequent updates).
+
+-----------------------------------------------------------
+ENTRY 1 — SCIENTIFIC GOAL
+-----------------------------------------------------------
+Objective:
+Use observational constraints from HST to restrict the allowed
+initial conditions of a Milky Way–M31 merger simulation, ensuring
+that simulated present-day phase-space coordinates are consistent
+with measured values.
+
+Key idea:
+Treat the simulation as a forward model and compare its outputs
+(COM separation, velocities, angular momentum) against observations.
+
+-----------------------------------------------------------
+ENTRY 2 — OBSERVATIONAL DATA (HST)
+-----------------------------------------------------------
+Primary source:
+van der Marel et al. 2012, ApJ 753, 8
+
+Observed present-day quantities (with uncertainties):
+
+1. Current separation:
+   r_obs ≈ 770–780 kpc
+   σ_r ≈ 20–30 kpc
+
+2. Relative radial velocity:
+   v_rad_obs ≈ −109 km/s
+   σ_vrad ≈ 4 km/s
+
+3. Relative tangential velocity:
+   v_tan_obs ≈ 17 km/s
+   σ_vtan ≈ 17 km/s
+
+4. Inferred orbital angular momentum:
+   Low, near-radial orbit
+
+5. Total Local Group mass estimate:
+   M_LG ≈ (2–3) × 10^12 M_sun
+
+These values define the observational constraints the simulation
+must reproduce at z ≈ 0.
+
+-----------------------------------------------------------
+ENTRY 3 — CONSTRAINED PARAMETERS IN THE CODE
+-----------------------------------------------------------
+Simulation parameters to be constrained:
+
+- Initial MW–M31 separation vector r_0
+- Initial relative velocity vector v_0
+- Mass ratio (MW : M31)
+- Halo scale lengths and concentrations (secondary constraint)
+
+These are treated as free parameters within observational priors.
+
+-----------------------------------------------------------
+ENTRY 4 — PRIOR CONSTRUCTION
+-----------------------------------------------------------
+Define observational priors as probability distributions:
+
+Separation prior:
+  r_0 ~ Normal(r_obs, σ_r)
+
+Radial velocity prior:
+  v_rad_0 ~ Normal(v_rad_obs, σ_vrad)
+
+Tangential velocity prior:
+  v_tan_0 ~ Normal(v_tan_obs, σ_vtan)
+
+Angular momentum prior:
+  Implicitly enforced through v_tan distribution
+
+These priors replace fixed initial conditions in the code.
+
+-----------------------------------------------------------
+ENTRY 5 — ENSEMBLE SIMULATION STRATEGY
+-----------------------------------------------------------
+Rationale:
+Observational uncertainties imply a family of allowed orbits,
+not a single deterministic trajectory.
+
+Method:
+- Sample N initial conditions from the priors (N ~ 100–1000)
+- Run one full merger simulation per sample
+- Store COM trajectories and snapshots
+
+Each run is one realization of a plausible Local Group history.
+
+-----------------------------------------------------------
+ENTRY 6 — DIAGNOSTICS COMPUTED FROM EACH RUN
+-----------------------------------------------------------
+At each snapshot:
+
+- Center-of-mass positions of MW and M31
+- Relative separation:
+  r_sim(t) = |r_M31(t) − r_MW(t)|
+
+- Relative velocity:
+  v_sim(t) = v_M31(t) − v_MW(t)
+
+- Radial velocity:
+  v_rad_sim = (r · v) / |r|
+
+- Tangential velocity:
+  v_tan_sim = sqrt(|v|^2 − v_rad_sim^2)
+
+- Orbital angular momentum:
+  L_orb = r × v
+
+-----------------------------------------------------------
+ENTRY 7 — COMPARISON WITH HST DATA
+-----------------------------------------------------------
+At the snapshot corresponding to “present day”:
+
+Compute misfit metric:
+
+χ² =
+  ((r_sim − r_obs)/σ_r)^2
++ ((v_rad_sim − v_rad_obs)/σ_vrad)^2
++ ((v_tan_sim − v_tan_obs)/σ_vtan)^2
+
+Interpretation:
+Lower χ² indicates better agreement with HST measurements.
+
+Optional likelihood formulation:
+  L ∝ exp(−0.5 * χ²)
+
+-----------------------------------------------------------
+ENTRY 8 — SELECTION OF ACCEPTABLE SIMULATIONS
+-----------------------------------------------------------
+Procedure:
+- Rank ensemble members by χ² or likelihood
+- Select best-fitting subset (e.g., lowest 5–10%)
+
+These runs define the HST-consistent parameter space.
+
+Store:
+- Initial conditions
+- Merger times
+- Orbital angular momentum histories
+- Disk heating diagnostics
+
+-----------------------------------------------------------
+ENTRY 9 — VALIDATION CHECKS
+-----------------------------------------------------------
+Numerical validation:
+- Energy conservation over time
+- Angular momentum conservation (global)
+- Sensitivity to timestep and softening length
+
+Physical validation:
+- Reasonable merger timescale (~4–6 Gyr)
+- Near-radial infall consistent with low v_tan
+- No unphysical disk disruption before pericenter
+
+-----------------------------------------------------------
+ENTRY 10 — SCIENTIFIC OUTPUTS
+-----------------------------------------------------------
+Primary results:
+- Posterior distributions of initial velocities
+- Allowed range of merger times
+- Evolution of orbital angular momentum
+- Predictions for disk heating and entropy growth
+
+Deliverables:
+- Tables of constrained parameters
+- Trajectory plots (r(t), v_rad(t), v_tan(t))
+- Diagnostics plots (energy, entropy, Lz)
+
+-----------------------------------------------------------
+ENTRY 11 — EXTENSIONS
+-----------------------------------------------------------
+Future improvements:
+- MCMC or nested sampling instead of brute-force ensemble
+- Updated HST + Gaia proper motion constraints
+- Inclusion of Local Group tidal environment
+- Comparison with cosmological zoom-in simulations
+
 
