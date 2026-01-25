@@ -1,3 +1,104 @@
-Hours worked:
-Name of Project
-Author: Abhinav Vatsa
+Hours worked: 5 hours
+===========================================================
+W–M31 MERGER SIMULATION PROJECT
+DATE: 2026-01-24
+===========================================================
+
+Project:
+HST-Constrained Milky Way–Andromeda Merger Simulation
+
+Purpose:
+Implement, analyze, and plan improvements for a controlled
+N-body MW–M31 merger simulation. Focus on phase-space
+irreversibility, disk heating, angular momentum evolution,
+and alignment with observational constraints.
+
+-----------------------------------------------------------
+ENTRY 1 — CODE STRUCTURE ANALYSIS
+-----------------------------------------------------------
+Tasks completed:
+- Reviewed full simulation pipeline:
+  * Initial conditions (disk + halo generation)
+  * Gravity solver (Newtonian, softening)
+  * Leapfrog integrator
+  * Snapshot storage and trajectory tracking
+  * Diagnostics modules (entropy, disk heating, angular momentum, energy)
+  * Post-processing pipeline
+- Identified dataclasses: SimulationConfig, GalaxyComponent, Snapshot
+- Cataloged core simulation classes and methods
+
+Outcome:
+- Produced a comprehensive list of all classes and methods
+  used in the pipeline
+- Confirmed module structure aligns with standard N-body practice
+
+-----------------------------------------------------------
+ENTRY 2 — DEFINITIONS AND CONCEPTS
+-----------------------------------------------------------
+Tasks completed:
+- Defined key physical concepts:
+  * Phase space: (x, y, z, vx, vy, vz) for each particle
+  * Liouville’s theorem: phase-space density conservation
+  * Phase-space irreversibility: entropy increase in N-body systems
+  * Disk heating: increase in vertical velocity dispersion and scale height
+  * Angular momentum evolution: change in Lz over time
+  * HST-constrained merger setup: initial conditions based on observational data
+  * Entropy evolution: tracking of phase-space distribution disorder
+  * Angular momentum budget: tracking component-specific Lz
+
+Outcome:
+- Generated a plain-text copyable glossary of definitions and equations
+
+-----------------------------------------------------------
+ENTRY 3 — LOGICAL AND STRATEGIC ANALYSIS
+-----------------------------------------------------------
+Tasks completed:
+- Confirmed that the current code produces:
+  * State arrays for disk and halo particles
+  * In-memory trajectory snapshots
+  * Diagnostics arrays: entropy, energy, angular momentum, disk heating
+- Assessed alignment with HST observations:
+  * Current code has hard-coded initial MW–M31 separation and velocity
+  * COM offsets applied via `CenterOfMass2`
+- Planned strategies for HST-constrained simulations:
+  * Use priors from van der Marel et al. 2012 for separation, radial and tangential velocities
+  * Sample ensemble of initial conditions from observational uncertainties
+  * Compute misfit (χ²) against observational constraints
+  * Select best-fitting ensemble members
+  * Validate simulations via energy, angular momentum, and merger timescale checks
+
+Outcome:
+- Clear roadmap for modifying initial conditions to enforce HST constraints
+- Defined the diagnostics and metrics needed to evaluate simulation consistency
+
+-----------------------------------------------------------
+ENTRY 4 — LOGICAL DOCUMENTATION
+-----------------------------------------------------------
+Tasks completed:
+- Created a “logbook-style” text block describing HST-constrained
+  simulation strategy, including:
+  * Observational priors
+  * Ensemble approach
+  * COM tracking
+  * Misfit computation
+  * Validation steps
+  * Output deliverables
+- Ensured that equations, methodology, and definitions are included
+
+-----------------------------------------------------------
+ENTRY 5 — NEXT STEPS / TO-DOs
+-----------------------------------------------------------
+1. Implement ensemble initial conditions using HST priors
+2. Integrate ensemble sampling into `MergerSimulation.initialize()`
+3. Extend `Trajectory` to store additional COM diagnostics
+4. Compute radial/tangential velocities and orbital angular momentum
+5. Implement χ²-based selection of best-fitting ensemble members
+6. Run test simulations and validate energy/ angular momentum conservation
+7. Compare predicted merger timescale with Local Group constraints
+8. Update disk heating and entropy diagnostics to ensemble context
+9. Plot and analyze posterior distributions of initial parameters
+10. Document workflow for reproducibility
+
+-----------------------------------------------------------
+END OF LOGBOOK ENTRY
+-----------------------------------------------------------
