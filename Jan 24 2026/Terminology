@@ -1,15 +1,95 @@
-Phase space: For a system of particles, a phase space is defined as the space of (x,v) = (x,y,z,vx,vy,vz). Every particle in this system is a point in the phase space.
+CONCEPTUAL DEFINITIONS 
 
-Louiville's theorem:
+Phase space
+For a system of particles, phase space is the six-dimensional space defined by position and velocity coordinates
+
+(x, v) = (x, y, z, vx, vy, vz)
+
+Each particle corresponds to a single point in this space, and the full dynamical state of the system is represented by the distribution of all particles in phase space.
+
+In the code, phase space is explicitly stored as the first six columns of the state array and is used directly when computing coarse-grained phase-space density and entropy.
+
+Liouville’s theorem
+Liouville’s theorem states that for a Hamiltonian system evolving under conservative forces, the fine-grained phase-space density is conserved along trajectories:
+
+df/dt = 0
+
+This holds even for strongly time-dependent or chaotic gravitational systems.
+
+In the code, Newtonian gravity and a symplectic leapfrog integrator approximate Hamiltonian evolution. Any observed entropy growth does not violate Liouville’s theorem and arises from coarse-graining and finite numerical resolution.
 
 Phase-space irreversibility
+Phase-space irreversibility refers to the practical impossibility of reconstructing the initial phase-space distribution from a later evolved state, despite the underlying equations of motion being time-reversible.
+
+Formally, although the microscopic equations satisfy:
+
+(x, v, t) → (x, −v, −t)
+
+the coarse-grained phase-space distribution does not return to its original configuration.
+
+In the code, irreversibility is diagnosed by the monotonic increase of coarse-grained phase-space entropy, driven by phase mixing, chaotic orbital divergence, and numerical coarse-graining.
 
 Disk heating
+Disk heating is the process by which a galactic disk increases its vertical thickness and velocity dispersion due to gravitational perturbations.
+
+Vertical thickening is quantified by:
+
+h_z = sqrt(<z^2>)
+
+Velocity dispersion is quantified by:
+
+σ^2 = Var(vx, vy, vz)
+
+In the code, both quantities are computed for disk particles and tracked over time to diagnose tidal heating during the MW–M31 merger.
 
 Angular momentum evolution
+Angular momentum evolution describes how angular momentum is redistributed within and between galactic components during dynamical interactions.
+
+The z-component of angular momentum is defined as:
+
+L_z = Σ m (x vy − y vx)
+
+In the code, L_z is computed per galactic component and tracked over time to study tidal torques, orbital decay, and internal angular momentum transfer.
 
 HST-constrained merger setup
+An HST-constrained merger setup initializes the Milky Way–Andromeda system using observationally inferred relative positions and velocities derived from Hubble Space Telescope proper-motion measurements.
 
-Entropy evolution 
+In the code, center-of-mass positions and velocities are computed for each galaxy, and corrective shifts are applied so that:
+
+Δr ≈ 780 kpc
+Δv ≈ (−109, 20, 0) km/s
+
+This anchors the simulation to real observational constraints rather than arbitrary initial conditions.
+
+Entropy evolution
+Entropy evolution refers to the time evolution of coarse-grained phase-space entropy, which measures the degree of mixing and disorder in the system.
+
+Entropy is defined as:
+
+S = − Σ_i P_i ln(P_i)
+
+where P_i is the normalized phase-space density in bin i.
+
+In the code, entropy is computed from six-dimensional phase-space histograms and tracked across simulation snapshots.
 
 Angular momentum budget
+The angular momentum budget is the accounting of angular momentum content within each galactic component as a function of time.
+
+In the code, the angular momentum budget is computed separately for the Milky Way disk and Andromeda disk, enabling analysis of conservation, transfer, and merger-driven redistribution.
+
+ADDITIONAL IMPLIED DEFINITIONS
+
+Coarse-graining
+The process of dividing continuous phase space into finite bins in order to compute statistical quantities such as entropy.
+
+Phase mixing
+The spreading of nearby phase-space trajectories due to differences in orbital frequencies, leading to apparent irreversibility.
+
+Symplectic integration
+A numerical integration method that preserves phase-space structure and long-term stability for Hamiltonian systems.
+
+Snapshot
+A discrete record of the full system state at a specific simulation time.
+
+Collisionless dynamics
+An approximation in which direct particle–particle collisions are neglected and evolution is governed by smooth gravitational forces.
