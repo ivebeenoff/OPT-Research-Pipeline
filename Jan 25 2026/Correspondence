@@ -1,14 +1,13 @@
+===============================================================
 Question raised by AAS 
-. The origin of the data used in this work must be clearly specified. Although three previous papers are cited, none appear to provide publicly available simulation snapshots. If the analysis relies on snapshots from a specific existing simulation, this should be stated explicitly, together with a concise description of the simulation setup and methodology. Alternatively, if the simulations were newly generated for this study following the methods outlined in the cited works, this should be clearly indicated and accompanied by a substantially more detailed description of the simulation procedure than is currently provided.===============================================================
+===============================================================
+The origin of the data used in this work must be clearly specified. 
+Although three previous papers are cited, none appear to provide publicly available simulation snapshots. 
+If the analysis relies on snapshots from a specific existing simulation, this should be stated explicitly, together with a concise description of the simulation setup and methodology. 
+Alternatively, if the simulations were newly generated for this study following the methods outlined in the cited works, this should be clearly indicated and accompanied by a substantially more detailed description of the simulation procedure than is currently provided.
+===============================================================
 Correspondence with Dr. Besla regarding citation of data points
-================================================================
-Greetings, 
-I hope you are doing well. I was one of the students in your ASTR 400B class last spring. 
-I am writing to ask you a question regarding the MW-M31 merger simulation data set that was provided to us for the course. 
-Since my graduation, I have significantly extended the pipeline that I had initially created for my 400B final project. I want to publish the methodology that I have developed for the analysis of halo shapes in a research note for AAS. 
-My question is, am I allowed to use the simulation snapshots that were provided to us for 400B to demonstrate how the pipeline works and generate plots?
-If yes, how am I supposed to cite it? As far as I am aware, the simulation data set is not publicly available. I tried going back to the original Van der Marel (2012) paper, but I couldn’t find the data set itself linked under the paper or in any Zenodo repository. 
-Kindly let me know how I should proceed with the citation. 
-
-With regards
-Abhinav Vatsa
+===============================================================
+I am seeking clarification on whether I may use the Milky Way–Andromeda (MW–M31) merger simulation snapshots that were provided for the ASTR 400B course to demonstrate and generate plots for an analysis pipeline I have since substantially extended. 
+I plan to publish the methodology developed for this pipeline, which focuses on the analysis of halo shapes, as a research note for the American Astronomical Society (AAS). 
+Because the simulation data set does not appear to be publicly available, I would also appreciate guidance on whether its use is permitted for this purpose and how it should be properly cited in a publication.
