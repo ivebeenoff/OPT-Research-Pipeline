@@ -1,0 +1,14 @@
+Data Provenance and Citation Clarification
+
+Issue Raised by AAS Reviewer
+
+The reviewer noted that the origin of the simulation data used in this work must be clearly specified. 
+While three prior studies are cited, none appear to provide publicly accessible simulation snapshots. 
+If the analysis relies on snapshots from an existing simulation, this dependency should be stated explicitly, along with a concise description of the simulation setup and methodology. 
+Alternatively, if the simulations were newly generated for this study following the methods described in the cited works, this should be clearly indicated and accompanied by a more detailed description of the simulation procedure than is currently provided.
+
+Action Taken: Correspondence with Dr. Besla
+
+I contacted Dr. Besla to request clarification regarding the use and citation of the Milky Way–Andromeda (MW–M31) merger simulation snapshots originally provided for the ASTR 400B course. 
+I explained that these snapshots are being used to demonstrate and generate plots for an analysis pipeline that I have since substantially extended, with the intent of publishing the methodology as a research note for the American Astronomical Society (AAS). 
+Given that the simulation data set does not appear to be publicly available, I requested guidance on whether its use is permitted for this purpose and how it should be properly cited in a publication.
