@@ -4,3 +4,10 @@ Project: HST aligned merger simulation of the Milky Way and M31
 Author: ABHINAV VATSA
 ===============================================================
 Started- 10:15 AM
+
+Further plans
+1. Start populating Jupyter Notebooks with detailed explanations for the theory and the code functionality. 
+2. Once the simulation code is finished, generate some plots. 
+3. Create a comprehensive collection of Jupyter notebooks illustrating the work done so far. Try to merge as much as possible into a few notebooks. 
+4. Create one concise Jupyter notebook highlighting my pipeline. 
+5. Use techniques from ASTR 400B (especially labs) to further modify and constrain the simulation and the overall pipeline. 
