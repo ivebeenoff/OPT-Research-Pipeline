@@ -1,0 +1,375 @@
+HST-Aligned MW–M31 Merger Simulation
+Class & Dataclass Documentation Sheet
+
+Dataclasses
+1. SimulationConfig
+
+Fields only (no methods):
+
+softening_length
+
+timestep
+
+n_steps
+
+phasespace_bins
+
+snapshot_stride
+
+enable_energy_tracking
+
+enable_angular_momentum_tracking
+
+save_snapshots
+
+Description:
+Container for all numerical and diagnostic configuration parameters controlling the simulation, integration cadence, and post-processing behavior.
+
+Operations performed:
+
+Supplies global numerical parameters to:
+
+Gravity solver
+
+Integrator
+
+Diagnostics pipeline
+
+Controls snapshot cadence and optional disk output
+
+Acts as a single source of truth for reproducibility
+
+2. GalaxyComponent
+
+Fields only (no methods):
+
+name
+
+component_id
+
+total_mass
+
+particle_count
+
+scale_length
+
+scale_height
+
+component_type
+
+Description:
+Abstract representation of a galactic structural component (disk or halo), used to parameterize initial condition generation.
+
+Operations performed:
+
+Defines mass, size, and resolution for particle sampling
+
+Supplies metadata to the initial condition factory
+
+Encodes component identity via component_id
+
+3. Snapshot
+
+Fields only (no methods):
+
+state
+
+time
+
+step
+
+Description:
+Immutable record of the full N-body system state at a specific simulation time.
+
+Operations performed:
+
+Stores particle phase-space data
+
+Enables time-ordered diagnostics
+
+Acts as atomic unit for trajectory analysis
+
+Core Simulation Classes
+4. InitialConditionFactory
+
+Static methods:
+
+hernquist_halo(component)
+
+exponential_disk(component)
+
+Description:
+Factory class responsible for sampling initial particle distributions for galactic components.
+
+Operations performed:
+
+Samples spatial distributions for disks and halos
+
+Assigns masses and component IDs
+
+Produces standardized (N, 8) state arrays
+
+Initializes approximate kinematics (disk rotation, halo placeholders)
+
+5. GravitySolver
+
+Methods:
+
+__init__(softening)
+
+accelerations(pos, m)
+
+Description:
+Direct-summation Newtonian gravity solver with Plummer softening.
+
+Operations performed:
+
+Computes pairwise gravitational accelerations
+
+Applies softening to suppress numerical divergences
+
+Serves as the force backend for the integrator
+
+6. LeapfrogIntegrator
+
+Methods:
+
+__init__(solver)
+
+step(state, dt)
+
+Description:
+Second-order symplectic leapfrog integrator for collisionless N-body dynamics.
+
+Operations performed:
+
+Advances particle positions and velocities in time
+
+Preserves phase-space structure to leading order
+
+Minimizes secular energy drift
+
+7. Trajectory
+
+Methods:
+
+__init__()
+
+add(state, time, step)
+
+times()
+
+Description:
+Container for the time-ordered evolution of the simulation.
+
+Operations performed:
+
+Stores snapshots at configurable cadence
+
+Provides access to simulation timeline
+
+Acts as the backbone for all diagnostics
+
+Phase-Space & Diagnostics
+8. PhaseSpaceMetrics
+
+Methods:
+
+__init__(bins)
+
+density(state)
+
+Description:
+Computes coarse-grained phase-space density via multidimensional binning.
+
+Operations performed:
+
+Constructs 6D phase-space histograms
+
+Normalizes densities for entropy calculation
+
+Implements observationally motivated coarse-graining
+
+9. EntropyEvolution
+
+Methods:
+
+__init__(bins)
+
+entropy(state)
+
+series(traj)
+
+Description:
+Tracks coarse-grained phase-space entropy as a function of time.
+
+Operations performed:
+
+Computes Shannon entropy from binned phase space
+
+Generates entropy time series
+
+Quantifies phase-space irreversibility
+
+10. DiskHeatingTracker
+
+Methods:
+
+scale_height(state) (static)
+
+velocity_dispersion(state) (static)
+
+track(traj, disk_id)
+
+Description:
+Measures structural and kinematic heating of galactic disks.
+
+Operations performed:
+
+Computes vertical thickening
+
+Tracks velocity dispersion growth
+
+Diagnoses tidal heating during merger
+
+11. AngularMomentumBudget
+
+Methods:
+
+total_Lz(state) (static)
+
+component_Lz(traj, component_id)
+
+Description:
+Tracks angular momentum evolution for individual galactic components.
+
+Operations performed:
+
+Computes z-component of angular momentum
+
+Measures angular momentum transfer
+
+Diagnoses tidal torques and orbital decay
+
+12. ConservedQuantities
+
+Methods:
+
+total_energy(state, softening) (static)
+
+Description:
+Computes total mechanical energy of the N-body system.
+
+Operations performed:
+
+Evaluates kinetic energy
+
+Computes softened gravitational potential energy
+
+Enables numerical conservation checks
+
+13. EnergyDiagnostics
+
+Methods:
+
+__init__(softening)
+
+series(traj)
+
+Description:
+Wrapper class for energy conservation diagnostics.
+
+Operations performed:
+
+Produces energy time series
+
+Quantifies integration accuracy
+
+Flags numerical dissipation or instability
+
+Merger Orchestration
+14. MergerSimulation
+
+Methods:
+
+__init__(config)
+
+initialize()
+
+run()
+
+Description:
+Top-level controller for MW–M31 merger execution.
+
+Operations performed:
+
+Defines galactic components
+
+Applies HST-aligned COM constraints
+
+Integrates the system forward in time
+
+Produces the full trajectory
+
+15. PostProcessingPipeline
+
+Methods:
+
+__init__(config)
+
+run(traj)
+
+Description:
+Unified interface for computing all diagnostics from the trajectory.
+
+Operations performed:
+
+Computes entropy evolution
+
+Tracks disk heating
+
+Measures angular momentum budgets
+
+Evaluates energy conservation
+
+Externally Imported & Used
+16. CenterOfMass2 (external module)
+
+Methods used:
+
+__init__(state, ptype)
+
+COM_P()
+
+COM_V(x_COM, y_COM, z_COM)
+
+Description:
+Robust iterative center-of-mass finder using a shrinking-sphere algorithm.
+
+Operations performed:
+
+Computes COM positions for MW and M31
+
+Computes COM velocities within a bounded region
+
+Anchors simulation frame to HST-constrained observables
+
+TO-DO / IMPROVEMENT TASKS
+
+Replace placeholder halo velocities with equilibrium distribution function sampling
+
+Validate phase-space entropy convergence vs bin resolution
+
+Add reverse-time integration test for irreversibility validation
+
+Introduce adaptive time stepping near pericenter
+
+Compare disk heating metrics with HST + Gaia constraints
+
+Add snapshot export in HDF5 for interoperability
+
+Replace direct summation gravity with tree or PM solver for scalability
+
+Separate baryonic and dark matter entropy diagnostics
+
+Add unit tests for energy and angular momentum conservation
