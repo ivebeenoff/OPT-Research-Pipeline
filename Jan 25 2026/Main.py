@@ -247,7 +247,6 @@ class AngularMomentumBudget:
             for s in traj.snapshots
         ])
 
-
 # =============================================================================
 # ENERGY
 # =============================================================================
@@ -255,22 +254,36 @@ class AngularMomentumBudget:
 class ConservedQuantities:
     """
     Energy diagnostics for monitoring numerical stability.
+
+    Uses Plummer-softened gravity, consistent with the force law
+    employed in the GravitySolver.
     """
 
     @staticmethod
     def total_energy(state: np.ndarray, softening: float) -> float:
         pos = state[:, :3]
         vel = state[:, 3:6]
-        m = state[:, 6]
+        m   = state[:, 6]
 
-        # Kinetic energy
+        N = len(pos)
+
+        # ------------------------------------------------------------------
+        # Kinetic Energy
+        # ------------------------------------------------------------------
         KE = 0.5 * np.sum(m * np.sum(vel**2, axis=1))
 
-        # Potential energy (pairwise, softened)
+        # ------------------------------------------------------------------
+        # Potential Energy (pairwise, Plummer-softened)
+        # ------------------------------------------------------------------
         PE = 0.0
-        for i in range(len(pos)):
-            r = np.linalg.norm(pos[i] - pos, axis=1) + softening
-            PE -= G * np.sum(m[i] * m / r)
+        for i in range(N):
+            dr = pos[i] - pos
+            r2 = np.sum(dr**2, axis=1) + softening**2
+
+            # Avoid self-interaction
+            inv_r = np.where(r2 > 0, 1.0 / np.sqrt(r2), 0.0)
+
+            PE -= G * np.sum(m[i] * m * inv_r)
 
         # Factor of 1/2 avoids double counting
         return KE + 0.5 * PE
@@ -284,7 +297,7 @@ class EnergyDiagnostics:
     def __init__(self, softening: float):
         self.softening = softening
 
-    def series(self, traj: Trajectory):
+    def series(self, traj: Trajectory) -> np.ndarray:
         return np.array([
             ConservedQuantities.total_energy(s.state, self.softening)
             for s in traj.snapshots
