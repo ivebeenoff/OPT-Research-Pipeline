@@ -1,13 +1,19 @@
-Hours worked
+Hours worked: 5 hours 45 minutes
 ===============================================================
-Project: HST aligned merger simulation of the Milky Way and M31 
-Author: ABHINAV VATSA
+Project: HST aligned merger simulation of the Milky Way and M31
+Author: Abhinav Vatsa
 ===============================================================
-Started- 10:15 AM
 
-Further plans
-1. Start populating Jupyter Notebooks with detailed explanations for the theory and the code functionality. 
-2. Once the simulation code is finished, generate some plots. 
-3. Create a comprehensive collection of Jupyter notebooks illustrating the work done so far. Try to merge as much as possible into a few notebooks. 
-4. Create one concise Jupyter notebook highlighting my pipeline. 
-5. Use techniques from ASTR 400B (especially labs) to further modify and constrain the simulation and the overall pipeline. 
+Summary of work completed:
+• Added detailed, structured commentary throughout the MW–M31 merger simulation pipeline to clarify physical assumptions, numerical methods, and diagnostics.
+• Finalized modular design for gravity solver, leapfrog integrator, snapshot storage, entropy tracking, disk heating diagnostics, angular momentum, and energy conservation.
+• Implemented and documented HST-aligned center-of-mass correction using the CenterOfMass2 module.
+• Drafted a formal “Data Provenance and Citation Clarification” response addressing an AAS reviewer concern and initiated correspondence with Dr. Besla regarding simulation data usage and citation.
+• Reviewed pipeline organization with the goal of converting the codebase into publication-quality Jupyter notebooks.
+
+Further plans:
+1. Start populating Jupyter Notebooks with detailed explanations for the theory and the code functionality.
+2. Once the simulation code is finished, generate diagnostic and illustrative plots.
+3. Create a comprehensive collection of Jupyter notebooks illustrating the work done so far, merging content where possible.
+4. Create one concise Jupyter notebook highlighting the full simulation and analysis pipeline.
+5. Use techniques from ASTR 400B (especially labs) to further modify and constrain the simulation and the overall pipeline.
