@@ -1,0 +1,112 @@
+We consider spherically symmetric mass distributions, where the mass density ρ(r)
+depends only on the radial distance r from the center. The density represents the
+mass per unit volume at radius r. The enclosed mass within radius r is defined as
+
+M(r) = 4π ∫₀ʳ ρ(r′) r′² dr′
+
+The following profiles are commonly used in stellar structure, galactic dynamics,
+and cosmological halo modeling.
+
+-----------------------------------------------------------------------
+
+1. Einasto Profile (Einasto 1965)
+
+Description:
+A smoothly varying density profile characterized by a continuously changing
+logarithmic slope. It provides an excellent fit to dark matter halos in numerical
+simulations and avoids sharp cusps or breaks.
+
+Expression:
+ρ(r) = ρ₋₂ · exp{ - (2/α) [ (r / r₋₂)ᵅ − 1 ] }
+
+Parameters:
+ρ₋₂   : density at the radius r₋₂
+r₋₂   : radius where d ln ρ / d ln r = −2
+α     : shape parameter controlling curvature
+
+-----------------------------------------------------------------------
+
+2. Sérsic Profile (Sérsic 1963) — Surface Density (2D)
+
+Description:
+A phenomenological law describing the radial surface brightness or surface mass
+density of galaxies. It applies to projected (two-dimensional) distributions and
+does not directly describe volume density.
+
+Expression:
+I(R) = Iₑ · exp{ - bₙ [ (R / Rₑ)¹⁄ⁿ − 1 ] }
+
+Parameters:
+Iₑ   : surface density at the effective radius
+Rₑ   : radius enclosing half the total luminosity
+n    : Sérsic index (concentration parameter)
+bₙ   : constant chosen so that Rₑ encloses half the total light
+
+Note:
+The Einasto profile is mathematically analogous to the Sérsic law, but applies to
+three-dimensional volume densities rather than projected surface densities.
+
+-----------------------------------------------------------------------
+
+3. Navarro–Frenk–White (NFW) Profile (Navarro, Frenk & White 1996)
+
+Description:
+A cuspy density profile emerging from cold dark matter simulations. It features a
+central r⁻¹ cusp and a steep r⁻³ falloff at large radii.
+
+Expression:
+ρ(r) = ρₛ / [ (r / rₛ) (1 + r / rₛ)² ]
+
+Parameters:
+ρₛ : characteristic density
+rₛ : scale radius
+
+-----------------------------------------------------------------------
+
+4. Hernquist Profile (Hernquist 1990)
+
+Description:
+A finite-mass profile commonly used to model stellar bulges and elliptical galaxies.
+It resembles the de Vaucouleurs profile in projection and has an analytic potential.
+
+Expression:
+ρ(r) = (M / 2π) · a / [ r (r + a)³ ]
+
+Parameters:
+M : total mass
+a : scale length
+
+-----------------------------------------------------------------------
+
+5. Plummer Sphere (Plummer 1911)
+
+Description:
+A cored density profile with finite central density. Historically used for star
+clusters and pedagogical models due to its analytic simplicity.
+
+Expression:
+ρ(r) = (3M / 4πa³) · (1 + r² / a²)⁻⁵ᐟ²
+
+Parameters:
+M : total mass
+a : core radius
+
+-----------------------------------------------------------------------
+
+6. Singular Isothermal Sphere
+
+Description:
+An idealized model producing flat rotation curves. While useful analytically, it
+has infinite mass and is not physically realistic at large radii.
+
+Expression:
+ρ(r) = σ² / (2π G r²)
+
+Parameters:
+σ : velocity dispersion
+G : gravitational constant
+
+-----------------------------------------------------------------------
+
+All profiles above describe the radial concentration of mass per unit volume as a
+function of distance from the center of a star, galaxy, or halo.
