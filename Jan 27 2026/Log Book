@@ -1,1 +1,142 @@
-Time of logging in: 11 AM 
+RESEARCH LOG BOOK
+Hours worked: 6 hours 
+Project Title: Radial Mass Density Profiles & Computational Modeling Pipeline
+Author: Abhinav Vatsa
+
+---------------------------------------------------------------------------
+OBJECTIVE
+---------------------------------------------------------------------------
+
+The objective of today’s work was to formalize a set of physically relevant
+radial mass density profiles used in astrophysics and cosmology, with emphasis
+on their interpretation as mass-per-unit-volume functions ρ(r), and to design
+a modular, numerically transparent Python pipeline for computing enclosed mass
+as a function of radius. The work explicitly avoided derivations, focusing
+instead on formal definitions, expressions, and computational implementation.
+
+---------------------------------------------------------------------------  
+SCOPE OF WORK
+---------------------------------------------------------------------------
+
+1. Clarify the physical meaning of radial density profiles under spherical
+   symmetry.
+2. Compile a representative set of commonly used density and surface-density
+   models.
+3. Present each model with:
+   - A concise physical description
+   - A mathematically precise expression
+   - Clear parameter definitions
+4. Construct a reusable Python pipeline for numerical evaluation of enclosed
+   mass M(r).
+5. Ensure code design favors clarity, extensibility, and research use rather
+   than optimization shortcuts.
+
+---------------------------------------------------------------------------  
+THEORETICAL CONSOLIDATION
+---------------------------------------------------------------------------
+
+1. Spherical Symmetry Framework
+   - Adopted the assumption that density depends only on radial distance r.
+   - Defined ρ(r) as mass per unit volume at distance r from the center.
+   - Identified enclosed mass M(r) as the principal derived observable for all
+     profiles.
+
+2. Einasto Profile
+   - Identified as the primary smooth 3D density profile of interest.
+   - Noted its defining feature: continuously varying logarithmic slope.
+   - Emphasized its widespread use in modern N-body simulations of dark matter
+     halos.
+   - Formalized the expression using (ρ₋₂, r₋₂, α) parameterization.
+
+3. Sérsic Profile
+   - Included as a two-dimensional surface density (or brightness) profile.
+   - Clarified that Sérsic applies to projected distributions, not volume
+     densities.
+   - Explicitly noted the mathematical analogy between Sérsic (2D) and Einasto
+     (3D).
+   - Avoided deprojection or inversion due to lack of closed-form solutions.
+
+4. Navarro–Frenk–White (NFW) Profile
+   - Added as a canonical cold-dark-matter halo model.
+   - Highlighted central cusp behavior and asymptotic outer slope.
+   - Framed as a contrast case to Einasto’s smooth curvature.
+
+5. Hernquist Profile
+   - Included as a finite-mass stellar profile.
+   - Motivated by its relevance to galactic bulges and elliptical galaxies.
+   - Noted analytic convenience in gravitational modeling.
+
+6. Plummer Sphere
+   - Added as a cored, non-cuspy reference model.
+   - Identified as historically significant and pedagogically useful.
+
+7. Singular Isothermal Sphere
+   - Included for conceptual completeness.
+   - Noted its role in explaining flat rotation curves.
+   - Explicitly identified as physically unrealistic due to infinite mass.
+
+---------------------------------------------------------------------------  
+COMPUTATIONAL PIPELINE DESIGN
+---------------------------------------------------------------------------
+
+1. Design Philosophy
+   - Prioritized transparency and physical readability over abstraction.
+   - Avoided object-heavy frameworks in favor of explicit functional design.
+   - Ensured compatibility with NumPy-based numerical workflows.
+
+2. Core Numerical Routine
+   - Implemented a general-purpose numerical integrator for enclosed mass.
+   - Used direct radial summation under spherical symmetry.
+   - Avoided analytic shortcuts to preserve generality across profiles.
+
+3. Density Profile Implementations
+   - Implemented each density profile as a standalone callable function.
+   - Standardized the API: rho(r, parameters).
+   - Ensured all functions support vectorized NumPy inputs.
+
+4. Validation Strategy
+   - Verified dimensional consistency across all functions.
+   - Ensured numerical stability by avoiding r = 0 singularities.
+   - Designed example usage for quick sanity checks and extension.
+
+---------------------------------------------------------------------------  
+DELIVERABLES PRODUCED
+---------------------------------------------------------------------------
+
+1. Formal written catalog of:
+   - Einasto profile (3D)
+   - Sérsic profile (2D)
+   - NFW profile
+   - Hernquist profile
+   - Plummer sphere
+   - Singular isothermal sphere
+
+2. Fully commented Python pipeline including:
+   - Enclosed mass integrator
+   - Individual density profile definitions
+   - Example usage block
+
+---------------------------------------------------------------------------  
+CURRENT STATE
+---------------------------------------------------------------------------
+
+- Theoretical expressions are complete and presentation-ready.
+- Computational pipeline is functional, modular, and extensible.
+- Code is suitable for:
+  - Parameter studies
+  - Numerical experiments
+  - Future inclusion of potentials, rotation curves, or fitting routines.
+
+---------------------------------------------------------------------------  
+NEXT LOGICAL EXTENSIONS
+---------------------------------------------------------------------------
+
+1. Numerical computation of gravitational potential Φ(r).
+2. Circular velocity curves v_c(r) derived from M(r).
+3. Sérsic deprojection via numerical Abel inversion.
+4. Parameter fitting to simulated or observational datasets.
+5. Comparison between Einasto and NFW halo fits.
+
+---------------------------------------------------------------------------  
+END OF LOG ENTRY
+---------------------------------------------------------------------------  
