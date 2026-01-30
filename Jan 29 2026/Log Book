@@ -1,1 +1,71 @@
+Hours worked: 6.0
 
+Date: 29 January 2026
+Researcher: Abhinav Vatsa
+Project: HST-Aligned Milky Way–Andromeda Merger Simulation
+
+----------------------------------------------------------------------
+LOG BOOK ENTRY
+----------------------------------------------------------------------
+
+Objective:
+Refactor the MW–M31 merger simulation to reduce gravitational
+force-calculation complexity and improve numerical scalability, while
+preserving the existing physics model and diagnostic pipeline.
+
+Work Performed:
+
+1. Barnes–Hut Gravity Implementation
+   - Designed and implemented a Barnes–Hut octree algorithm to replace
+     the direct O(N^2) pairwise Newtonian gravity solver.
+   - Implemented recursive 3D spatial subdivision, node mass and
+     center-of-mass calculation, and an opening-angle criterion (θ).
+   - Incorporated gravitational softening consistently into the
+     Barnes–Hut force evaluation.
+   - Targeted effective computational scaling of approximately
+     O(N log N).
+
+2. Integration with Existing Framework
+   - Encapsulated the Barnes–Hut logic in a BarnesHutSolver class that
+     conforms to the existing GravitySolver interface.
+   - Integrated the new solver into the leapfrog integrator without
+     modifying timestep control, state-vector layout, or integration
+     scheme.
+   - Ensured compatibility with existing diagnostics, including
+     entropy evolution, disk heating metrics, angular momentum budgets,
+     and energy tracking.
+
+3. Initial Condition Adjustments
+   - Modified Hernquist halo initialization to include approximate
+     isotropic velocity dispersion, reducing the severity of known
+     non-equilibrium artifacts in the original zero-velocity setup.
+   - Retained the existing exponential disk initialization and
+     circular velocity prescription to maintain continuity with prior
+     simulation configurations.
+
+4. Code Refactoring and Readability
+   - Consolidated gravity-related logic into clearly separated tree,
+     node, and solver classes.
+   - Preserved NumPy-only implementation constraints and avoided
+     multiprocessing or external N-body libraries.
+   - Maintained compatibility with the existing CenterOfMass2-based
+     HST-aligned initialization workflow.
+
+Status:
+- Barnes–Hut gravity solver is fully implemented and integrated.
+- No numerical validation or performance benchmarking has been
+  performed yet.
+- Physical fidelity, conservation properties, and runtime scaling
+  remain to be tested.
+
+Next Steps:
+- Test energy and angular momentum conservation in isolated halo and
+  disk systems.
+- Benchmark performance against the original direct-summation solver.
+- Run controlled MW–M31 merger tests to assess numerical heating and
+  entropy evolution.
+- Tune the Barnes–Hut opening angle θ and softening length if needed.
+
+----------------------------------------------------------------------
+END OF ENTRY
+----------------------------------------------------------------------
