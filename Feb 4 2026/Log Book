@@ -1,1 +1,79 @@
+===============================================================================
+Development Log — MW–M31 N-Body Simulation
+Date: 2026-02-04
+Total Time Worked: 10.0 hours
+===============================================================================
 
+TIME BREAKDOWN (SUMMARY)
+
+  1.5 hrs  — Full code audit & issue identification
+  2.0 hrs  — Unit system redesign (kpc, km/s, Gyr, Msun)
+  2.0 hrs  — Barnes–Hut octree correctness rebuild
+  1.5 hrs  — Gravity law & Plummer softening fixes
+  1.0 hr   — Initial conditions & COM alignment corrections
+  1.0 hr   — Leapfrog integrator rebuild
+  1.0 hr   — End-to-end integration, testing, plotting
+
+  ------------------------------------------
+  TOTAL:   10.0 hours
+  ------------------------------------------
+
+
+DETAILED WORK LOG
+
+[1] Initial Audit & Fault Identification (1.5 hrs)
+    - Read entire simulation pipeline end-to-end
+    - Identified fatal unit inconsistency (seconds vs km/s vs kpc)
+    - Flagged incorrect Barnes–Hut octant construction
+    - Found overlapping child nodes and double-counted particles
+    - Detected non-physical gravity softening implementation
+    - Identified self-force contamination in tree traversal
+    - Reviewed equilibrium quality of halo and disk ICs
+    - Categorized issues as fatal vs acceptable approximations
+
+[2] Unit System Redesign (2.0 hrs)
+    - Standardized all quantities to kpc, km/s, Gyr, Msun
+    - Removed all second-based timestep logic
+    - Introduced explicit km/s → kpc/Gyr conversion constant
+    - Ensured leapfrog updates obey dimensional analysis
+    - Verified velocity–position coupling consistency
+
+[3] Barnes–Hut Octree Rebuild (2.0 hrs)
+    - Removed overlapping bounding-box octant logic
+    - Implemented strict binary octant assignment via sign tests
+    - Guaranteed one-particle-per-leaf invariant
+    - Rebuilt recursive tree construction with correct geometry
+    - Verified mass and center-of-mass aggregation correctness
+
+[4] Gravity Solver & Softening Corrections (1.5 hrs)
+    - Replaced additive softening with Plummer softening
+    - Implemented correct softened force law:
+        a ∝ r / (r² + ε²)^(3/2)
+    - Explicitly excluded self-force contributions
+    - Verified near-field and far-field behavior consistency
+
+[5] Initial Conditions & COM Alignment (1.0 hr)
+    - Replaced disk-only COM alignment with full-mass COM
+    - Ensured MW–M31 relative position and velocity applied cleanly
+    - Removed dependency on external COM helper class
+    - Documented equilibrium assumptions clearly
+
+[6] Leapfrog Integrator Rebuild (1.0 hr)
+    - Implemented kick–drift–kick symplectic scheme
+    - Ensured accelerations recomputed after drift
+    - Removed hidden unit conversions inside integrator
+    - Preserved time-reversibility and stability
+
+[7] Integration, Testing & Visualization (1.0 hr)
+    - Integrated all rebuilt components end-to-end
+    - Ran full MW–M31 merger trajectory
+    - Verified separation evolution is smooth and physical
+    - Generated MW–M31 separation vs time plot
+    - Confirmed no runtime errors or numerical instabilities
+
+-------------------------------------------------------------------------------
+Notes:
+- Simulation is explicitly documented as a qualitative toy model
+- Initial conditions are approximate but controlled
+- Codebase is now stable, unit-consistent, and extensible
+===============================================================================
