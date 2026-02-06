@@ -1,0 +1,69 @@
+Date: February 4, 2026
+
+Total Time Logged: 11.0 hours
+
+Project: Barnes–Hut N-Body Simulation of the Milky Way–Andromeda Merger
+
+Summary:
+Today’s work focused on consolidating, validating, documenting, and extending the
+MW–M31 N-body simulation framework. The emphasis was on numerical correctness,
+clarity, reproducibility, and scientific defensibility, with careful attention paid
+to performance constraints and algorithmic transparency.
+
+Work Breakdown:
+
+1. Numerical Architecture Review (1.5 hrs)
+   - Reviewed full simulation pipeline end-to-end: initial conditions → force
+     computation → time integration → analysis outputs.
+   - Verified that no nested O(N²) loops appear in the production force calculation.
+   - Confirmed Barnes–Hut traversal is the sole source of inter-particle forces.
+   - Ensured leapfrog integration follows a strict kick–drift–kick scheme.
+
+2. Unit Consistency Audit (1.25 hrs)
+   - Re-checked dimensional consistency across all equations of motion.
+   - Verified positions in kpc, velocities in km/s, time in Gyr, masses in Msun.
+   - Documented km/s → kpc/Gyr conversion factor and its usage.
+   - Confirmed removal of implicit SI units.
+
+3. Code Refactoring for Clarity (2.0 hrs)
+   - Clarified class responsibilities (configuration, IC factory, tree, integrator).
+   - Ensured mass, position, and velocity storage is explicit and unambiguous.
+   - Removed ambiguous variable naming.
+   - Centralized and stabilized configuration parameters.
+
+4. Barnes–Hut Algorithm Validation (1.5 hrs)
+   - Reviewed octree construction logic and spatial subdivision rules.
+   - Verified center-of-mass accumulation and mass propagation.
+   - Confirmed correct self-force exclusion and softening behavior.
+   - Re-checked opening-angle criterion.
+
+5. Documentation & Notebook Blueprint Writing (1.75 hrs)
+   - Wrote a detailed Jupyter notebook blueprint focused on scientific explanation.
+   - Drafted and finalized initial notebook sections:
+       • Metadata and purpose
+       • Scientific motivation and scope
+       • Units and physical conventions
+       • Imports and constants
+
+6. Diagnostics & Validation Extensions (2.0 hrs)
+   - Implemented vectorized kinetic energy and angular momentum diagnostics.
+   - Added vectorized direct N² gravity solver for validation (no nested loops).
+   - Implemented gravitational potential energy diagnostic.
+   - Added Barnes–Hut vs direct solver accuracy comparison routine.
+
+7. Adaptive Timestep Control (1.0 hr)
+   - Implemented acceleration-based adaptive timestep criterion.
+   - Integrated timestep logic into leapfrog integrator.
+   - Added global timestep cap for numerical stability.
+
+Outcome:
+The MW–M31 simulation framework is now well-validated, documented, and extended with
+diagnostics and accuracy checks expected of a research-grade N-body code. The codebase
+is suitable as a stable foundation for further physical realism and performance
+studies.
+
+Next Planned Steps:
+- Long-term energy and angular momentum conservation testing.
+- Parameter tuning of Barnes–Hut opening angle and softening length.
+- Replacement of analytic initial conditions with published MW/M31 distribution
+  function models.
