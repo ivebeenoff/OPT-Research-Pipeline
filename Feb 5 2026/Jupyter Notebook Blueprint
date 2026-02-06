@@ -1,0 +1,230 @@
+Jupyter Notebook Blueprint
+==========================
+
+Title:
+------
+Barnes–Hut N-Body Simulation of the Milky Way–Andromeda Merger
+
+Author:
+-------
+Abhinav Vatsa
+
+Date:
+-----
+February 5 2026
+
+Purpose:
+--------
+This notebook documents the construction, validation, and extension of a
+Barnes–Hut N-body simulation modeling the future merger of the Milky Way (MW)
+and Andromeda (M31). The emphasis is on numerical correctness, unit consistency,
+algorithmic transparency, and reproducibility rather than raw performance.
+
+The notebook is designed to function both as:
+- A research-grade computational physics record
+- A readable, auditable explanation of the simulation pipeline
+
+
+------------------------------------------------------------------------------
+Section 1 — Scientific Motivation
+------------------------------------------------------------------------------
+
+The Milky Way–Andromeda system provides a canonical testbed for collisionless
+galactic dynamics. The problem spans large spatial scales (~Mpc), long dynamical
+times (~Gyr), and a wide dynamic range in mass and density.
+
+Direct N² gravitational solvers are computationally prohibitive for realistic
+particle counts. The Barnes–Hut tree algorithm provides an O(N log N)
+approximation that is well-suited for this regime.
+
+This notebook aims to:
+- Implement a stable Barnes–Hut N-body solver
+- Validate its accuracy against direct gravity for small N
+- Track conserved quantities (energy, angular momentum)
+- Establish a baseline suitable for further physical refinement
+
+
+------------------------------------------------------------------------------
+Section 2 — Physical Units and Conventions
+------------------------------------------------------------------------------
+
+All quantities are expressed in consistent astrophysical units:
+
+- Length:        kiloparsecs (kpc)
+- Velocity:      kilometers per second (km/s)
+- Time:          gigayears (Gyr)
+- Mass:          solar masses (Msun)
+
+Gravitational constant:
+    G = 4.302e-6 kpc (km/s)^2 / Msun
+
+Leapfrog integration requires converting velocity units during drift and kick
+steps. The following conversion factor is used:
+
+    1 km/s × 1 Gyr ≈ 1.022712 kpc
+
+All constants are defined explicitly to avoid hidden unit conversions or implicit
+SI usage.
+
+
+------------------------------------------------------------------------------
+Section 3 — Numerical Methods Overview
+------------------------------------------------------------------------------
+
+The simulation consists of the following components:
+
+1) Initial Condition Generation
+   - Analytic Hernquist halos
+   - Exponential stellar disks
+   - Approximate equilibrium velocity distributions
+
+2) Gravity Solver
+   - Barnes–Hut octree with Plummer softening
+   - Opening-angle criterion θ
+   - Center-of-mass approximation for distant nodes
+
+3) Time Integration
+   - Leapfrog (kick–drift–kick) integrator
+   - Optional adaptive timestep based on acceleration magnitude
+
+4) Diagnostics and Validation
+   - Total kinetic and potential energy
+   - Total angular momentum
+   - Barnes–Hut vs direct gravity comparison for small N
+
+
+------------------------------------------------------------------------------
+Section 4 — Imports and Global Constants
+------------------------------------------------------------------------------
+
+This section imports standard scientific Python libraries and defines all global
+constants. No implicit dependencies or hidden state are allowed.
+
+Typical imports include:
+- NumPy for vectorized numerical operations
+- Matplotlib for visualization
+- Dataclasses for configuration clarity
+
+All constants are defined once and used consistently throughout the notebook.
+
+
+------------------------------------------------------------------------------
+Section 5 — Simulation Configuration
+------------------------------------------------------------------------------
+
+A centralized configuration object controls:
+- Softening length
+- Barnes–Hut opening angle
+- Timestep parameters
+- Snapshot cadence
+
+This ensures that all numerical parameters are:
+- Explicit
+- Documented
+- Immutable during runtime
+
+
+------------------------------------------------------------------------------
+Section 6 — Initial Conditions
+------------------------------------------------------------------------------
+
+Galaxy components (disk, halo) are generated using analytic distribution
+functions. Each particle stores:
+
+- Position (x, y, z)
+- Velocity (vx, vy, vz)
+- Mass
+- Component identifier
+
+Initial conditions are constructed independently for MW and M31, then shifted
+and boosted to match observational constraints on relative separation and
+velocity.
+
+
+------------------------------------------------------------------------------
+Section 7 — Barnes–Hut Tree Implementation
+------------------------------------------------------------------------------
+
+This section documents:
+- Octree node structure
+- Recursive subdivision logic
+- Center-of-mass accumulation
+- Opening-angle acceptance criterion
+
+Special attention is paid to:
+- Avoiding self-force contributions
+- Consistent softening treatment
+- Numerical stability during close encounters
+
+
+------------------------------------------------------------------------------
+Section 8 — Time Integration
+------------------------------------------------------------------------------
+
+The leapfrog integrator is implemented in a strictly symplectic
+kick–drift–kick form.
+
+If adaptive timestep control is enabled:
+- The timestep is computed from the maximum acceleration magnitude
+- A global timestep cap is enforced
+- The criterion is fully vectorized
+
+
+------------------------------------------------------------------------------
+Section 9 — Diagnostics
+------------------------------------------------------------------------------
+
+This section introduces fully vectorized diagnostics:
+
+- Kinetic energy:
+      K = 1/2 ∑ m_i v_i²
+
+- Potential energy (direct, for small N):
+      U = -1/2 ∑_{i≠j} G m_i m_j / r_ij
+
+- Angular momentum:
+      L = ∑ m_i (r_i × v_i)
+
+These diagnostics are used to assess numerical stability and conservation
+properties.
+
+
+------------------------------------------------------------------------------
+Section 10 — Barnes–Hut Validation Against Direct Gravity
+------------------------------------------------------------------------------
+
+For small particle subsets:
+- Accelerations are computed using both Barnes–Hut and direct N² gravity
+- Relative L2 error is measured
+- The dependence on opening angle and softening length is examined
+
+This provides quantitative confidence in the approximation accuracy.
+
+
+------------------------------------------------------------------------------
+Section 11 — Results and Visualization
+------------------------------------------------------------------------------
+
+Typical plots include:
+- MW–M31 separation vs time
+- Energy conservation error vs time
+- Angular momentum conservation vs time
+- Barnes–Hut force error vs opening angle
+
+All plots include labeled axes, units, and physical interpretation.
+
+
+------------------------------------------------------------------------------
+Section 12 — Conclusions and Next Steps
+------------------------------------------------------------------------------
+
+This notebook establishes a stable, validated baseline N-body simulation of the
+MW–M31 merger.
+
+Planned extensions include:
+- Published distribution-function initial conditions (e.g. Widrow & Dubinski)
+- Higher particle counts
+- Performance profiling
+- Inclusion of additional physical components (e.g. bulges, satellites)
+
+The notebook is intended to evolve alongside the simulation codebase.
