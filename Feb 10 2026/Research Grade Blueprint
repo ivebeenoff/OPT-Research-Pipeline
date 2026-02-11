@@ -1,0 +1,340 @@
+# ============================================================
+# HIGH-FIDELITY MW–M31 N-BODY BLUEPRINT
+# ============================================================
+
+GOAL:
+Upgrade toy Barnes–Hut merger into a research-grade
+collisionless N-body framework.
+
+All units: kpc, Gyr, Msun
+G in kpc^3 / (Msun Gyr^2)
+
+------------------------------------------------------------
+GLOBAL ARCHITECTURE
+------------------------------------------------------------
+
+Simulation
+ ├── InitialConditionFactory
+ │     ├── EddingtonInversionSampler
+ │     ├── DiskDFSampler
+ │
+ ├── Tree (Barnes–Hut + Multipole)
+ │     ├── Monopole
+ │     ├── Quadrupole
+ │     ├── TreeCache (reusable)
+ │
+ ├── Integrator
+ │     ├── SymplecticLeapfrog
+ │     ├── AdaptiveTimeStepController
+ │
+ ├── SofteningModel
+ │     ├── AdaptiveSofteningKernel
+ │
+ ├── Diagnostics
+ │     ├── EnergyTracker
+ │     ├── MomentumTracker
+ │     ├── AngularMomentumTracker
+ │
+ └── SnapshotManager
+
+------------------------------------------------------------
+1) PROPER DF SAMPLING (EDDINGTON INVERSION)
+------------------------------------------------------------
+
+Goal:
+Sample halo particles from exact isotropic distribution
+function f(E) for Hernquist or NFW profile.
+
+Steps:
+
+Class EddingtonInversionSampler:
+
+    INPUT:
+        density_profile(r)
+        potential_profile(r)
+        total_mass
+        scale_radius
+
+    PRECOMPUTE:
+        1. Compute Psi(r) = -Phi(r)
+        2. Invert r(Psi)
+        3. Compute d^2 rho / d Psi^2 numerically
+        4. Evaluate:
+
+            f(E) = (1 / (sqrt(8) * pi^2)) *
+                   ∫_0^E (d^2 rho / d Psi^2) / sqrt(E - Psi) dPsi
+
+        Use spline interpolation for rho(Psi)
+        Precompute f(E) grid
+
+    SAMPLING ALGORITHM:
+
+        For each particle:
+
+            1. Sample radius from cumulative M(r)
+            2. Compute Psi(r)
+            3. Determine maximum velocity v_esc = sqrt(2*Psi)
+            4. Rejection sample velocity:
+
+                Loop:
+                    sample v in [0, v_esc]
+                    compute E = Psi - v^2/2
+                    accept if rand < f(E)*v^2
+
+        5. Assign isotropic velocity direction
+
+OUTPUT:
+    phase-space consistent halo
+
+NOTE:
+This guarantees equilibrium halo and suppresses violent relaxation.
+
+------------------------------------------------------------
+2) ADAPTIVE TIMESTEP
+------------------------------------------------------------
+
+Goal:
+Each particle evolves on timestep appropriate to its
+local dynamical time.
+
+Add:
+
+state[:, dt_index]
+
+Define:
+
+Class AdaptiveTimeStepController:
+
+    METHOD compute_dt(state):
+
+        For each particle:
+
+            a = |acceleration|
+            r = |position|
+
+            local_dt_1 = eta * sqrt(softening / a)
+            local_dt_2 = eta * r / |v|
+
+            dt_i = min(local_dt_1, local_dt_2)
+
+        Quantize to power-of-two hierarchy:
+
+            dt_i = dt_min * 2^n
+
+        Return dt_i array
+
+Integrator modification:
+
+    Use block timestep scheme:
+
+        Global time loop:
+            advance particles whose dt matches current time bin
+
+This preserves symplectic structure if done carefully.
+
+------------------------------------------------------------
+3) MULTIPOLE EXPANSION TO QUADRUPOLE ORDER
+------------------------------------------------------------
+
+Current tree uses monopole only.
+
+Upgrade node structure:
+
+class OctreeNode:
+    mass
+    center_of_mass
+    quadrupole_tensor (3x3 symmetric)
+    half_size
+    children
+
+During tree build:
+
+    For each node:
+
+        Q_ij = Σ_k m_k *
+               (3 x_i x_j - r_k^2 δ_ij)
+
+Store symmetric 3x3 tensor.
+
+Force evaluation:
+
+If node accepted by opening criterion:
+
+    r = x - COM
+    d = |r|
+
+    Monopole:
+        a_mono = -G M r / d^3
+
+    Quadrupole correction:
+        a_quad_i = (G / (2 d^5)) *
+                   Σ_j Q_ij r_j
+                   - (5 G / (2 d^7)) *
+                     (r^T Q r) r_i
+
+Total:
+    a = a_mono + a_quad
+
+This reduces force error from O(θ^2)
+to O(θ^4).
+
+------------------------------------------------------------
+4) ENERGY CONSERVATION TRACKING
+------------------------------------------------------------
+
+Class EnergyTracker:
+
+    METHOD compute_total_energy(state, tree):
+
+        KE = 1/2 Σ m v^2
+
+        PE:
+            Use tree traversal
+            Avoid double counting
+            Include quadrupole term
+
+        E_total = KE + PE
+
+    METHOD track_drift():
+
+        if first step:
+            store E0
+
+        drift = (E - E0)/|E0|
+
+        if drift > tolerance:
+            trigger warning
+
+Also track:
+
+    Angular momentum:
+        L = Σ m (r × v)
+
+This validates symplectic performance.
+
+------------------------------------------------------------
+5) ADAPTIVE SOFTENING
+------------------------------------------------------------
+
+Goal:
+Prevent over-softening in dense regions.
+
+For each particle:
+
+    Compute local density via:
+
+        k-nearest neighbors (k ~ 32)
+
+    Set softening:
+
+        epsilon_i = eta *
+                    (m_i / rho_i)^(1/3)
+
+Force law becomes:
+
+    d2 = r^2 + epsilon_i^2 + epsilon_j^2
+
+Option:
+Symmetrized softening:
+
+    epsilon_ij^2 = (epsilon_i^2 + epsilon_j^2)/2
+
+Requires tree nodes to store average softening.
+
+This allows dense cores to resolve
+without shrinking global epsilon.
+
+------------------------------------------------------------
+6) TREE REUSE (CRITICAL PERFORMANCE FIX)
+------------------------------------------------------------
+
+Current:
+Tree rebuilt twice per timestep.
+
+Upgrade:
+
+Integrator:
+
+    tree = build_tree(state)
+
+    acc = tree.compute_acc()
+
+    Kick half
+
+    Drift
+
+    Update tree structure only if:
+
+        particles moved > rebuild_threshold
+
+Otherwise:
+
+    tree.update_multipoles()
+
+Strategy:
+
+    Keep tree structure static
+    Update node mass, COM, Q tensor
+
+Use bounding box growth tracking:
+
+    If any particle exits node boundary:
+        full rebuild required
+
+Otherwise:
+        in-place update
+
+This reduces cost ~40–50%.
+
+------------------------------------------------------------
+OPTIONAL ADVANCED IMPROVEMENTS
+------------------------------------------------------------
+
+• Parallel tree traversal (OpenMP / numba)
+• GPU acceleration (PyCUDA)
+• Individual particle time bins
+• Hermite 4th order integrator for core regions
+• Cosmological expansion term
+
+------------------------------------------------------------
+INTEGRATOR FLOW (FINAL FORM)
+------------------------------------------------------------
+
+for global_time:
+
+    dt_i = AdaptiveTimeStepController.compute_dt()
+
+    for each active time bin:
+
+        if rebuild_needed:
+            tree.rebuild()
+        else:
+            tree.update_multipoles()
+
+        acc = tree.compute_acc(quadrupole=True)
+
+        apply adaptive softening
+
+        kick half
+
+        drift
+
+        update active set
+
+    Diagnostics.track()
+
+    SnapshotManager.save()
+
+------------------------------------------------------------
+EXPECTED RESULT
+------------------------------------------------------------
+
+• Stable halos (no artificial heating)
+• Energy drift < 0.1% over several Gyr
+• Accurate force calculation
+• Adaptive resolution
+• Performance scalable to 10^5–10^6 particles
+
+------------------------------------------------------------
+END BLUEPRINT
+------------------------------------------------------------
