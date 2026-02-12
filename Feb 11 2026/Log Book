@@ -1,1 +1,64 @@
+Hours worked: 7 hours
+N-Body Simulation Development Log Book  
+Date: 2026-02-10  
+
+
+Summary:
+Continued structured refactoring and physical accuracy improvements to the collisionless N-body simulation framework. Focused on numerical rigor, Hamiltonian consistency, and algorithmic stability.
+
+Work Completed:
+
+1. Distribution Function (DF) Sampling – Eddington Inversion (2.0 hours)
+- Finalized the numerical framework for isotropic DF sampling via Eddington inversion.
+- Implemented stable spline-based differentiation of density with respect to potential.
+- Added safeguards for monotonicity and positivity of f(E).
+- Replaced prior approximate velocity assignment (Gaussian heuristic) with physically consistent sampling derived from the inverted DF.
+- Verified normalization consistency against the input density profile.
+
+2. Adaptive Timestep Integration (1.5 hours)
+- Implemented per-particle timestep estimation based on local dynamical time:
+      dt_i ∝ sqrt(ε / |a_i|)
+- Introduced global synchronization mechanism using minimum timestep binning.
+- Modified leapfrog integrator to support variable timestep updates while preserving symplectic structure as closely as possible.
+- Compared against fixed-step implementation and verified improved stability in high-density regions.
+
+3. Multipole Expansion to Quadrupole Order (1.0 hour)
+- Extended Barnes–Hut tree node data structure to store quadrupole tensor components.
+- Implemented quadrupole correction term in far-field force evaluation.
+- Benchmarked force error reduction relative to monopole-only approximation.
+- Observed significant accuracy gains for elongated particle distributions.
+
+4. Energy Conservation Tracking (0.75 hours)
+- Implemented runtime tracking of:
+      - Kinetic energy
+      - Potential energy
+      - Total energy
+- Added periodic logging of fractional energy drift:
+      ΔE / E₀
+- Confirmed that adaptive timestep and quadrupole corrections reduce secular drift relative to baseline code.
+
+5. Adaptive Softening Scheme (0.75 hours)
+- Replaced constant softening length with density-dependent adaptive softening:
+      ε_i ∝ (m_i / ρ_i)^(1/3)
+- Integrated softening length into force calculation symmetrically.
+- Verified mitigation of artificial two-body scattering in dense regions.
+
+6. Tree Reuse Optimization (1.0 hour)
+- Refactored simulation loop to avoid rebuilding Barnes–Hut tree twice per timestep.
+- Implemented single tree construction per step with stored accelerations.
+- Added conditional rebuild trigger based on particle displacement threshold.
+- Reduced computational overhead and improved runtime efficiency.
+
+General Notes:
+- All modifications were implemented incrementally with verification tests after each structural change.
+- Code documentation updated to reflect new mathematical formulations.
+- Emphasis maintained on preserving Hamiltonian structure where possible.
+- Preliminary validation runs show improved stability and reduced numerical artifacts compared to previous simulation version.
+
+Next Steps:
+- Conduct long-duration stability test (≥100 dynamical times).
+- Quantitatively benchmark quadrupole accuracy vs computational cost.
+- Evaluate timestep binning strategy under extreme density contrast.
+- Begin profiling memory footprint of adaptive softening implementation.
+
 
