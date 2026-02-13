@@ -1,1 +1,143 @@
+Hours worked: 7.0 hours 
+N-Body Simulation Development Log Book  
+Date: 2026-02-12 
+ 
+
+Project: High-Fidelity Collisionless N-Body Framework  
+Focus: Stability Instrumentation, Performance Structure, and Numerical Validation  
+
+----------------------------------------------------------------------
+DAILY OBJECTIVE
+----------------------------------------------------------------------
+
+Advance the simulation framework beyond feature implementation into
+rigorous validation, timestep hierarchy formalization, and performance
+instrumentation. Emphasis placed on long-duration stability readiness
+and quantitative force-accuracy assessment.
+
+---------------------------------------------------------------------- 
+WORK COMPLETED
+----------------------------------------------------------------------
+
+1) Hierarchical Timestep Binning System (2.0 hours)
+
+- Replaced prior minimum-global-timestep synchronization strategy.
+- Implemented power-of-two timestep hierarchy:
+      dt_k = dt_max / 2^k
+- Assigned particles to nearest allowed timestep bin.
+- Introduced synchronized sub-cycling structure to preserve integration coherence.
+- Ensured compatibility with symplectic Kick–Drift–Kick ordering.
+
+Result:
+Improved efficiency in regions with strong acceleration gradients while
+maintaining controlled timestep discretization and structural stability.
+
+----------------------------------------------------------------------
+
+2) Long-Duration Stability Monitoring Framework (1.5 hours)
+
+- Implemented StabilityMonitor class.
+- Added persistent tracking of:
+      • Total energy history
+      • Angular momentum magnitude history
+- Implemented fractional energy drift evaluation:
+      ΔE / E₀
+- Prepared framework for ≥100 dynamical time integrations.
+
+Result:
+Simulation now instrumented for systematic long-term stability validation
+rather than qualitative inspection.
+
+----------------------------------------------------------------------
+
+3) Quadrupole Accuracy Benchmark Module (1.25 hours)
+
+- Developed direct O(N²) force comparison routine.
+- Implemented RMS relative error metric for tree vs direct force.
+- Structured benchmark for varying opening angle θ.
+- Verified measurable accuracy improvement relative to monopole-only case.
+
+Result:
+Force accuracy now quantitatively testable rather than assumed.
+Provides objective validation of multipole implementation.
+
+----------------------------------------------------------------------
+
+4) Per-Particle Energy Diagnostics (1.0 hour)
+
+- Extended energy tracking beyond total system energy.
+- Implemented per-particle specific energy computation.
+- Stored values within particle structure for granular analysis.
+- Enables detection of local heating or relaxation artifacts.
+
+Result:
+Improved resolution of numerical instability sources at the particle level.
+
+----------------------------------------------------------------------
+
+5) Memory Profiling for Adaptive Softening & Multipole Storage (0.75 hours)
+
+- Integrated tracemalloc-based memory profiling.
+- Implemented snapshot reporting of:
+      • Current memory usage
+      • Peak memory usage
+- Verified overhead introduced by quadrupole tensors and adaptive softening storage.
+
+Result:
+Established performance-awareness layer for future scaling tests.
+
+----------------------------------------------------------------------
+
+6) Extended Simulation Driver Refactor (0.5 hours)
+
+- Integrated:
+      • Timestep hierarchy
+      • Stability monitor
+      • Memory profiler
+      • Per-particle energy computation
+- Preserved tree reuse (single build per global step).
+- Maintained dimensional consistency and Hamiltonian structure.
+
+Result:
+Simulation loop now structured for research-grade diagnostics and scaling.
+
+----------------------------------------------------------------------
+
+TECHNICAL OBSERVATIONS
+
+- Hierarchical timestep binning significantly reduces unnecessary
+  over-resolution of low-acceleration particles.
+- Quadrupole benchmarking confirms expected reduction in RMS force error.
+- Per-particle energy tracking reveals subtle halo heating trends
+  not visible in total energy alone.
+- Memory overhead from quadrupole storage remains manageable
+  relative to computational gains.
+
+----------------------------------------------------------------------
+
+SYSTEM STATUS
+
+The simulation framework now includes:
+
+✓ Eddington-based DF sampling  
+✓ Adaptive softening  
+✓ Quadrupole Barnes–Hut expansion  
+✓ Hierarchical timestep bins  
+✓ Energy & angular momentum drift tracking  
+✓ Per-particle energy diagnostics  
+✓ Memory profiling instrumentation  
+✓ Tree reuse optimization  
+
+Classification:
+Numerically instrumented research prototype with structured validation layer.
+
+----------------------------------------------------------------------
+
+NEXT STEPS
+
+1. Conduct ≥100 dynamical time stability run.
+2. Perform θ-sweep to optimize force-accuracy vs runtime tradeoff.
+3. Evaluate timestep bin distribution under extreme density contrasts.
+4. Begin scaling tests toward higher particle counts.
+
 
