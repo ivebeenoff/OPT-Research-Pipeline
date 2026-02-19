@@ -1,1 +1,46 @@
+============================================================
+Hours Worked: 10 hours
+MW–M31 Simulation Logbook — 2026-02-19
+============================================================
 
+Goal / Task:
+------------
+Upgrade toy Gaussian halo to a publication-grade NFW halo generator 
+and implement isotropic Jeans velocity dispersion for stable MW/M31 
+initial conditions.
+
+Code Changes:
+-------------
+• Implemented sample_nfw_positions() using inverse-CDF sampling of 
+  NFW cumulative mass.
+• Implemented nfw_sigma() and sample_nfw_velocities() for Jeans-consistent 
+  velocities.
+• Added generate_mw_halo() and generate_m31_halo() for Milky Way and 
+  Andromeda halos.
+• Added generate_local_group() to combine MW + M31 with observational 
+  separation (~780 kpc) and relative radial velocity (~−110 km/s).
+
+Tests / Results:
+----------------
+• Generated 50k-particle MW halo; median radius ~80 kpc.
+• Velocities sampled from Jeans dispersion; mean speed ~150 km/s.
+• Halo visually stable for ~100 integration steps in Jupyter plots.
+• Density profile roughly matches analytic NFW; minor truncation effects 
+  near rmax.
+
+Analysis / Notes:
+-----------------
+• Halo is significantly more stable than Gaussian toy model.
+• Vectorized NumPy implementation is efficient and compatible with 
+  Spyder/Jupyter workflow.
+• Ready to integrate with existing Barnes–Hut leapfrog N-body code.
+• Virial ratio check pending; optional velocity rescaling may be applied 
+  before full MW–M31 merger simulation.
+
+Next Steps:
+-----------
+• Validate virial ratio and adjust velocities if needed.
+• Implement disk + bulge for both MW and M31.
+• Run preliminary MW–M31 merger simulation and monitor energy conservation.
+• Generate plots of density and velocity dispersion for methods appendix.
+============================================================
