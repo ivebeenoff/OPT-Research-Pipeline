@@ -1,1 +1,112 @@
+Hours Worked: 10 hours
 
+MW–M31 High-Fidelity N-Body Framework  
+Development Log Book  
+
+---
+
+### Project Goal
+Design a research-quality N-body framework in Python/NumPy capable of simulating large-scale galaxy dynamics (e.g., Milky Way–Andromeda merger) with good accuracy and reasonable performance.
+
+Environment: Python + NumPy (Spyder/Jupyter workflow)  
+Focus: Numerical stability, physics realism, algorithmic scalability  
+
+---
+
+### Work Completed
+
+1. Framework Architecture
+- Planned overall structure of simulation code.
+- Selected physical units (kpc, Gyr, Msun) for numerical stability.
+- Identified major modules needed:
+  - Barnes–Hut tree
+  - Multipole expansion
+  - Energy tracking
+  - Adaptive softening
+  - Halo equilibrium sampling
+
+Result: Clear modular structure suitable for research extensions.
+
+---
+
+2. Barnes–Hut Tree Implementation
+- Implemented octree node structure.
+- Built recursive tree construction algorithm.
+- Added center-of-mass calculation.
+- Implemented quadrupole tensor to improve force accuracy.
+
+Complexity
+- Tree build: ~O(N log N)  
+- Memory: ~O(N)  
+
+Result: Efficient force approximation for large particle counts.
+
+---
+
+3. Force Calculation
+- Implemented Barnes–Hut opening criterion.
+- Added monopole + quadrupole force evaluation.
+- Verified correctness against small brute-force tests.
+
+Complexity
+- Force evaluation: ~O(N log N) average.
+
+Result: Accurate and scalable gravitational force engine.
+
+---
+
+4. Energy Diagnostics
+- Implemented tree-based potential calculation.
+- Added total energy computation (kinetic + potential).
+
+Purpose
+- Monitor numerical stability and integrator accuracy.
+
+Complexity
+- ~O(N log N)
+
+Result: Framework can track conservation laws.
+
+---
+
+5. Adaptive Softening Infrastructure
+- Implemented density estimation using nearest neighbors.
+- Added softening calculation based on local density.
+
+Complexity
+- Current method: O(N²) (prototype stage).
+
+Result: Ready for upgrade to kd-tree neighbor search.
+
+---
+
+6. Eddington Inversion Halo Sampler
+- Implemented distribution-function based velocity sampling.
+- Ensures halos start in equilibrium.
+
+Result: Realistic galaxy initial-condition support.
+
+---
+
+### Testing & Validation
+- Checked dimensional consistency of gravitational constant.
+- Verified small-N force calculations vs brute-force results.
+- Confirmed tree builds correctly for random particle sets.
+
+---
+
+### Overall Outcome
+A well-documented, modular N-body framework capable of supporting research-level galaxy simulations once an integrator and initial conditions are added.
+
+---
+
+### Next Steps
+- Implement leapfrog integrator.
+- Generate Milky Way + Andromeda initial conditions.
+- Add visualization in Jupyter.
+- Benchmark performance vs particle count.
+- Replace density estimator with kd-tree method.
+
+---
+
+End of Log Book.
