@@ -1,0 +1,64 @@
+##############################################
+# PROJECT BLUEPRINT: MW–M31 HALO SHAPE EVOLUTION
+##############################################
+
+Objective:
+----------
+Quantify the geometric and mass-weighted shape evolution of the
+Milky Way (MW) and Andromeda (M31) dark matter halos during their
+merger. Track tidal deformation, triaxiality, and irregularity.
+
+Scientific Questions:
+--------------------
+1. How do MW and M31 halo axis ratios evolve over time during merger?
+2. How does halo irregularity (convex hull inflation) correlate with
+   pericentric passages?
+3. Do mass-weighted inertia tensor and convex-hull geometry provide
+   consistent insights into halo triaxiality?
+
+Hypotheses:
+-----------
+- Halo triaxiality increases near pericenter due to tidal torques.
+- Volume inflation factor >1 indicates tidal debris and asymmetry.
+- Convex-hull methods capture outer halo distortions better than
+  standard inertia tensor.
+
+Metrics:
+--------
+- Mass-weighted inertia tensor:
+    * Eigenvalues λ1 ≥ λ2 ≥ λ3
+    * Axis ratios: b/a = sqrt(λ2/λ1), c/a = sqrt(λ3/λ1)
+    * Ellipsoidal volume: V_ellipsoid = (4π/3)*sqrt(λ1*λ2*λ3)
+- Convex hull geometry:
+    * Volume of convex hull: V_hull
+    * Axis ratios from covariance of hull vertices
+    * Volume inflation factor: V_hull / V_ellipsoid
+- Derived metrics:
+    * Triaxiality: T = (1-(b/a)^2)/(1-(c/a)^2)
+    * Sphericity: S = c/a
+    * Halo elongation along MW–M31 axis
+
+Pipeline Overview:
+------------------
+1. Load halo particle snapshots for MW and M31.
+2. Center particles on MW COM or MW+M31 barycenter.
+3. Compute inertia tensor axis ratios and ellipsoidal volumes.
+4. Compute convex hull axis ratios and volume.
+5. Compute volume inflation factor.
+6. Log metrics to HDF5/CSV for reproducibility.
+7. Generate publication-quality plots:
+       - Axis ratios vs snapshot
+       - Volume inflation vs snapshot
+       - Triaxiality vs snapshot
+       - Axis ratios vs MW–M31 separation
+       - Method comparison scatter plots
+8. Include error estimation (bootstrap) and sensitivity analysis.
+9. Validate with synthetic halos and isolated MW/M31 snapshots.
+
+Deliverables:
+-------------
+- HDF5 metrics file
+- Figures in vector graphics (PDF/SVG)
+- Documentation for reproducibility
+- Analysis scripts modularized by stage
+- Potential for RNASS / ApJ / MNRAS publication
