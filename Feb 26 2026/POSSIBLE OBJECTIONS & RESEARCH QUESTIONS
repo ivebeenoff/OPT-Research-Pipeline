@@ -1,0 +1,34 @@
+##############################################
+# POSSIBLE OBJECTIONS & RESEARCH QUESTIONS
+##############################################
+
+Methodology Objections:
+-----------------------
+1. Centering Bias:
+   - Choice of MW COM vs barycenter can affect axis ratios.
+   - Mitigation: test both methods; report sensitivity.
+
+2. Particle Selection:
+   - Inclusion/exclusion of satellites or outskirts may bias hull volume.
+   - Mitigation: optional radial cuts and mass thresholds.
+
+3. Convex Hull Limitations:
+   - Sensitive to outliers; may overestimate volume inflation.
+   - Mitigation: bootstrap or percentile-based hull trimming.
+
+4. Inertia Tensor Assumptions:
+   - Assumes ellipsoidal symmetry; may underestimate tidal streams.
+   - Mitigation: compare with convex hull results.
+
+5. Snapshot Resolution:
+   - Low particle numbers → noisy metrics
+   - Mitigation: test convergence with higher-resolution snapshots.
+
+Research Questions:
+-------------------
+Q1: How do axis ratios (b/a, c/a) evolve from pre-pericenter → coalescence?
+Q2: Does volume inflation peak at pericenter, indicating tidal debris?
+Q3: Are inertia tensor and convex hull methods systematically offset?
+Q4: How does triaxiality correlate with MW–M31 separation?
+Q5: Do shape metrics vary significantly with centering choice or radial cut?
+Q6: Are observed trends robust under bootstrap subsampling?
