@@ -1,0 +1,125 @@
+##############################################
+# TERMINOLOGY: MW–M31 HALO SHAPE ANALYSIS & PIPELINE
+##############################################
+
+1. Halo:
+   - Dark matter-dominated structure surrounding a galaxy.
+   - In this project: MW (Milky Way) and M31 (Andromeda) halos.
+
+2. Snapshot:
+   - Single output file from an N-body simulation with positions, velocities, and masses of particles at a given time.
+
+3. Particle Types:
+   - Type 1 = dark matter (used for halo shape analysis)
+   - Other types may include stars, gas, or satellites.
+
+4. Center of Mass (COM):
+   - Weighted average position of all particles: COM = Σ(m_i * r_i) / Σ(m_i)
+   - Used to center particle coordinates.
+
+5. Barycenter:
+   - Combined center of mass of MW + M31 system.
+   - Optional centering method to reduce asymmetry bias.
+
+6. Inertia Tensor:
+   - 3x3 matrix encoding mass distribution:
+       I_ij = Σ_k m_k (r_k^2 δ_ij - x_{k,i} x_{k,j})
+   - Used to compute halo axis ratios and ellipsoidal volume.
+
+7. Eigenvalues & Eigenvectors:
+   - Eigenvalues (λ1 ≥ λ2 ≥ λ3) correspond to squared principal axes of the halo.
+   - Eigenvectors indicate orientation of principal axes.
+
+8. Axis Ratios:
+   - b/a = sqrt(λ2/λ1), c/a = sqrt(λ3/λ1)
+   - Measures halo elongation and flattening.
+
+9. Ellipsoidal Volume:
+   - Volume of equivalent ellipsoid from inertia tensor axes:
+       V_ellipsoid = 4/3 π a b c, with a = sqrt(λ1), etc.
+
+10. Convex Hull:
+    - Smallest convex polyhedron enclosing all halo particles.
+    - Captures geometric shape independent of particle mass.
+
+11. Convex Hull Axis Ratios:
+    - Compute covariance of hull vertices, then eigenvalues → b/a, c/a
+    - More sensitive to outer halo asymmetries than inertia tensor.
+
+12. Volume Inflation Factor:
+    - V_hull / V_ellipsoid
+    - >1 indicates tidal debris, streams, or outer asymmetry.
+
+13. Triaxiality (T):
+    - Shape descriptor: T = (1-(b/a)^2)/(1-(c/a)^2)
+    - T ~0 → oblate, T ~1 → prolate, 0<T<1 → triaxial.
+
+14. Sphericity (S):
+    - Simplified measure of roundness: S = c/a
+    - S ~1 → spherical, S <<1 → flattened.
+
+15. Pericenter / Apocenter:
+    - Pericenter: MW and M31 closest approach.
+    - Apocenter: MW and M31 farthest separation.
+
+16. HDF5 (Hierarchical Data Format v5):
+    - Binary file format designed for large, complex datasets.
+    - Supports multiple datasets, metadata (attributes), and fast I/O.
+    - In this project:
+        • Stores axis ratios, triaxiality, volumes, and metadata
+        • Enables reproducibility and vectorized access.
+
+17. Metadata:
+    - Attributes stored in HDF5 describing snapshot count, centering method, etc.
+    - Provides context and reproducibility for analysis.
+
+18. Bootstrap:
+    - Resampling technique for estimating uncertainties.
+    - Subset particles, recompute metrics multiple times.
+
+19. Vector Graphics:
+    - Figures saved as PDF or SVG.
+    - Ensures scalability, journal-quality output, and RNASS compliance.
+
+20. RNASS / ApJ / MNRAS Standards:
+    - Peer-reviewed astrophysical journals.
+    - Require reproducible methods, proper figure labeling, and metadata.
+
+21. Snapshot Range:
+    - Array of simulation outputs analyzed sequentially (e.g., 1–800).
+
+22. Preallocation:
+    - Allocate memory for arrays in advance to optimize time and space complexity.
+    - Reduces repeated memory allocation during loops.
+
+23. Time & Space Complexity:
+    - Inertia tensor: O(N) per snapshot
+    - Convex hull: O(M log M), M = number of hull vertices
+    - Preallocated arrays: O(n_snapshots) memory
+
+24. Validation:
+    - Cross-checking metrics with synthetic halos and isolated MW/M31 snapshots.
+    - Ensures that computed axis ratios, triaxiality, and volumes are physically meaningful.
+
+25. Radial Cuts:
+    - Optional selection of particles within a certain radius (e.g., 50 kpc, 100 kpc).
+    - Reduces influence of outliers or unbound satellites.
+
+26. Method Comparison:
+    - Direct comparison between inertia tensor and convex hull results.
+    - Detects systematic biases or underestimation of outer halo asymmetries.
+
+27. COMdefine:
+    - Function from CenterOfMass2 package to compute COM iteratively or via barycenter.
+    - Returns x, y, z coordinates of the center.
+
+28. Centering Bias:
+    - Effect of choosing different centering methods on computed axis ratios and triaxiality.
+    - Mitigated by testing multiple centering choices.
+
+29. Outer Halo / Tidal Streams:
+    - Particles beyond main halo body affected by merger.
+    - Can increase convex hull volume and volume inflation factor.
+
+30. Reproducibility:
+    - Ensures that anyone rerunning the pipeline with the same HDF5 metrics will obtain identical figures and results.
