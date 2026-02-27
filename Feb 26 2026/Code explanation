@@ -1,0 +1,132 @@
+##############################################
+# CODE EXPLANATION: MW–M31 Halo Shape Pipeline
+##############################################
+
+Purpose:
+--------
+Process MW & M31 dark matter snapshots to quantify halo shape evolution.
+Compute metrics for both traditional (inertia tensor) and geometric (convex hull) approaches.
+
+Modules & Functions:
+-------------------
+
+1. compute_inertia_tensor(positions, masses)
+   - Vectorized computation of mass-weighted inertia tensor
+   - Complexity: O(N), Memory: O(1) extra
+   - Input: particle positions relative to COM, masses
+   - Output: 3x3 inertia tensor
+
+2. inertia_axis_ratios(I)
+   - Eigenvalues → b/a, c/a
+   - Returns eigenvalues for ellipsoidal volume calculation
+
+3. ellipsoid_volume_from_inertia(eigvals)
+   - Compute equivalent ellipsoid volume: V = 4/3 π a b c
+
+4. convex_hull_properties(positions)
+   - Compute convex hull of particles
+   - Axis ratios from covariance of hull vertices
+   - Complexity: O(M log M), M = #hull vertices
+
+5. triaxiality(b_over_a, c_over_a)
+   - Compute T = (1-(b/a)^2)/(1-(c/a)^2)
+   - Interpret halo as oblate/prolate/triaxial
+
+6. sphericity(c_over_a)
+   - S = c/a
+
+7. load_and_center_snapshots(mw_file, m31_file, centering)
+   - Concatenate MW & M31 particles
+   - Center using MW COM or barycenter
+   - Output: positions, masses, centering coordinates
+
+8. process_snapshots(snapshot_range, data_dir, centering, output_file)
+   - Loops over snapshots:
+       • Loads & centers particles
+       • Computes inertia & convex hull metrics
+       • Computes derived quantities: triaxiality, sphericity, volume inflation
+       • Logs optional print statements
+   - Saves all metrics to HDF5 for reproducibility
+   - Optimizations:
+       • Preallocated arrays → O(n_snapshots) memory
+       • Vectorized tensor → O(N) per snapshot
+       • Hull uses only vertices → memory & time efficient
+
+Optional Extensions:
+--------------------
+- Bootstrap subsets for uncertainty estimation
+- Radial cuts
+- Parallelization for large snapshot sets
+- Synthetic halo validation
+
+##############################################
+# CODE EXPLANATION: Analysis & Plotting Module
+##############################################
+
+Purpose:
+--------
+This module takes precomputed halo metrics from HDF5 files and
+generates publication-ready figures, with full commentary
+for astrophysical interpretation.
+
+Major Components:
+-----------------
+
+1. Publication plotting style:
+   - Sets fonts, line widths, figure size, and grid alpha
+   - Ensures figures are consistent, readable, and vector-ready
+
+2. load_metrics(hdf5_file):
+   - Reads HDF5 file containing halo metrics
+   - Returns:
+       • data dictionary: axis ratios, triaxiality, volumes
+       • metadata dictionary: simulation parameters
+
+3. compute_separation(snapshot_range, data_dir="."):
+   - Computes MW–M31 center-of-mass separation for each snapshot
+   - Used to correlate halo shape with tidal interactions
+   - Optional if separation already stored in HDF5
+
+4. plot_axis_ratio_evolution(data, snapshot_range):
+   - Plots b/a and c/a for inertia tensor and convex hull
+   - Tracks flattening and triaxiality evolution over time
+
+5. plot_volume_inflation(data, snapshot_range):
+   - Plots ratio of convex hull volume to ellipsoidal volume
+   - Measures asymmetry or tidal debris
+
+6. plot_triaxiality(data, snapshot_range):
+   - Computes and plots triaxiality T from axis ratios
+   - Differentiates oblate, prolate, and triaxial halo shapes
+
+7. plot_axis_vs_separation(data, separation):
+   - Scatter plot of c/a vs MW–M31 separation
+   - Tests tidal interaction hypothesis: smaller separation → greater deformation
+
+8. plot_method_comparison(data):
+   - Compares inertia tensor vs convex hull axis ratios
+   - Detects systematic bias between methods
+   - 1:1 line included as reference
+
+9. generate_all_figures(hdf5_file, snapshot_range, compute_sep=False):
+   - Master function that:
+       • Loads metrics
+       • Generates all standard figures
+       • Optionally computes separation for correlation plots
+   - Ensures reproducibility and publication-ready outputs
+
+Scientific Rationale:
+---------------------
+- Each figure corresponds directly to a testable hypothesis
+- Axis ratios → halo flattening
+- Triaxiality → morphological class evolution
+- Volume inflation → tidal asymmetry
+- Separation correlation → tidal interaction signature
+- Method comparison → robustness check
+
+Computational Notes:
+-------------------
+- Memory: O(N_snapshots) for metrics arrays
+- Time: negligible for plotting; main cost is convex hull computation
+- Fully compatible with NumPy-only workflows
+- Reproducible: deterministic outputs from HDF5 inputs
