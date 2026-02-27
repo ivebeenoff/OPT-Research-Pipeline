@@ -1,1 +1,55 @@
+##############################################
+# Hours worked: 7 hours 
+# Date: 2026-02-26
+# Researcher: Abhinav Vatsa
+# Project: MW–M31 Halo Shape Evolution
+##############################################
 
+1. OBJECTIVES FOR TODAY:
+------------------------
+- Improve documentation and explanatory materials for the MW–M31 halo shape pipeline.
+- Develop research blueprint, code explanations, and terminology glossary.
+- Detail potential objections and research questions.
+- Add commentary to the plotting module for clarity and publication standards.
+
+2. WORK COMPLETED:
+------------------
+a. Research Documentation:
+   - Drafted **full research blueprint**:
+       • Objectives, scientific questions, hypotheses
+       • Metrics, derived quantities, and snapshot selection
+       • Centering methods, robustness strategy, and analysis plan
+       • Optional extensions (bootstrapping, radial cuts, synthetic halos)
+   - Created **code explanation block**:
+       • Step-by-step breakdown of full pipeline functions
+       • Optimization notes on time and memory complexity
+   - Compiled **objections & research questions** block:
+       • Potential methodological critiques
+       • Strategies for mitigation
+       • Key scientific questions and hypotheses
+
+b. Terminology Glossary:
+   - Produced comprehensive **terminology block**:
+       • Astrophysical concepts (halo, COM, barycenter, pericenter/apocenter)
+       • Computational concepts (inertia tensor, eigenvalues, axis ratios, convex hull)
+       • File formats and metadata (HDF5, attributes)
+       • Derived metrics (triaxiality, sphericity, volume inflation)
+       • Pipeline-specific functions (COMdefine, snapshot range, centering methods)
+
+c. Plotting Module Commentary:
+   - Added detailed explanations for:
+       • Each figure function (axis ratios, volume inflation, triaxiality, separation vs ratios, method comparison)
+       • HDF5 data loading and snapshot handling
+       • Publication-ready settings (vector graphics, labels, legends)
+
+3. NEXT STEPS:
+---------------
+- Implement full snapshot processing with HDF5 output.
+- Apply bootstrapping and radial cuts for uncertainty estimation.
+- Run pipeline on full dataset (snapshots 1–800) to generate metrics.
+- Produce publication-ready figures using the documented plotting module.
+
+4. NOTES:
+----------
+- Today’s work focused entirely on **documentation, explanation, and blueprinting**; no actual data processing or metric computation was performed.
+- All created materials are ready to support reproducible pipeline execution and manuscript preparation.
