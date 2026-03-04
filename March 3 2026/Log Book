@@ -1,1 +1,131 @@
+##############################################
+Hours worked: 7 hours 
+Date: 2026-03-03
+Researcher: Abhinav Vatsa
+Project: MW–M31 Halo Merger – Diagnostic Movie System
+##############################################
 
+1. OBJECTIVE
+------------
+Develop modular, physically interpretable visualization tools to analyze
+the MW–M31 merger simulation. Specifically:
+
+• Construct separate diagnostic movies isolating:
+    (1) Structural evolution (morphology + principal axes)
+    (2) Angular momentum evolution (spin vector behavior)
+
+• Avoid overloading a single movie with excessive diagnostics.
+• Ensure each movie corresponds to one physical mechanism.
+
+------------------------------------------------------------
+
+2. WORK COMPLETED
+-----------------
+
+A. ARCHITECTURAL DECISION
+--------------------------
+Formalized a multi-movie framework rather than a single composite film.
+Rationale:
+    - Improves interpretability
+    - Aligns with thesis/paper structure
+    - Prevents visual overcrowding
+    - Allows each movie to answer a distinct dynamical question
+
+Defined separate analysis tracks:
+    Movie 1 → Morphological evolution
+    Movie 2 → Angular momentum evolution
+
+------------------------------------------------------------
+
+B. MOVIE 1: STRUCTURAL EVOLUTION
+---------------------------------
+
+Implemented full rendering script including:
+
+1. Snapshot ingestion:
+    - MW_###.txt
+    - M31_###.txt
+    - Combined halo construction
+
+2. Proper center-of-mass centering using:
+    MW.COMdefine(x, y, z, m)
+
+3. Inertia tensor computation:
+    - Full 3D tensor
+    - Mass-weighted
+    - Diagonalization via numpy.linalg.eigh
+
+4. Principal axes extraction:
+    - Eigenvalue sorting (a ≥ b ≥ c)
+    - Axis scaling for visualization
+    - Eigenvector plotting
+
+5. 3D rendering:
+    - Separate MW and M31 particle clouds
+    - Principal axes overlay
+    - Fixed spatial limits for consistent scaling
+    - High-resolution FFMpegWriter output
+
+Scientific purpose:
+    Direct visual validation of axis ratio and triaxiality evolution.
+
+------------------------------------------------------------
+
+C. MOVIE 2: ANGULAR MOMENTUM EVOLUTION
+---------------------------------------
+
+Implemented independent spin-focused visualization including:
+
+1. Snapshot ingestion (same structure as Movie 1)
+2. Full COM position + velocity centering
+3. Specific angular momentum calculation:
+       L = Σ m (r × v) / M_tot
+
+4. Normalized display vector for stable rendering
+5. 3D halo rendering with:
+       - Particle cloud
+       - Angular momentum arrow
+       - Fixed coordinate frame
+
+Scientific purpose:
+    - Observe spin magnitude changes
+    - Detect spin reorientation
+    - Identify possible angular momentum transfer during merger
+
+------------------------------------------------------------
+
+3. KEY DESIGN PRINCIPLES ESTABLISHED
+--------------------------------------
+
+• Separation of physics and rendering responsibilities
+• Fixed axis scaling across frames
+• Mass-weighted calculations only
+• Clean, isolated physical interpretation per movie
+• No metric dashboards to preserve clarity
+• High-resolution MP4 output suitable for presentation
+
+------------------------------------------------------------
+
+4. SCIENTIFIC VALUE
+-------------------
+
+The developed tools now allow:
+
+• Direct visual correlation between inertia tensor evolution and morphology
+• Direct visualization of angular momentum vector behavior
+• Identification of merger phases (qualitative)
+• Foundation for thesis-level dynamical interpretation
+
+------------------------------------------------------------
+
+5. NEXT STEPS
+-------------
+
+• Precompute principal axes and angular momentum arrays for performance
+• Implement convex hull movie (tidal inflation diagnostic)
+• Add optional slow camera orbit (non-essential enhancement)
+• Begin comparative framework for custom simulation
+
+------------------------------------------------------------
+
+STATUS: Successful implementation of two modular diagnostic movie engines.
