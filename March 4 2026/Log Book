@@ -1,1 +1,112 @@
+##############################################
+Hours Worked: 7 hours
+LAB LOG BOOK ENTRY
+Date: 2026-03-04
+Researcher: Abhinav Vatsa
+Project: MW–M31 Halo Shape Evolution
+##############################################
 
+1. OBJECTIVE
+------------
+Extend the diagnostic movie framework by implementing
+two additional metric-focused visualization modules:
+
+    (5) Volume Inflation Evolution
+    (6) Axis Ratio Evolution
+
+These movies isolate quantitative shape metrics from
+particle-based rendering and directly test merger
+hypotheses regarding triaxiality and halo irregularity.
+
+------------------------------------------------------------
+
+2. WORK COMPLETED
+-----------------
+
+A. PRECOMPUTATION PIPELINE IMPLEMENTED
+--------------------------------------
+
+Developed a full metric precomputation loop across
+snapshots (0–799):
+
+For each snapshot:
+    • Loaded MW_###.txt and M31_###.txt
+    • Combined halo particle arrays
+    • Applied COM centering using MW.COMdefine
+    • Computed full 3D inertia tensor
+    • Diagonalized tensor (numpy.linalg.eigh)
+    • Extracted principal axes (a ≥ b ≥ c)
+    • Computed ellipsoidal volume:
+            V_ellipsoid = (4/3)πabc
+    • Computed convex hull volume via scipy.spatial.ConvexHull
+    • Calculated:
+            b/a
+            c/a
+            Volume inflation = V_hull / V_ellipsoid
+
+Stored all results in NumPy arrays for efficient reuse
+during rendering.
+
+Design principle:
+    Physics computed once.
+    Rendering performs zero heavy calculations.
+
+------------------------------------------------------------
+
+B. MOVIE 5 — VOLUME INFLATION EVOLUTION
+----------------------------------------
+
+Implemented animated time-series visualization of:
+
+    V_hull / V_ellipsoid vs snapshot number
+
+Features:
+    • Progressive curve growth across frames
+    • Fixed axis scaling for consistent interpretation
+    • Clean single-panel layout
+    • No particle rendering to avoid visual noise
+
+Scientific purpose:
+    - Identify tidal stripping events
+    - Detect pericenter-induced halo inflation
+    - Observe post-merger relaxation trends
+
+------------------------------------------------------------
+
+C. MOVIE 6 — AXIS RATIO EVOLUTION
+----------------------------------
+
+Implemented animated time-series visualization of:
+
+    b/a vs snapshot
+    c/a vs snapshot
+
+Features:
+    • Dual-line metric tracking
+    • Fixed axis limits (0–1.1)
+    • Legend included
+    • Focused metric-only presentation
+
+Scientific purpose:
+    - Directly test hypothesis:
+          Triaxiality increases during pericenter
+          and decreases post-coalescence
+    - Quantify halo flattening and elongation phases
+
+------------------------------------------------------------
+
+3. TECHNICAL NOTES
+------------------
+
+• Convex hull computation scales ~ O(N log N).
+• Inertia tensor computation scales ~ O(N).
+• Entire metric pipeline structured for reproducibility.
+• All movies written using FFMpegWriter at high resolution.
+
+------------------------------------------------------------
+
+STATUS
+------
+
+Successfully extended visualization framework to include
+two additional quantitative metric movies.
