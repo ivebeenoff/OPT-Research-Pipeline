@@ -1,0 +1,139 @@
+Computational Complexity and Efficiency Analysis
+================================================
+
+Let
+
+N = number of snapshots
+P = number of particles per snapshot
+
+These movies operate ONLY on already-computed time series
+(j_spec_matrix and spin_param), meaning the expensive particle
+computations have already been completed earlier.
+
+------------------------------------------------
+1. Time Complexity
+------------------------------------------------
+
+Angular Momentum Vector Movie
+
+Per frame operations:
+
+• Clear axes
+• Plot trajectory of length i
+• Plot current point
+
+Time per frame: O(i)
+
+Total runtime:
+
+Σ(i=1→N) O(i) = O(N²)
+
+With N ≈ 800 snapshots:
+
+N² ≈ 640,000 operations
+
+This is trivial for modern CPUs.
+
+
+Spin Parameter Movie
+
+Per frame:
+
+• plot array of length i
+
+Time per frame: O(i)
+
+Total runtime:
+
+O(N²)
+
+Again extremely small computational cost.
+
+
+------------------------------------------------
+2. Space Complexity
+------------------------------------------------
+
+Memory requirements are minimal.
+
+j_spec_matrix
+
+size = N × 3
+
+For N = 800
+
+Memory ≈ 800 × 3 × 8 bytes
+       ≈ 19 KB
+
+spin_param
+
+size = N
+
+Memory ≈ 800 × 8 bytes
+       ≈ 6 KB
+
+Total memory footprint is far below 1 MB.
+
+
+------------------------------------------------
+3. Movie Encoding Cost
+------------------------------------------------
+
+Most runtime is dominated by:
+
+• matplotlib rendering
+• FFmpeg encoding
+
+Frame generation complexity:
+
+O(N_frames)
+
+With fps = 20 and 800 frames:
+
+movie length ≈ 40 seconds
+
+
+------------------------------------------------
+4. Why This Is Computationally Efficient
+------------------------------------------------
+
+The expensive operations in the pipeline are:
+
+• particle loading
+• angular momentum calculation
+• inertia tensor calculation
+• convex hull construction
+
+Those scale roughly:
+
+O(P) or O(P log P)
+
+where P ≈ millions of particles.
+
+These movie modules avoid recomputing any particle physics.
+
+They only visualize precomputed quantities, meaning the
+visualization layer is extremely lightweight.
+
+
+------------------------------------------------
+5. Scientific Interpretation
+------------------------------------------------
+
+Angular Momentum Vector Movie reveals:
+
+• orbital torque phases
+• spin flips
+• angular momentum transfer during merger
+• final spin alignment
+
+
+Spin Parameter Movie reveals:
+
+• halo spin growth
+• merger-driven angular momentum injection
+• post-merger relaxation
+
+
+Together they provide a dynamical view of how the MW–M31
+merger redistributes angular momentum in the combined halo.
