@@ -1,1 +1,145 @@
+Research Logbook Entry
+Hours Worked: 7 hours
+Project: MW–M31 Halo Shape Evolution and Dynamical Visualization
+Date: March 5, 2026
 
+
+--------------------------------------------------------------------
+Objectives for the Day
+--------------------------------------------------------------------
+
+The primary objective for today was to continue expanding the
+visualization framework for the MW–M31 merger analysis pipeline.
+The focus was on building additional movie-generation modules
+that illustrate dynamical quantities derived from the simulation
+snapshots. These movies complement earlier plots and analysis by
+allowing time-resolved visual inspection of the physical processes
+occurring during the merger.
+
+A secondary goal was to ensure that the visualization modules are
+efficient, modular, and consistent with the rest of the research
+pipeline.
+
+--------------------------------------------------------------------
+Work Completed
+--------------------------------------------------------------------
+
+1. Continued Development of Movie Generation Framework
+
+Additional movie modules were designed and implemented using
+Matplotlib's FFMpegWriter interface. These modules extend the
+existing visualization pipeline and allow different dynamical
+quantities to be tracked over time across all simulation snapshots.
+
+Each movie focuses on a specific physical property in order to
+avoid visual overcrowding and to isolate the physical processes
+being examined.
+
+2. Implementation of Angular Momentum Vector Evolution Movie
+
+A new module was implemented to visualize the evolution of the
+specific angular momentum vector of the combined MW–M31 halo.
+
+The movie plots the trajectory of the angular momentum vector
+(j_x, j_y, j_z) in three-dimensional space across all snapshots.
+
+This visualization is intended to reveal:
+
+• orbital angular momentum transfer  
+• merger-driven torques  
+• spin reorientation or spin flips  
+• final angular momentum stabilization after halo coalescence  
+
+The algorithm iteratively plots the trajectory of the vector
+through time, updating the current position at each frame.
+
+The computational cost of this visualization is low because the
+movie uses precomputed angular momentum vectors rather than
+recalculating particle-level quantities.
+
+3. Implementation of Spin Parameter Evolution Movie
+
+A second movie module was implemented to visualize the evolution
+of the Bullock spin parameter (λ') across the merger timeline.
+
+This parameter measures the rotational support of the halo
+relative to its gravitational binding energy.
+
+The movie progressively plots λ' as a function of snapshot
+number, allowing the temporal evolution of halo spin to be
+observed.
+
+This visualization is designed to highlight:
+
+• spin fluctuations during close passages  
+• angular momentum injection during the merger  
+• relaxation toward a stable post-merger halo configuration  
+
+As with the angular momentum visualization, the movie uses
+precomputed time-series data, keeping runtime and memory
+requirements minimal.
+
+4. Detailed Commentary and Computational Analysis
+
+Extensive commentary was added to the code explaining:
+
+• physical meaning of the quantities being visualized  
+• algorithmic workflow of each module  
+• time complexity of the frame-generation process  
+• memory usage and scalability considerations  
+
+This documentation ensures that the visualization modules are
+transparent and reproducible, which is critical for research
+projects intended for publication or presentation.
+
+--------------------------------------------------------------------
+Technical Notes
+--------------------------------------------------------------------
+
+The movie-generation modules operate on time-series arrays
+generated earlier in the analysis pipeline.
+
+Because the expensive particle-level computations are already
+completed prior to visualization, the movie generation stage
+is computationally lightweight.
+
+Typical runtime scaling:
+
+Frame generation complexity: O(N_snapshots²)
+
+However, with approximately 800 snapshots this remains
+computationally trivial.
+
+Memory requirements are also minimal because only small
+time-series arrays are used rather than full particle data.
+
+--------------------------------------------------------------------
+Next Steps
+--------------------------------------------------------------------
+
+Future work will focus on expanding the visualization suite
+to include additional physical diagnostics of the merger,
+including:
+
+• escape velocity profile evolution  
+• rotation curve evolution  
+• radial density evolution  
+• halo shape evolution visualizations  
+• comparison movies between simulation and custom models  
+
+In addition, the integration of these movies with the
+analysis plots will be explored in order to produce a
+coherent visual narrative of the MW–M31 merger process.
+
+--------------------------------------------------------------------
+Summary
+--------------------------------------------------------------------
+
+Today's work expanded the research visualization pipeline by
+adding new movie-generation modules that track the evolution
+of angular momentum and halo spin during the MW–M31 merger.
+
+These tools provide an intuitive, time-resolved view of the
+dynamical processes occurring during the merger and will
+play an important role in interpreting the quantitative
+results produced by the analysis pipeline.
