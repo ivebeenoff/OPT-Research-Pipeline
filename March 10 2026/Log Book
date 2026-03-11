@@ -1,1 +1,37 @@
+Research Logbook Entry
+Hours Worked: 7 hours 
+Project: MW–M31 Halo Shape Evolution – Density Movie Development
+Date: March 5, 2026
 
+
+Summary of Work
+---------------
+
+Developed a multi-method halo density movie using the MW–M31 
+simulation snapshots. The following density estimation techniques 
+were implemented and incorporated into a FFMpegWriter animation:
+
+1. 2D Histogram (baseline): counts of particles per spatial bin; 
+   fast and memory-efficient (O(N_particles) time, bins^2 memory).
+
+2. Gaussian Kernel Density Estimation (KDE): smooth density 
+   field highlighting faint tidal streams; computationally heavier 
+   (O(N_particles * bins^2) time, bins^2 memory).
+
+3. SPH-inspired smoothing: per-particle Gaussian kernel 
+   accumulation to emphasize local density variations; highest 
+   fidelity but computationally intensive (O(N_particles * bins^2)).
+
+Work also included:
+- Centering halos using MW center of mass.
+- Applying log-scaling to density maps to improve visualization of 
+  both dense cores and sparse tidal features.
+- Adding detailed commentary in code on physical interpretation, 
+  computational complexity, and memory usage.
+- Preparing framework for producing separate movies per density method 
+  to track different structural features independently.
+
+Outcome:
+- Completed a flexible, research-grade density movie pipeline capable 
+  of rendering multi-method visualizations of halo density evolution 
+  during the MW–M31 merger.
