@@ -1,1 +1,62 @@
+Research Logbook Entry
+Hours Worked: 7 hours
+Project: MW–M31 Halo Shape Evolution – Velocity Dispersion Visualization
+Date: March 6, 2026
 
+
+Summary of Work
+---------------
+
+Developed a velocity dispersion movie module to visualize the
+time evolution of the MW–M31 halo kinematics during the merger.
+The goal of this work was to track how random motions of halo
+particles evolve as the two systems interact and eventually
+coalesce into a single merged halo.
+
+Velocity dispersion was computed from the particle velocity
+distribution after centering the system using the halo center
+of mass. Particle velocities were shifted into the center-of-mass
+frame in order to remove bulk translational motion and isolate
+the internal dynamical behavior of the system.
+
+The velocity dispersion was calculated using the standard
+statistical definition based on the variance of particle
+velocities relative to the mean velocity of the halo.
+
+A movie-generation pipeline was implemented using Matplotlib's
+FFMpegWriter framework. For each snapshot, the velocity dispersion
+distribution was calculated and rendered as a spatial map of
+velocity variance across the halo. Frames were then compiled
+into a continuous movie illustrating the evolution of kinematic
+structure during the merger.
+
+Key implementation steps included:
+
+• Loading MW and M31 particle data for each snapshot
+• Combining particle sets into a single halo system
+• Centering particle positions and velocities using the
+  center-of-mass frame
+• Computing velocity dispersion from particle velocity
+  distributions
+• Mapping dispersion values onto a spatial grid
+• Rendering dispersion maps frame-by-frame using FFMpegWriter
+
+Logarithmic color scaling was applied to improve visualization
+of both high-dispersion core regions and lower-dispersion outer
+halo regions.
+
+Computational complexity was analyzed and documented in the code.
+Velocity dispersion calculations scale linearly with the number
+of particles per snapshot, resulting in overall runtime scaling of
+
+    O(N_snapshots × N_particles)
+
+Memory requirements remain modest because only particle arrays
+and a spatial dispersion grid are stored at any given time.
+
+Outcome:
+A complete velocity dispersion visualization module was created,
+allowing the dynamical heating and relaxation of the halo to be
+tracked throughout the MW–M31 merger process. This movie provides
+a complementary diagnostic to the previously implemented density,
+angular momentum, and spin parameter visualizations.
