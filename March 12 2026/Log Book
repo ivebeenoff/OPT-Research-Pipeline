@@ -1,1 +1,10 @@
+Hours Worked: 7 hours
+Date: March 12, 2026
 
+Summary of Work:
+
+Developed a new visualization module for the MW–M31 merger analysis pipeline focused on velocity anisotropy evolution. Implemented code to compute the radial and tangential velocity components of halo particles after performing center-of-mass centering of the combined MW and M31 system. Constructed radial bins and calculated velocity dispersions within each shell in order to compute the velocity anisotropy parameter β(r) for each snapshot.
+
+Integrated this analysis into the movie-generation framework using FFMpegWriter so that the anisotropy profile evolves frame-by-frame across the simulation timeline. Added detailed code commentary explaining the physical interpretation of the anisotropy parameter, the binning algorithm, and computational complexity considerations.
+
+This module extends the dynamical diagnostics of the project beyond basic velocity dispersion by allowing direct visualization of how particle orbital structures evolve during the merger process, particularly during close passages and final halo relaxation.
