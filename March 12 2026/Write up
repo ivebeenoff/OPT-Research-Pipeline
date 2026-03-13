@@ -1,0 +1,24 @@
+Velocity Anisotropy: A Dynamical Diagnostic
+====================================================
+
+Overview
+--------
+Velocity anisotropy provides a more detailed diagnostic of halo dynamics than simple velocity dispersion. While velocity dispersion measures the overall spread of particle speeds in a region, it does not differentiate between radial motion toward the halo center and tangential motion along orbital paths. The anisotropy parameter, β(r), separates these components by comparing radial (σ_r) and tangential (σ_t) velocity dispersions:
+
+    β(r) = 1 - (σ_t^2 / 2σ_r^2)
+
+This formulation allows us to determine whether halo particles are primarily on radial infall trajectories or moving along stable orbital paths.
+
+Physical Relevance During Mergers
+---------------------------------
+In a major galaxy merger, such as the MW–M31 system, tidal forces, violent relaxation, and dynamical heating significantly perturb particle orbits. Close encounters typically drive particles onto more radial trajectories, while angular momentum is redistributed post-interaction. Tracking the evolution of β(r) therefore provides a direct probe of how the orbital structure of the halo changes over time.
+
+Scientific Utility
+-----------------
+Velocity anisotropy profiles are widely used in astrophysical research on:
+
+- Dark matter halo dynamics
+- Galaxy mergers
+- Dynamical relaxation processes
+
+Visualizing β(r) across simulation snapshots delivers a more physically informative picture of halo evolution than velocity dispersion alone. This approach enables a deeper understanding of the internal dynamical state of merging halos and highlights processes such as tidal stripping, halo elongation, and the relaxation of particle orbits following coalescence.
