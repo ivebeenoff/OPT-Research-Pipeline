@@ -1,1 +1,39 @@
+Research Log — Velocity Anisotropy Movie Generation
+Hours Worked: 3.0 hours
+Date: March 13, 2026
 
+Objective
+Generate a time-resolved visualization of the velocity anisotropy profile β(r) during the Milky Way–Andromeda merger using simulation snapshots.
+
+Tasks Completed
+
+1. Environment Configuration
+   - Installed FFmpeg to enable video export through matplotlib.animation.FFMpegWriter.
+   - Verified that the installation worked within the Jupyter environment.
+
+2. Execution of Existing Analysis Code
+   - Ran the previously developed Python pipeline for the velocity anisotropy analysis.
+   - No new scripting or algorithm development performed during this session.
+
+3. Runtime Execution
+   - Processed 800 simulation snapshots containing Milky Way and Andromeda particle data.
+   - For each snapshot:
+     - Loaded MW and M31 particle datasets.
+     - Computed center-of-mass position and velocity.
+     - Calculated radial and tangential velocity components.
+     - Generated velocity anisotropy profile β(r) using logarithmic radial bins.
+     - Estimated uncertainties using bootstrap sampling.
+
+4. Output Generation
+   - Successfully generated the animation:
+     movie_velocity_anisotropy_robust.mp4
+   - Frames illustrate the evolution of β(r) across the merger timeline.
+
+Outcome
+- The full pipeline executed successfully across 800 snapshots.
+- Produced a continuous visualization of the velocity anisotropy evolution during the MW–M31 merger simulation.
+- Environment is now properly configured for future movie exports using FFmpeg.
+
+Notes
+- Work focused on environment setup, troubleshooting, and execution of the analysis pipeline.
+- No modifications were made to the codebase during this session.
