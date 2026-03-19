@@ -1,0 +1,120 @@
+# ===============================================================
+# MW–M31 MOVIE PIPELINE
+# ===============================================================
+#
+# AUTHOR: Abhinav Vatsa
+# DATE: March 15, 2026
+#
+# PURPOSE
+# -------
+# Document the core computer science and software engineering 
+# concepts applied in the development of the MW–M31 halo movie 
+# pipeline. This includes algorithm design, data structures, 
+# optimization strategies, and principles of reproducibility.
+#
+# 1. MODULAR DESIGN
+# -----------------
+# - The pipeline is divided into discrete modules for:
+#       • Inertia tensor and axis ratio computation
+#       • Convex hull analysis
+#       • Radial binning and velocity anisotropy
+#       • Density map projection
+#       • Movie generation using FFMpegWriter
+# - Benefits:
+#       • Easier debugging and testing
+#       • Reusable components for other simulations
+#       • Separation of concerns (single responsibility principle)
+#
+# 2. DATA STRUCTURES
+# ------------------
+# - Numpy arrays:
+#       • Efficient storage and vectorized computation of particle positions, 
+#         velocities, and masses
+#       • Supports broadcasting for mass-weighted operations
+#       • Enables O(N) operations instead of nested loops
+# - HDF5 files:
+#       • Hierarchical data storage for metrics (axis ratios, volumes, triaxiality)
+#       • Metadata storage (centering method, snapshot count, units)
+#       • Supports reproducibility and versioning of results
+# - Matplotlib objects:
+#       • Figures and axes stored as objects for iterative frame updates
+#       • Enables clean frame-by-frame animation without retaining entire dataset
+#
+# 3. ALGORITHMIC PRINCIPLES
+# --------------------------
+# - Vectorization:
+#       • Used for inertia tensor, velocity components, radial calculations
+#       • Reduces algorithmic complexity from O(N*3^2) to O(N*3)
+# - Convex hull computation:
+#       • Uses scipy.spatial.ConvexHull with complexity O(M log M)
+#       • Only hull vertices are used for axis ratio computation (space optimization)
+# - Radial binning:
+#       • Logarithmic bins provide balanced resolution across halo scales
+#       • Enables O(N) assignment of particles to bins
+# - Movie generation:
+#       • FFMpegWriter writes frames sequentially
+#       • Avoids storing entire animation in memory
+#
+# 4. TIME AND SPACE COMPLEXITY CONSIDERATIONS
+# -------------------------------------------
+# - Time complexity:
+#       • Inertia tensor: O(N) per snapshot
+#       • Convex hull: O(M log M) per snapshot, M << N
+#       • Radial velocity and anisotropy: O(N_bins * N_particles)
+#       • Density map: O(N_particles)
+#       • Overall pipeline scales linearly with number of snapshots
+# - Space complexity:
+#       • Preallocated arrays: O(n_snapshots) for metrics
+#       • Density grids: O(bins^2)
+#       • Radial arrays: O(N_bins)
+#       • Avoids retaining full particle arrays for all snapshots
+#
+# 5. PARALLELIZATION AND PERFORMANCE
+# ----------------------------------
+# - Movies and snapshot metrics can be parallelized:
+#       • Snapshot-level parallelism (independent computations)
+#       • Radial bin computations can be vectorized per thread
+# - Optimized memory usage prevents memory leaks during long loops
+# - Performance monitored using print logging per snapshot
+#
+# 6. SOFTWARE ENGINEERING PRINCIPLES
+# ----------------------------------
+# - Reproducibility:
+#       • HDF5 files store computed metrics, metadata, and configuration
+# - Documentation:
+#       • Each module contains docstrings explaining purpose, inputs, outputs
+# - Logging:
+#       • Prints snapshot-level processing info for monitoring
+# - Configurability:
+#       • User-defined centering method, radial bins, spatial limits, and movie parameters
+# - Extensibility:
+#       • Easy to add new movie types (stellar component, gas particles)
+#
+# 7. NUMERICAL METHODS
+# --------------------
+# - Eigenvalue decomposition for inertia tensors
+# - Covariance matrix computation for hull vertex axis ratios
+# - Standard deviation for velocity dispersion
+# - Logarithmic scaling for radial bins and density visualization
+# - All operations vectorized for speed and accuracy
+#
+# 8. ERROR HANDLING AND ROBUSTNESS
+# --------------------------------
+# - Conditional checks for radial bins with insufficient particles
+# - Safe handling of zero radial dispersion (β=0)
+# - Input validation for centering methods
+# - Validation against synthetic ellipsoids to ensure metric accuracy
+#
+# 9. CONCLUSION
+# -------------
+# The MW–M31 movie pipeline exemplifies careful application of 
+# computer science principles in scientific computing. Its design 
+# emphasizes modularity, reproducibility, efficient data structures, 
+# and computational optimization. These principles enable the 
+# creation of high-resolution, publication-ready movies that 
+# provide deep physical insights into halo dynamics during a 
+# major galaxy merger.
+#
+# ===============================================================
+# END OF DOCUMENTATION
+# ===============================================================
