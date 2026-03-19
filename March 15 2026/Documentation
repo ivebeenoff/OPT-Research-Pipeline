@@ -50,8 +50,8 @@
 # have quantified MW–M31 dynamics using axis ratios, triaxiality, 
 # and spin parameters. However, the use of movies to directly 
 # visualize these quantities over hundreds of snapshots remains 
-# underexplored. Our work fills this gap, providing an integrated 
-# visualization pipeline suitable for publication and teaching.
+# underexplored. This work provides an integrated 
+# visualization pipeline suitable for further exploration in this regard.
 #
 # 2. MOVIE PIPELINE OVERVIEW
 # --------------------------
