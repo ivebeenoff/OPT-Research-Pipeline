@@ -1,1 +1,35 @@
+Research Log — ML-Based Halo Movie Pipeline  
+Hours Worked: 8 hours  
+Date: March 19, 2026  
+Time: 6:00 AM – 2:00 PM  
 
+---
+
+**Objective**  
+Develop a machine-learning-based pipeline to efficiently generate MW–M31 halo movies by learning low-dimensional representations of particle snapshots.
+
+---
+
+**Tasks Completed**  
+1. Implemented a fully connected autoencoder to encode particle positions and velocities into a low-dimensional latent space.  
+2. Loaded and preprocessed MW and M31 halo snapshots, including COM-centering and feature standardization.  
+3. Trained the autoencoder on concatenated snapshot data for dimensionality reduction and reconstruction.  
+4. Performed latent-space analysis using PCA for visualization and KMeans clustering to identify substructures.  
+5. Developed a movie generation function that decodes latent embeddings and produces density evolution movies using 2D histograms.  
+6. Verified that decoded movies preserve spatial features such as tidal streams and halo overlap.  
+7. Designed the pipeline to be modular and extensible for velocity anisotropy and rotational profile movies.  
+8. Documented computational considerations, including time complexity, memory usage, and GPU acceleration potential.
+
+---
+
+**Notes & Observations**  
+- Latent-space representation reduces redundant computations across snapshots.  
+- Clustering in latent space can reveal coherent structures like tidal streams.  
+- The framework is flexible, allowing generation of additional movies from the same latent embeddings with minimal extra computation.
+
+---
+
+**Next Steps**  
+- Extend the ML pipeline to velocity anisotropy and rotational profile movies.  
+- Implement latent-space interpolation for smoother frame transitions.  
+- Explore variational autoencoders (VAE) for continuous generative modeling of halo dynamics.
