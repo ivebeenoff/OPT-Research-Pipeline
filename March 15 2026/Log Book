@@ -1,1 +1,41 @@
-
+# ===============================================================
+# LOG BOOK ENTRY
+# ===============================================================
+# Date: March 15, 2026
+(Updated on March 19 2026 with errors corrected) 
+# Hours Worked: 10 hours
+# ===============================================================
+#
+# TASK SUMMARY
+# ------------
+# Documented the computer science principles underlying the MW–M31
+# movie and analysis pipeline. Focused on how algorithm design,
+# data structures, vectorization, complexity optimization, and 
+# software engineering practices support efficient computation
+# of halo metrics and movie generation.
+#
+# WORK COMPLETED
+# --------------
+# 1. Prepared a structured, paper-style document detailing:
+#       • Modular design and separation of concerns
+#       • Numpy array usage for vectorized computation
+#       • HDF5 data storage and metadata management
+#       • Algorithmic approaches for inertia tensor, convex hull,
+#         radial binning, and velocity anisotropy
+#       • Time and space complexity analysis for each major step
+#       • Software engineering principles including reproducibility,
+#         logging, documentation, and configurability
+#       • Numerical methods used for physical metric computation
+#       • Error handling and robustness in computation
+# 2. Explained performance considerations and possible parallelization.
+# 3. Produced a final document suitable for inclusion in a methods
+#    section of a research paper.
+#
+# NOTES
+# -----
+# - Document serves as a detailed reference for the pipeline,
+#   supporting reproducibility and scientific rigor.
+# - Provides foundation for future pipeline optimization and
+#   extension, including additional movie types or metrics.
+#
+# ===============================================================
