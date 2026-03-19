@@ -1,0 +1,182 @@
+# ===============================================================
+# PAPER-STYLE DOCUMENTATION — MW–M31 HALO MOVIE PIPELINE
+# ===============================================================
+#
+# AUTHOR: Abhinav Vatsa
+# DATE: March 15, 2026
+#
+# TITLE: Comprehensive Time-Resolved Visualizations of MW–M31 
+#        Dark Matter Halo Evolution During a Major Merger
+#
+# ABSTRACT
+# --------
+# The Milky Way–Andromeda (MW–M31) merger represents a prototypical 
+# major galaxy merger, providing an exceptional laboratory to study 
+# dark matter halo evolution under extreme dynamical conditions. 
+# While numerical metrics such as mass-weighted inertia tensors, 
+# convex hulls, velocity anisotropy profiles, and spin parameters 
+# quantify halo structure and dynamics, static plots cannot fully 
+# capture the continuous evolution of these systems. 
+#
+# We present a suite of modular, time-resolved visualizations (movies) 
+# derived from high-resolution N-body snapshots that animate halo 
+# density, shape, orbital structure, and rotational properties. 
+# Each movie focuses on a distinct aspect of the halos, providing 
+# both qualitative intuition and quantitative insight. This pipeline 
+# complements conventional analysis by explicitly showing how tidal 
+# forces, orbital mixing, and angular momentum redistribution progress 
+# through merger stages.
+#
+# 1. INTRODUCTION
+# ---------------
+# 1.1 Scientific Motivation
+# -------------------------
+# Major mergers drastically alter halo structure. Dark matter halos 
+# respond to tidal interactions, violent relaxation, and dynamical 
+# friction. Traditional metrics—e.g., axis ratios (b/a, c/a), 
+# triaxiality, or velocity dispersion—provide snapshots in time 
+# but fail to convey continuous changes in particle orbits, tidal 
+# features, and the emergence of streams. Movies of halo evolution 
+# therefore provide a complementary tool to elucidate:
+#
+#   • The emergence and evolution of tidal streams
+#   • Coupling between halo shape and orbital anisotropy
+#   • Redistribution of angular momentum
+#   • Relaxation of halo density post-coalescence
+#
+# 1.2 Literature Context
+# ----------------------
+# Prior studies (e.g., van der Marel et al. 2012; Bullock et al. 2001) 
+# have quantified MW–M31 dynamics using axis ratios, triaxiality, 
+# and spin parameters. However, the use of movies to directly 
+# visualize these quantities over hundreds of snapshots remains 
+# underexplored. Our work fills this gap, providing an integrated 
+# visualization pipeline suitable for publication and teaching.
+#
+# 2. MOVIE PIPELINE OVERVIEW
+# --------------------------
+# 2.1 Design Philosophy
+# ---------------------
+# • Modular: Each movie focuses on a single halo property (shape, 
+#   density, velocity anisotropy, spin, or rotation), preventing 
+#   frame clutter.
+# • Scalable: Supports hundreds of snapshots and millions of particles.
+# • Publication-ready: High-DPI MP4 files, labeled axes, titles, and 
+#   legends.
+# • Reproducible: Movies are generated from HDF5 metrics and raw 
+#   snapshot data, ensuring full reproducibility.
+#
+# 2.2 Movies Generated
+# --------------------
+# 2.2.1 Axis Ratio Evolution Movie
+#   • Animates b/a and c/a for both mass-weighted inertia tensor 
+#     and convex hull.
+#   • Reveals triaxiality evolution during pericentric passages 
+#     and post-merger relaxation.
+#   • Time complexity: O(N) per snapshot (inertia tensor), O(M log M) 
+#     per snapshot (convex hull, M << N)
+#
+# 2.2.2 Volume Inflation Factor Movie
+#   • Shows ratio of convex hull volume to ellipsoidal volume.
+#   • Highlights tidal features and departures from ellipsoidal symmetry.
+#   • Memory usage: preallocated arrays per snapshot, bins negligible.
+#
+# 2.2.3 Velocity Anisotropy Profile Movie
+#   • Computes β(r) = 1 - σ_t^2 / (2 σ_r^2) in logarithmic radial bins.
+#   • Reveals whether particle orbits are radial or tangential.
+#   • Provides deeper dynamical insight than velocity dispersion alone.
+#   • Complexity: O(N_particles * N_bins) per snapshot; memory scales 
+#     with radial bin count.
+#
+# 2.2.4 Density Projection Movie
+#   • 2D XY projection of halo particle positions.
+#   • Computes logarithmic density maps via 2D histograms.
+#   • Captures tidal streams, halo overlap, and merger morphology.
+#   • Complexity: O(N) per snapshot; memory: bins^2.
+#
+# 2.2.5 Rotational Profile and Spin Parameter Movie
+#   • Computes rotation curves, escape velocity profiles, specific 
+#     angular momentum, and Bullock spin parameter λ'.
+#   • Highlights redistribution of angular momentum during merger.
+#   • Provides direct comparison of pre- and post-merger rotation states.
+#
+# 3. METHODOLOGICAL DETAILS
+# -------------------------
+# 3.1 Snapshot Handling
+#   • Snapshots numbered 0–800.
+#   • Each snapshot includes MW and M31 halo particle positions 
+#     (x,y,z), velocities (vx,vy,vz), and masses (m).
+#   • Particles are concatenated, and the system is centered 
+#     using either MW COM or barycenter.
+#
+# 3.2 Radial Binning
+#   • Logarithmic radial bins used for β(r), rotation curves, 
+#     and escape velocity.
+#   • Number of bins (typically 30–40) balances resolution and 
+#     noise.
+#
+# 3.3 Vectorization and Optimization
+#   • Inertia tensor: fully vectorized, reducing complexity from 
+#     O(N*3^2) to O(N*3)
+#   • Convex hull computations limited to hull vertices (M << N), 
+#     O(M log M)
+#   • Preallocated arrays for metrics to minimize memory overhead
+#   • Movies generated frame-by-frame to avoid storing full 3D arrays 
+#     across all snapshots.
+#
+# 3.4 Visualization Considerations
+#   • Log scaling used in density maps to emphasize tidal features.
+#   • β(r) plotted with radial axes logarithmic, y-axis bounded [-1,1].
+#   • Rotational curves and spin parameters plotted with clear 
+#     legends and units.
+#   • Titles indicate snapshot number and epoch for easy cross-reference.
+#
+# 4. COMPUTATIONAL COSTS
+# ----------------------
+# • Time: Each movie scales linearly with particle number per snapshot.
+# • Space: Memory usage dominated by 2D histogram grids or radial 
+#   bin arrays; O(bins^2) or O(N_bins) per snapshot.
+# • Parallelization optional via multiprocessing or joblib for large 
+#   datasets; not required for standard workflow.
+#
+# 5. VALIDATION AND ROBUSTNESS
+# ----------------------------
+# • Bootstrapping of particle subsets to estimate metric uncertainty.
+# • Comparison between inertia tensor and convex hull axis ratios.
+# • Testing on synthetic ellipsoids to confirm accuracy of shape 
+#   and volume metrics.
+# • Multiple centering schemes (MW COM vs barycenter) tested for 
+#   consistency.
+#
+# 6. SCIENTIFIC INSIGHTS
+# ----------------------
+# • Movies reveal tidal tails, streams, and halo overlap not visible 
+#   in static plots.
+# • Axis ratio and triaxiality movies directly show the progression 
+#   of halo deformation during pericentric passages.
+# • Velocity anisotropy highlights redistribution of radial and 
+#   tangential orbits throughout the merger.
+# • Density and rotational movies complement quantitative metrics, 
+#   providing physical intuition about the system’s dynamical state.
+#
+# 7. EXTENSIONS AND FUTURE WORK
+# ------------------------------
+# • Inclusion of stellar and gas particles for baryonic effects.
+# • 3D volume rendering and fly-through animations.
+# • Cross-correlation with satellite disruption events or stellar streams.
+# • Integration with machine learning clustering to identify substructures.
+#
+# 8. CONCLUSION
+# --------------
+# The MW–M31 halo movie pipeline represents a comprehensive, 
+# reproducible, and publication-ready framework for visualizing 
+# time-resolved dark matter halo evolution. By generating separate 
+# movies for shape, density, velocity anisotropy, rotation, and 
+# spin, the methodology avoids visual clutter and maximizes 
+# physical insight. This approach complements traditional 
+# time-series plots and provides an intuitive, dynamic view of 
+# halo merger physics.
+#
+# ===============================================================
+# END OF DOCUMENTATION
+# ===============================================================
