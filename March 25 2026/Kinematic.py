@@ -4,8 +4,6 @@
 
 Author  : Abhinav Vatsa
 Date    : March 25 2026
-Runtime : 6-8hours in a std workstation
-
 ## Overview
 
 This script processes N-body simulation snapshots of the Milky Way (MW) and
