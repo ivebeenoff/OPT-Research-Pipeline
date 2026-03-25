@@ -3,7 +3,7 @@
 # MW–M31 MERGER KINEMATIC PROFILES PIPELINE
 
 Author  : Abhinav Vatsa
-Date    : March 2026
+Date    : March 25 2026
 Runtime : 6-8hours in a std workstation
 
 ## Overview
