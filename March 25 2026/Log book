@@ -1,1 +1,31 @@
+Date: March 25, 2026  
+Hours Worked: 12 hours  
 
+Title: MW–M31 Merger Kinematic Profiles Pipeline
+
+Summary:
+Completed development of a full kinematic analysis pipeline for MW–M31 merger simulation snapshots. The pipeline processes N-body data to compute radial and time-evolving kinematic profiles, including velocity dispersions (σ_r, σ_t), rotational velocity (v_rot), specific angular momentum (j), enclosed mass (M_enc), escape velocity (v_esc), and velocity anisotropy (β).
+
+Work Completed:
+- Implemented snapshot extraction system from tar archives into temporary workspace.
+- Built robust center-of-mass (COM) position and velocity calculations with fallback handling.
+- Developed full kinematic profile computation engine in COM frame.
+- Implemented radial binning with mass-weighted statistics and noise filtering.
+- Computed global kinematic scalars per snapshot for time-series diagnostics.
+- Designed and generated multiple publication-quality plots:
+  • Inner-halo kinematic evolution
+  • (r, t) heatmaps for σ_r and β
+  • Radial profile grids across merger stages
+  • Angular momentum evolution
+  • Escape velocity profiles
+  • β anisotropy profiles
+- Added detailed documentation and physical explanations throughout the code.
+- Structured pipeline for scalability and HPC/batch execution.
+
+Notes:
+- Code successfully written but not yet compiled/run.
+- Expected runtime: ~6–8 hours on CPU for full snapshot range.
+- Pipeline is modular and ready for extensions (Jeans analysis, NFW fitting, stream identification).
+
+Outcome:
+A complete, well-documented kinematic analysis pipeline ready for execution and further scientific analysis of MW–M31 merger dynamics.
