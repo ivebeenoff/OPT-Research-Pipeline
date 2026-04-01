@@ -1,1 +1,31 @@
+Date: March 30, 2026  
+Hours Worked: 10.5 hours  
 
+Title: MW–M31 Merger Kinematic Profiles Pipeline  
+
+Summary:  
+Advanced the development of the MW–M31 merger kinematic analysis pipeline, with primary focus on completing and refining the core computational engine for per-snapshot kinematic profile extraction. The pipeline now robustly processes N-body data in the joint center-of-mass frame and computes detailed radial and global kinematic quantities necessary for analyzing merger-driven dynamical evolution.
+
+Work Completed:  
+- Finalized implementation of the core kinematic profile computation function for individual snapshots.  
+- Integrated Milky Way and Andromeda particle datasets into a unified COM frame.  
+- Implemented robust center-of-mass position (shrinking-sphere) and velocity calculations with fallback handling.  
+- Developed full radial/tangential velocity decomposition and ensured numerical stability.  
+- Computed mass-weighted velocity dispersions (σ_r, σ_t) across radial bins.  
+- Implemented azimuthal velocity calculation to capture rotational structure (v_rot).  
+- Calculated specific angular momentum profiles using cross-product formalism (j = |r × v|).  
+- Implemented enclosed mass and escape velocity calculations per radial bin.  
+- Computed velocity anisotropy parameter β(r) for orbital characterization.  
+- Added safeguards for low-particle bins and floating-point edge cases.  
+- Computed global kinematic scalars (mean velocities, dispersions, total angular momentum) for each snapshot.  
+- Ensured unit consistency and physical correctness across all calculations.  
+- Structured outputs for seamless integration with downstream visualization modules.  
+
+Notes:  
+- Escape velocity calculation represents a lower bound due to finite radial truncation.  
+- COM velocity fallback mechanism is critical for stability in irregular or low-density snapshots.  
+- Mass-weighted statistics significantly improve physical reliability of dispersion estimates.  
+- Current implementation prioritizes clarity and correctness; optimization (e.g., cumulative mass precomputation) can further improve performance.  
+
+Outcome:  
+A fully functional and physically consistent kinematic computation engine has been established. The pipeline is now capable of producing detailed radial and global kinematic diagnostics for MW–M31 merger simulations, forming the foundation for large-scale time evolution analysis and publication-quality visualization.
