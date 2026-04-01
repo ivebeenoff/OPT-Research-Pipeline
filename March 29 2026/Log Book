@@ -1,1 +1,47 @@
+Date: March 30, 2026  
+Hours Worked: 10.5 hours  
 
+Title: MW–M31 Merger Density Analysis Pipeline  
+
+Summary:  
+Developed the density analysis companion to the MW–M31 kinematic pipeline, focusing on quantifying the spatial mass distribution and structural evolution of the merger. The pipeline computes detailed spherical and projected density profiles, galaxy-origin decomposition, mixing diagnostics, and parametric profile fits (NFW, Einasto, Hernquist), along with 2D surface density maps and time-evolving structural properties.
+
+Work Completed:  
+- Implemented snapshot extraction and loading system with unified MW–M31 particle handling.  
+- Constructed COM-centered particle framework for consistent spatial analysis.  
+- Developed spherical density profile engine computing ρ(r) using mass-weighted shell binning.  
+- Implemented projected surface density profiles Σ(R) via cylindrical binning.  
+- Computed galaxy-specific density contributions (ρ_MW, ρ_M31) using origin tagging.  
+- Developed mixing fraction metric f_mix(r) to quantify spatial interpenetration of MW and M31 material.  
+- Implemented logarithmic slope calculation Γ(r) = d ln ρ / d ln r using interpolated differentiation.  
+- Computed derived structural scalars:
+  • Central density (ρ₀)  
+  • 3D and projected half-mass radii (r_half_3D, r_half_proj)  
+  • Inner and outer density slopes (Γ_inner, Γ_outer)  
+- Built 2D surface density map generator using histogram-based binning with Gaussian smoothing.  
+- Implemented separation of 2D maps into MW-only and M31-only contributions.  
+- Designed and integrated NFW, Einasto, and Hernquist profile fitting routines.  
+- Implemented residual analysis between measured density and fitted models.  
+- Configured time-series tracking for all density and structural quantities.  
+- Developed extensive visualization suite:
+  • Radial density and surface density profile grids  
+  • Γ(r, t) slope heatmaps  
+  • Central density and half-mass evolution plots  
+  • 2D density map grids and animations  
+  • MW vs M31 density comparison plots  
+  • Mixing fraction heatmaps  
+  • Model fitting and residual diagnostics  
+  • Comprehensive summary panel figure  
+- Ensured consistency with kinematic pipeline (shared binning strategy where applicable).  
+- Added detailed inline documentation and physical interpretation throughout the codebase.  
+
+Notes:  
+- Density calculations are fully mass-weighted, ensuring physical consistency across particle populations.  
+- Logarithmic slope computation requires interpolation to avoid NaN propagation in sparse bins.  
+- Mixing fraction provides a direct quantitative measure of merger phase progression.  
+- 2D maps balance resolution and computational cost; higher resolution available at increased runtime.  
+- Profile fitting range restricted to avoid noisy inner regions and contaminated outer halo.  
+- Current implementation prioritizes clarity and physical correctness; performance optimizations (e.g., cumulative mass arrays) remain possible.  
+
+Outcome:  
+A comprehensive and physically robust density analysis pipeline has been completed. The system now enables detailed investigation of spatial structure, mass redistribution, and mixing during the MW–M31 merger, fully complementing the kinematic pipeline for combined phase-space analysis.
