@@ -1,1 +1,20 @@
+Hours Worked: 11 hours
+Task: Development of the MW–M31 Merger Density Analysis Pipeline
 
+Objective:
+To create a density analysis pipeline complementary to the existing kinematic_profiles_pipeline.py, quantifying particle spatial distribution and mass in the MW–M31 merger simulation.
+
+Work Summary:
+	•	Defined configuration parameters: snapshot range, particle types, radial bins, 2D map grids, smoothing kernels, profile-fitting ranges, and temporal subsampling.
+	•	Implemented snapshot extraction and loading functions to handle MW and M31 data files and convert particle masses to M☉.
+	•	Built spherical density profile computation: ρ(r), ρ_MW(r), ρ_M31(r), f_mix(r), logarithmic slopes Γ(r), and derived scalars (ρ₀, r_half_3D, r_half_proj, Γ_inner, Γ_outer).
+	•	Constructed 2D surface density map engine: Σ(x, y), Σ_MW(x, y), Σ_M31(x, y), with Gaussian smoothing and correct pixel scaling.
+	•	Implemented main snapshot loop to pre-compute all profiles for 801 snapshots, storing results in pre-allocated NaN arrays.
+	•	Integrated temporal subsampling for expensive operations: 2D maps and profile fitting.
+	•	Prepared data structures for time-series analysis and figure generation.
+	•	Verified correct units and ensured compatibility with the kinematics pipeline.
+
+Challenges / Notes:
+	•	Handling missing or corrupted snapshots gracefully.
+	•	Interpolation of NaN values for slope calculations to prevent propagation errors.
+	•	Performance optimization for large 801-snapshot dataset.
