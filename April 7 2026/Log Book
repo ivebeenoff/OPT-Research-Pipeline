@@ -1,1 +1,15 @@
+Date: 2026-04-07
+Project: MW–M31 Merger Kinematic Profiles Pipeline
+Hours Worked: 10 hours
 
+Work Summary:
+	•	Implemented and tested computation of inner-halo kinematic scalars (σ_r, σ_t, v_rot, j, β) as a function of time.
+	•	Computed mass-weighted radial and tangential velocity dispersions, mean azimuthal velocity, specific angular momentum, enclosed mass, escape speed, and Binney velocity anisotropy.
+	•	Ensured proper COM frame alignment using the shrinking-sphere algorithm and fallback mass-weighted velocity.
+	•	Averaged radial-bin values for inner-halo (r ≤ 30 kpc) and stored time-series arrays for plotting.
+	•	Verified proper handling of NaNs in bins with insufficient particles.
+	•	Prepared the inner-halo kinematic time series figure (fig1) with three panels and consistent dark-themed styling.
+
+Next Steps:
+	•	Continue with heatmaps, radial profile grids, angular momentum evolution, escape velocity profiles, and β(r) plots.
+	•	Validate figures against known kinematic trends and integrate figure saving routines.
