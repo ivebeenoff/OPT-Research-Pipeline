@@ -714,3 +714,274 @@ profile_snap_indices   = [
 ]
 profile_labels = [f"Snap {SNAPSHOTS[k]}" for k in profile_snap_indices]
 profile_colors = ["#00d4aa", "#7b9fff", "#ffaa44", "#ff6b9a", "#aa88ff"]
+aa88ff"]
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 7 — FIGURE 1: INNER-HALO KINEMATIC TIME SERIES                   ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: Show how the inner halo (r ≤ 30 kpc) kinematics evolve as the
+# merger progresses.  Each panel tracks one kinematic scalar versus time.
+# Spikes and troughs mark key events (pericentre passages, coalescence).
+
+print("\n[Plot 1] Inner-halo kinematic time series …")
+
+fig1, axes1 = plt.subplots(
+    3, 1, figsize=(11, 9), sharex=True,
+    gridspec_kw={"hspace": 0.08},
+)
+fig1.patch.set_facecolor("#0d0d18")
+
+# ── Panel (a): Velocity dispersions σ_r and σ_t ──────────────────────────────
+ax = axes1[0]
+ax.plot(t_axis, sigma_r_inner, color="#4da6ff", lw=1.8, label=r"$\sigma_r$ (inner)")
+ax.plot(t_axis, sigma_t_inner, color="#ff7755", lw=1.8, label=r"$\sigma_t$ (inner)")
+ax.fill_between(t_axis, sigma_r_inner, sigma_t_inner,
+                where=np.isfinite(sigma_r_inner) & np.isfinite(sigma_t_inner),
+                alpha=0.12, color="#888888")
+ax.set_ylabel(r"$\sigma$ [km s$^{-1}$]", fontsize=10)
+ax.legend(loc="upper right")
+ax.set_title(
+    fr"Inner-halo kinematics  (r ≤ {INNER_RADIUS_KPC:.0f} kpc)",
+    fontsize=11, pad=8,
+)
+
+# ── Panel (b): Mean azimuthal rotation velocity ───────────────────────────────
+ax = axes1[1]
+ax.plot(t_axis, vrot_inner, color="#00d4aa", lw=1.8, label=r"$v_{\phi}$ (inner)")
+ax.axhline(0, color="#555577", lw=0.8, ls="--")
+ax.set_ylabel(r"$v_\phi$ [km s$^{-1}$]", fontsize=10)
+ax.legend(loc="upper right")
+
+# ── Panel (c): Mean radial velocity (bulk infall/expansion indicator) ─────────
+ax = axes1[2]
+ax.plot(t_axis, mean_vrad_arr, color="#ffcc44", lw=1.8, label=r"$\langle v_r \rangle$ (global)")
+ax.axhline(0, color="#555577", lw=0.8, ls="--")
+ax.set_ylabel(r"$\langle v_r \rangle$ [km s$^{-1}$]", fontsize=10)
+ax.set_xlabel(time_label, fontsize=10)
+ax.legend(loc="upper right")
+
+fig1.savefig(
+    os.path.join(OUT_DIR, "kinematics_inner_evolution.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig1.get_facecolor(),
+)
+plt.close(fig1)
+print("  Saved: kinematics_inner_evolution.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 8 — FIGURE 2: HEATMAPS  log σ_r(r, t)  AND  β(r, t)             ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: Reveal the 2D structure of kinematic evolution simultaneously in
+# radius and time.  Colour encodes the quantity value; horizontal structure
+# indicates radially-coherent events (e.g., tidal shocking); vertical structure
+# indicates sudden global transitions.
+
+print("[Plot 2] Heatmaps …")
+
+fig2, ax2 = plt.subplots(
+    2, 1, figsize=(12, 9), sharex=True,
+    gridspec_kw={"hspace": 0.1},
+)
+fig2.patch.set_facecolor("#0d0d18")
+
+# The heatmap extent maps pixel edges to (time, radius) coordinates.
+# imshow uses [left, right, bottom, top] for the extent argument.
+t_min, t_max = np.nanmin(t_axis), np.nanmax(t_axis)
+r_min, r_max = R_BINS[0], R_BINS[-1]
+extent = [t_min, t_max, r_min, r_max]
+
+# ── Panel (a): log₁₀ σ_r(r, t) ───────────────────────────────────────────────
+# We take log10 to reveal both the low-σ outer halo and the high-σ inner core
+# on the same colour scale.  NaN values (empty bins) are shown as background.
+log_sigma_r = np.where(sigma_r_ts > 0, np.log10(sigma_r_ts), np.nan)
+
+im1 = ax2[0].imshow(
+    log_sigma_r.T,          # transpose: rows=radius, cols=time → standard orientation
+    aspect="auto",
+    origin="lower",         # radius increases upward (matching physical intuition)
+    extent=extent,
+    cmap="plasma",
+    vmin=0.5, vmax=3.0,     # typical range: 3–1000 km/s in log10
+)
+cb1 = fig2.colorbar(im1, ax=ax2[0], pad=0.01)
+cb1.set_label(r"$\log_{10}(\sigma_r / \mathrm{km\,s^{-1}})$", fontsize=9)
+ax2[0].set_ylabel("Radius [kpc]", fontsize=10)
+ax2[0].set_title(r"Radial velocity dispersion  $\sigma_r(r,\,t)$", fontsize=11)
+ax2[0].set_yscale("log")   # log-spaced radius axis matches log-spaced bins
+
+# ── Panel (b): β(r, t) — velocity anisotropy ─────────────────────────────────
+# β is bounded [-∞, 1] in theory but practically lies in [-2, 1].
+# We use a diverging colormap centred on 0 (isotropy).
+# Blue (β < 0) = tangentially biased; Red (β > 0) = radially biased.
+
+beta_plot = np.clip(beta_ts, -2.0, 1.0)   # clip extreme outliers for display
+
+im2 = ax2[1].imshow(
+    beta_plot.T,
+    aspect="auto",
+    origin="lower",
+    extent=extent,
+    cmap="bwr",              # diverging: blue = tangential, red = radial
+    vmin=-1.0, vmax=1.0,
+)
+cb2 = fig2.colorbar(im2, ax=ax2[1], pad=0.01)
+cb2.set_label(r"$\beta$", fontsize=9)
+ax2[1].set_ylabel("Radius [kpc]", fontsize=10)
+ax2[1].set_xlabel(time_label, fontsize=10)
+ax2[1].set_title(r"Velocity anisotropy  $\beta(r,\,t)$", fontsize=11)
+ax2[1].set_yscale("log")
+
+# Draw a horizontal reference line at β = 0 (isotropic) on the colorbar axis.
+# We annotate the image rather than the axes to avoid clipping the log scale.
+ax2[1].text(
+    t_max * 0.98, 1.5, "β = 0 (isotropic)",
+    color="white", fontsize=7, ha="right", va="bottom",
+    alpha=0.7,
+)
+
+fig2.savefig(
+    os.path.join(OUT_DIR, "kinematics_heatmaps.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig2.get_facecolor(),
+)
+plt.close(fig2)
+print("  Saved: kinematics_heatmaps.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 9 — FIGURE 3: RADIAL PROFILE GRID AT SELECTED EPOCHS             ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: Show the detailed radial structure of all computed quantities at
+# five representative epochs.  This complements the heatmaps (which compress
+# the radial information) and the time series (which compress the spatial info).
+
+print("[Plot 3] Radial profile grid …")
+
+fig3 = plt.figure(figsize=(14, 10), facecolor="#0d0d18")
+gs3  = gridspec.GridSpec(2, 3, figure=fig3, hspace=0.42, wspace=0.38,
+                          left=0.07, right=0.97, top=0.92, bottom=0.08)
+
+PANEL_FG = "#c8c8e8"
+MUTED    = "#7070a0"
+
+profile_quantities = [
+    # (array,      ylabel,                              log-y?, panel-index)
+    (sigma_r_ts, r"$\sigma_r$ [km s$^{-1}$]",          False, 0),
+    (sigma_t_ts, r"$\sigma_t$ [km s$^{-1}$]",          False, 1),
+    (vrot_ts,    r"$v_\phi$ [km s$^{-1}$]",            False, 2),
+    (j_ts,       r"$j$ [kpc km s$^{-1}$]",             True,  3),
+    (vesc_ts,    r"$v_\mathrm{esc}$ [km s$^{-1}$]",    False, 4),
+    (beta_ts,    r"$\beta$ (anisotropy)",               False, 5),
+]
+
+for arr, ylabel, log_y, pidx in profile_quantities:
+    row, col = divmod(pidx, 3)
+    ax = fig3.add_subplot(gs3[row, col])
+    ax.set_xscale("log")
+    if log_y:
+        ax.set_yscale("log")
+
+    for k_idx, color, label in zip(profile_snap_indices, profile_colors, profile_labels):
+        y = arr[k_idx, :]
+        # Mask out NaN and (for log plots) non-positive values.
+        valid = np.isfinite(y)
+        if log_y:
+            valid &= y > 0
+        if valid.any():
+            ax.plot(r_mid[valid], y[valid], color=color, lw=1.5, label=label)
+
+    # Reference lines for β = 0 (isotropy) panel.
+    if "beta" in ylabel.lower() or "anisotropy" in ylabel.lower():
+        ax.axhline(0, color=MUTED, lw=0.8, ls="--", alpha=0.7)
+        ax.set_ylim(-1.5, 1.1)
+
+    ax.set_xlabel("r [kpc]", fontsize=9, color=PANEL_FG)
+    ax.set_ylabel(ylabel,    fontsize=9, color=PANEL_FG)
+    ax.set_xlim(R_BINS[0], R_BINS[-1])
+    ax.legend(fontsize=7)
+
+fig3.suptitle("Kinematic Profiles at Selected Epochs", fontsize=13, color=PANEL_FG)
+fig3.savefig(
+    os.path.join(OUT_DIR, "kinematics_profiles_grid.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig3.get_facecolor(),
+)
+plt.close(fig3)
+print("  Saved: kinematics_profiles_grid.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 10 — FIGURE 4: ANGULAR MOMENTUM TIME EVOLUTION                   ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: Track the global and inner-halo specific angular momentum over time.
+# Angular momentum should be approximately conserved in an isolated system;
+# deviations indicate tidal torques and angular momentum exchange between the
+# two galaxies during the merger.
+
+print("[Plot 4] Angular momentum evolution …")
+
+fig4, ax4 = plt.subplots(figsize=(10, 5), facecolor="#0d0d18")
+ax4.set_facecolor("#0d0d18")
+
+# Global (all-particle) j.
+ax4.plot(t_axis, j_glob_arr, color="#00d4aa", lw=2.0,
+         label=r"Global $\langle j \rangle$")
+
+# Inner-halo (r ≤ 30 kpc) j.
+ax4.plot(t_axis, j_inner, color="#ff9944", lw=2.0, ls="--",
+         label=fr"Inner ($r \leq {INNER_RADIUS_KPC:.0f}$ kpc)")
+
+ax4.set_xlabel(time_label, fontsize=10)
+ax4.set_ylabel(r"Specific ang. momentum [kpc km s$^{-1}$]", fontsize=10)
+ax4.set_title("Mass-weighted Specific Angular Momentum", fontsize=11)
+ax4.legend()
+
+fig4.savefig(
+    os.path.join(OUT_DIR, "kinematics_angular_momentum.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig4.get_facecolor(),
+)
+plt.close(fig4)
+print("  Saved: kinematics_angular_momentum.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 11 — FIGURE 5: ESCAPE VELOCITY PROFILES AT KEY EPOCHS            ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: Show how the gravitational potential well (traced by v_esc) evolves
+# through the merger.  As the two halos coalesce, the central v_esc should
+# increase, reflecting a deeper combined potential.
+
+print("[Plot 5] Escape velocity profiles …")
+
+fig5, ax5 = plt.subplots(figsize=(9, 6), facecolor="#0d0d18")
+ax5.set_facecolor("#0d0d18")
+ax5.set_xscale("log")
+
+for k_idx, color, label in zip(profile_snap_indices, profile_colors, profile_labels):
+    y = vesc_ts[k_idx, :]
+    valid = np.isfinite(y) & (y > 0)
+    if valid.any():
+        ax5.plot(r_mid[valid], y[valid], color=color, lw=2.0, label=label)
+
+# Reference: MW escape speed at the solar circle (~550 km/s at 8 kpc)
+ax5.axhline(550, color="#ffffff", lw=0.8, ls=":", alpha=0.5,
+            label=r"MW $v_{\rm esc}$ at 8 kpc ≈ 550 km/s")
+
+ax5.set_xlabel("r [kpc]", fontsize=10)
+ax5.set_ylabel(r"$v_{\rm esc}(r)$ [km s$^{-1}$]", fontsize=10)
+ax5.set_title(r"Escape Speed Profiles  $v_{\rm esc}(r) = \sqrt{2GM(<r)/r}$",
+              fontsize=11)
+ax5.set_xlim(R_BINS[0], R_BINS[-1])
+ax5.legend()
+
+fig5.savefig(
+    os.path.join(OUT_DIR, "kinematics_escape_velocity.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig5.get_facecolor(),
+)
+plt.close(fig5)
+print("  Saved: kinematics_escape_velocity.png")
+
