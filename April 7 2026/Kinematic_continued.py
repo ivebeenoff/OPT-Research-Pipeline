@@ -985,3 +985,400 @@ fig5.savefig(
 plt.close(fig5)
 print("  Saved: kinematics_escape_velocity.png")
 
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 12 — FIGURE 6: β(r) PROFILES AT KEY MERGER STAGES               ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose: β(r) is the single most diagnostic kinematic quantity for
+# distinguishing merger stage.  Early on both halos are isotropic at their
+# centres and slightly radial at large r.  At first pericentre, tidally heated
+# particles dominate, pushing β → +1.  Post-merger violent relaxation drives
+# β back toward 0.  This figure overlays profiles at all five key epochs.
+
+print("[Plot 6] β(r) profiles …")
+
+fig6, ax6 = plt.subplots(figsize=(9, 6), facecolor="#0d0d18")
+ax6.set_facecolor("#0d0d18")
+ax6.set_xscale("log")
+
+for k_idx, color, label in zip(profile_snap_indices, profile_colors, profile_labels):
+    y = beta_ts[k_idx, :]
+    valid = np.isfinite(y)
+    if valid.any():
+        ax6.plot(r_mid[valid], y[valid], color=color, lw=2.0, label=label)
+        ax6.fill_between(r_mid[valid], 0, y[valid],
+                         alpha=0.08, color=color)
+
+# Isotropic reference line.
+ax6.axhline(0, color="#555577", lw=1.0, ls="--")
+ax6.text(R_BINS[0] * 1.1, 0.04, "isotropic", color="#9090b0", fontsize=8)
+
+# Purely radial reference.
+ax6.axhline(1, color="#8855aa", lw=0.7, ls=":", alpha=0.6)
+ax6.text(R_BINS[0] * 1.1, 1.04, "radial (β=1)", color="#8855aa", fontsize=7)
+
+ax6.set_xlim(R_BINS[0], R_BINS[-1])
+ax6.set_ylim(-1.6, 1.2)
+ax6.set_xlabel("r [kpc]", fontsize=10)
+ax6.set_ylabel(r"$\beta(r)$", fontsize=10)
+ax6.set_title(r"Velocity Anisotropy Profiles  $\beta = 1 - \sigma_t^2 / 2\sigma_r^2$",
+              fontsize=11)
+ax6.legend()
+
+fig6.savefig(
+    os.path.join(OUT_DIR, "kinematics_beta_selected.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig6.get_facecolor(),
+)
+plt.close(fig6)
+print("  Saved: kinematics_beta_selected.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 13 — CLEANUP AND SUMMARY                                          ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# Remove the temporary directory containing extracted snapshot files.
+# This can be several GB; don't skip this step on a shared filesystem.
+shutil.rmtree(tmpdir, ignore_errors=True)
+print(f"\n[cleanup] Removed temporary directory: {tmpdir}")
+
+# ── Final summary ─────────────────────────────────────────────────────────────
+print("\n" + "=" * 70)
+print("  OUTPUT FILES")
+print("=" * 70)
+for fn in sorted(os.listdir(OUT_DIR)):
+    fp   = os.path.join(OUT_DIR, fn)
+    size = os.path.getsize(fp) / 1e6
+    print(f"  {fn:<45} {size:6.2f} MB")
+print("=" * 70)
+print("\n[DONE] Pipeline complete.")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 14 — CIRCULAR VELOCITY  v_c(r, t)                                ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Purpose
+# -------
+# The circular velocity v_c(r) = sqrt(G M_enc(r) / r) is the speed a test
+# particle needs to maintain a stable circular orbit at radius r.  It is the
+# standard observable used to construct galaxy rotation curves from 21-cm HI
+# or CO emission-line data, so computing it here ties the simulation directly
+# to observational diagnostics.
+#
+# Comparison with v_esc
+# ----------------------
+# v_esc(r) = sqrt(2 G M_enc / r) = sqrt(2) * v_c(r) in the point-mass
+# approximation.  Both are computed from the same M_enc array, so the ratio
+# should hover near sqrt(2) ≈ 1.41 everywhere; deviations signal that the
+# extended mass distribution (ignored by the point-mass formula) is significant.
+#
+# Flat-rotation-curve benchmark
+# ------------------------------
+# For an isolated NFW halo or an isothermal sphere, v_c is nearly flat over a
+# wide range of radii.  During the merger the peak and shape of v_c(r) will
+# change dramatically — tracking this documents how the gravitational potential
+# is restructured by the coalescence.
+
+print("\n" + "="*70)
+print("  SECTION 14 · Circular Velocity v_c(r, t)")
+print("="*70)
+
+# ── 14.1  Compute v_c from the already-stored M_enc array ─────────────────────
+# menc_ts has shape (ns, nb); r_mid has shape (nb,).
+# Broadcasting divides each row of menc_ts element-wise by r_mid.
+# Guard against r_mid = 0 (should not occur given R_BINS starts at 0.1 kpc).
+
+with np.errstate(divide="ignore", invalid="ignore"):
+    vc_ts = np.where(
+        (menc_ts > 0) & (r_mid > 0),
+        np.sqrt(G_KPC_KMS2_MSUN * menc_ts / r_mid),   # [km/s]
+        np.nan,
+    )   # shape (ns, nb)
+
+print(f"  v_c array shape: {vc_ts.shape}  (snapshots × bins)")
+
+# ── 14.2  Figure: v_c(r) profiles at five key epochs ─────────────────────────
+# Overlay all five representative snapshots on one axes, with v_esc for
+# comparison on a twin y-axis (same r-axis, different vertical scale).
+# Because v_esc = sqrt(2) v_c, the two families of curves should be parallel
+# in log-space; any departure is physically meaningful.
+
+fig14, ax14 = plt.subplots(figsize=(9, 6), facecolor="#0d0d18")
+ax14.set_facecolor("#0d0d18")
+ax14.set_xscale("log")
+
+for k_idx, color, label in zip(profile_snap_indices, profile_colors, profile_labels):
+    vc_snap  = vc_ts [k_idx, :]
+    esc_snap = vesc_ts[k_idx, :]
+
+    valid_vc  = np.isfinite(vc_snap)  & (vc_snap  > 0)
+    valid_esc = np.isfinite(esc_snap) & (esc_snap > 0)
+
+    # Solid line = circular velocity.
+    if valid_vc.any():
+        ax14.plot(r_mid[valid_vc], vc_snap[valid_vc],
+                  color=color, lw=2.0, ls="-", label=f"{label} $v_c$")
+
+    # Dashed line = escape speed (same colour, dashed).
+    if valid_esc.any():
+        ax14.plot(r_mid[valid_esc], esc_snap[valid_esc],
+                  color=color, lw=1.2, ls="--", alpha=0.55)
+
+# Annotate the sqrt(2) relationship between the two line families.
+ax14.text(
+    0.98, 0.96,
+    r"Dashed = $v_{\rm esc} = \sqrt{2}\,v_c$  (point-mass approx.)",
+    transform=ax14.transAxes, ha="right", va="top",
+    fontsize=7, color="#8888aa",
+)
+
+# Reference: MW circular speed at the solar circle (IAU 2012 value).
+ax14.axhline(238.0, color="#ffcc44", lw=0.9, ls=":", alpha=0.7,
+             label=r"MW $v_c(R_\odot) \approx 238$ km/s")
+
+ax14.set_xlim(R_BINS[0], R_BINS[-1])
+ax14.set_ylim(0, 500)
+ax14.set_xlabel("r [kpc]", fontsize=10)
+ax14.set_ylabel(r"$v_c(r)$ [km s$^{-1}$]", fontsize=10)
+ax14.set_title(
+    r"Circular Velocity Profiles  $v_c(r) = \sqrt{G M(<r)/r}$",
+    fontsize=11,
+)
+ax14.legend(ncol=2, fontsize=7)
+
+fig14.savefig(
+    os.path.join(OUT_DIR, "kinematics_circular_velocity.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig14.get_facecolor(),
+)
+plt.close(fig14)
+print("  Saved: kinematics_circular_velocity.png")
+
+# ── 14.3  Figure: v_c peak and location over time ─────────────────────────────
+# Track two scalar quantities per snapshot:
+#   • v_c_peak : maximum circular speed (proxy for total halo mass / depth)
+#   • r_peak   : radius at which v_c peaks (proxy for scale radius)
+# Both should change significantly through the merger.
+
+vc_peak_arr = np.full(ns, np.nan)
+r_peak_arr  = np.full(ns, np.nan)
+
+for i in range(ns):
+    row = vc_ts[i, :]
+    finite = np.isfinite(row)
+    if finite.sum() > 2:
+        idx_peak        = np.nanargmax(row)
+        vc_peak_arr[i]  = row[idx_peak]
+        r_peak_arr[i]   = r_mid[idx_peak]
+
+fig14b, (axA, axB) = plt.subplots(2, 1, figsize=(10, 7),
+                                   sharex=True, facecolor="#0d0d18",
+                                   gridspec_kw={"hspace": 0.08})
+for ax in (axA, axB):
+    ax.set_facecolor("#0d0d18")
+
+axA.plot(t_axis, vc_peak_arr, color="#f5c842", lw=1.8,
+         label=r"$v_{c,\,\rm peak}$")
+axA.set_ylabel(r"Peak $v_c$ [km s$^{-1}$]", fontsize=10)
+axA.legend()
+
+axB.plot(t_axis, r_peak_arr, color="#4a8fff", lw=1.8,
+         label=r"$r(v_{c,\,\rm peak})$")
+axB.set_yscale("log")
+axB.set_ylabel(r"Radius of peak $v_c$ [kpc]", fontsize=10)
+axB.set_xlabel(time_label, fontsize=10)
+axB.legend()
+
+fig14b.suptitle("Circular Velocity Peak Evolution", fontsize=11)
+fig14b.savefig(
+    os.path.join(OUT_DIR, "kinematics_vc_peak_evolution.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig14b.get_facecolor(),
+)
+plt.close(fig14b)
+print("  Saved: kinematics_vc_peak_evolution.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 15 — JEANS EQUATION EQUILIBRIUM CHECK                            ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Physical background
+# -------------------
+# The spherically symmetric, time-independent Jeans equation is:
+#
+#   d(ν σ_r²) / dr  +  (2 β / r) ν σ_r²  =  −ν d Φ / dr
+#
+# where ν(r) is the tracer number density, σ_r(r) the radial velocity
+# dispersion, β(r) the anisotropy, and dΦ/dr = G M_enc(r) / r² the
+# gravitational acceleration.
+#
+# Rearranging, the Jeans-predicted velocity dispersion at each bin is:
+#
+#   σ_r²|_Jeans(r)  =  (1/ν(r)) ∫_r^∞ ν(r') (G M_enc(r') / r'²) exp(...) dr'
+#
+# This integral form (Mamon & Łokas 2005) is exact for any β(r) but requires
+# an analytic or numerical integration to infinity.  Here we use a simpler
+# *local* Jeans test: at every bin we check whether the measured σ_r² is
+# consistent with hydrostatic balance given the local gravitational
+# acceleration and density gradient.  Specifically, we compute the
+# Jeans residual:
+#
+#   Δ_Jeans(r) = (d(ν σ_r²)/dr + 2β ν σ_r² / r) / (ν G M_enc / r²)
+#
+# In equilibrium Δ ≈ −1.  Departures signal either:
+#   Δ > −1  →  insufficient pressure support (in-fall, post-pericentre)
+#   Δ < −1  →  excess pressure (kinematically heated, expansion phase)
+#
+# Implementation note
+# --------------------
+# We use the number density proxy ν(r) ∝ N_particles(r) / (4π r² Δr)
+# (unweighted count per shell volume), which is sufficient for the
+# equilibrium *ratio* because ν cancels in Δ_Jeans.
+
+print("\n" + "="*70)
+print("  SECTION 15 · Jeans Equation Equilibrium Check")
+print("="*70)
+
+def compute_jeans_residual(sigma_r_prof, beta_prof, menc_prof, r_bins):
+    """
+    Compute the local Jeans equilibrium residual Δ_Jeans(r) for one snapshot.
+
+    Parameters
+    ----------
+    sigma_r_prof : (nb,) ndarray  — radial velocity dispersion per bin [km/s]
+    beta_prof    : (nb,) ndarray  — velocity anisotropy β per bin
+    menc_prof    : (nb,) ndarray  — enclosed mass at bin outer edge [M_sun]
+    r_bins       : (nb+1,) ndarray — bin edges [kpc]
+
+    Returns
+    -------
+    (nb,) ndarray
+        Δ_Jeans at each bin centre.  NaN where inputs are invalid.
+
+    Notes
+    -----
+    Numerical derivatives are computed with np.gradient, which uses
+    second-order central differences in the interior and first-order
+    one-sided differences at the boundaries.  The logarithmic bin spacing
+    means the finite-difference step Δr varies; np.gradient accepts the
+    non-uniform coordinate array and handles this correctly.
+    """
+    nb    = len(r_bins) - 1
+    r_mid_loc = 0.5 * (r_bins[:-1] + r_bins[1:])   # bin centres [kpc]
+
+    # Pressure proxy: P(r) = σ_r²(r)  (ν cancels in the ratio)
+    P = sigma_r_prof**2   # (nb,)  [km/s]²
+
+    # Numerical derivative dP/dr using the actual (non-uniform) radial grid.
+    # np.gradient handles non-uniform spacing via the edge_order=1 scheme.
+    dP_dr = np.gradient(P, r_mid_loc)   # (nb,)  [km/s]² / kpc
+
+    # Local gravitational acceleration: g(r) = G M_enc / r²
+    # Use M_enc at the bin outer edge as the best available estimate.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        g = np.where(
+            (menc_prof > 0) & (r_mid_loc > 0),
+            G_KPC_KMS2_MSUN * menc_prof / r_mid_loc**2,
+            np.nan,
+        )   # [km/s]² / kpc   (same composite unit as dP/dr)
+
+    # Anisotropy term: 2 β σ_r² / r
+    with np.errstate(invalid="ignore"):
+        aniso_term = np.where(
+            r_mid_loc > 0,
+            2.0 * beta_prof * P / r_mid_loc,
+            np.nan,
+        )
+
+    # Jeans residual:  Δ = (dP/dr + aniso_term) / (−g)
+    # In equilibrium the numerator equals −g, so Δ = 1.0 (we define it without
+    # the leading minus to avoid sign confusion in the plot).
+    with np.errstate(invalid="ignore", divide="ignore"):
+        delta = np.where(
+            np.isfinite(g) & (g != 0),
+            (dP_dr + aniso_term) / (-g),
+            np.nan,
+        )
+
+    return delta
+
+
+# ── 15.1  Compute Jeans residual at five key epochs ───────────────────────────
+jeans_residuals = {}
+for k_idx, label in zip(profile_snap_indices, profile_labels):
+    jeans_residuals[label] = compute_jeans_residual(
+        sigma_r_ts[k_idx, :],
+        beta_ts   [k_idx, :],
+        menc_ts   [k_idx, :],
+        R_BINS,
+    )
+
+# ── 15.2  Figure: Jeans residual profiles ─────────────────────────────────────
+fig15, ax15 = plt.subplots(figsize=(9, 6), facecolor="#0d0d18")
+ax15.set_facecolor("#0d0d18")
+ax15.set_xscale("log")
+
+for (label, delta), color in zip(jeans_residuals.items(), profile_colors):
+    valid = np.isfinite(delta)
+    if valid.any():
+        ax15.plot(r_mid[valid], delta[valid], color=color, lw=2.0, label=label)
+
+# Equilibrium reference line at Δ = 1.
+ax15.axhline(1.0, color="#ffffff", lw=1.0, ls="--", alpha=0.5,
+             label="equilibrium (Δ = 1)")
+
+# Shade the ±20% equilibrium band.
+ax15.axhspan(0.8, 1.2, alpha=0.06, color="#ffffff",
+             label="±20% equilibrium band")
+
+ax15.set_xlim(R_BINS[0], R_BINS[-1])
+ax15.set_ylim(-1.0, 3.0)
+ax15.set_xlabel("r [kpc]", fontsize=10)
+ax15.set_ylabel(r"Jeans residual $\Delta_{\rm Jeans}(r)$", fontsize=10)
+ax15.set_title(
+    r"Jeans Equilibrium Check  "
+    r"$\Delta = (d\sigma_r^2/dr + 2\beta\sigma_r^2/r)\,/\,(-GM/r^2)$",
+    fontsize=10,
+)
+ax15.legend(fontsize=8)
+
+fig15.savefig(
+    os.path.join(OUT_DIR, "kinematics_jeans_residual.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig15.get_facecolor(),
+)
+plt.close(fig15)
+print("  Saved: kinematics_jeans_residual.png")
+
+# ── 15.3  Global Jeans equilibrium score over time ────────────────────────────
+# Summarise the per-snapshot equilibrium state with one number:
+#   mean |Δ − 1| averaged over the inner 100 kpc.
+# A value near 0 means the inner halo is in Jeans equilibrium; values >> 0
+# mark pericentre passages and the post-merger violent relaxation phase.
+
+inner100_mask = r_mid <= 100.0
+jeans_score   = np.full(ns, np.nan)
+
+for i in range(ns):
+    delta_i = compute_jeans_residual(
+        sigma_r_ts[i, :], beta_ts[i, :], menc_ts[i, :], R_BINS,
+    )
+    valid_inner = inner100_mask & np.isfinite(delta_i)
+    if valid_inner.sum() > 2:
+        jeans_score[i] = np.nanmean(np.abs(delta_i[valid_inner] - 1.0))
+
+fig15b, ax15b = plt.subplots(figsize=(10, 4), facecolor="#0d0d18")
+ax15b.set_facecolor("#0d0d18")
+ax15b.plot(t_axis, jeans_score, color="#e8673a", lw=1.8,
+           label=r"$\langle |\Delta-1| \rangle_{r<100\,{\rm kpc}}$")
+ax15b.axhline(0.2, color="#ffffff", lw=0.8, ls="--", alpha=0.4,
+              label="20% departure threshold")
+ax15b.set_xlabel(time_label, fontsize=10)
+ax15b.set_ylabel("Jeans disequilibrium score", fontsize=10)
+ax15b.set_title("Inner-halo Jeans Equilibrium Score Over Time", fontsize=11)
+ax15b.legend()
+fig15b.savefig(
+    os.path.join(OUT_DIR, "kinematics_jeans_score.png"),
+    dpi=300, bbox_inches="tight", facecolor=fig15b.get_facecolor(),
+)
+plt.close(fig15b)
+print("  Saved: kinematics_jeans_score.png")
