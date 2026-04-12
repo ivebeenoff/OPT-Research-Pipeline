@@ -1,1 +1,94 @@
+Logbook Entry — Section 15–20 Implementation (Galaxy Merger Kinematics Analysis)  
+Date: April 11, 2026  
+Hours Worked: 8 hours  
 
+---
+
+Objective:  
+Extend the kinematic analysis pipeline for the MW–M31 merger simulation by implementing equilibrium diagnostics, stream identification, galaxy separation analysis, animation tools, and structural fitting via NFW profiles.
+
+---
+
+Work Completed:
+
+1. Jeans Equilibrium Analysis (Section 15)  
+- Implemented a local form of the Jeans equation to assess dynamical equilibrium across radial bins.  
+- Defined and computed the Jeans residual:  
+  Δ(r) = (d(σ_r²)/dr + 2βσ_r²/r) / (−GM/r²)  
+- Generated radial profiles at key epochs and visualized deviations from equilibrium.  
+- Introduced a global “Jeans score” (⟨|Δ−1|⟩ within 100 kpc) to quantify time-dependent disequilibrium.  
+- Identified signatures of pericentre passages and relaxation phases.
+
+---
+
+2. Tidal Stream Identification (Section 16)  
+- Developed a kinematic proxy for stream detection using:  
+  - High anisotropy (β > 0.5)  
+  - High specific angular momentum (top 25%)  
+- Constructed a time–radius heatmap of stream activity.  
+- Produced diagnostics:  
+  - Stream fraction heatmap  
+  - Time-averaged radial profile  
+  - Stream-active bin count vs time  
+- Enabled identification of tidal stripping phases and outer halo structure formation.
+
+---
+
+3. Separate MW and M31 Kinematic Profiles (Section 17)  
+- Recomputed σ_r and σ_t profiles independently for MW and M31 using subsampled snapshots.  
+- Implemented consistent COM frame for joint analysis.  
+- Defined a kinematic mixing score using overlap integrals:  
+  Mixing = ∫min(σ_r,MW, σ_r,M31) / ∫max(σ_r,MW, σ_r,M31)  
+- Generated:  
+  - Comparative σ_r profiles (early vs late stages)  
+  - Mixing score evolution over time  
+- Observed transition from distinct kinematic identities to merged halo behavior.
+
+---
+
+4. Kinematic Animations (Section 18)  
+- Built two animation pipelines:  
+  1. Four-panel evolution (σ_r, σ_t, β, v_c)  
+  2. Progressive β heatmap reveal  
+- Optimized performance via temporal subsampling (ANIM_STEP).  
+- Exported MP4 visualizations for dynamic interpretation of merger evolution.
+
+---
+
+5. NFW Profile Fitting (Section 19)  
+- Implemented NFW enclosed mass model and nonlinear fitting routine.  
+- Extracted structural parameters per snapshot:  
+  - Scale radius (r_s)  
+  - Characteristic density (ρ_s)  
+  - Virial mass (M_200)  
+  - Concentration (c_200)  
+- Computed reduced χ² to evaluate fit quality.  
+- Produced time evolution plots and overlay comparisons (data vs fit).  
+- Observed deviations during merger phases and recovery post-relaxation.
+
+---
+
+6. Output Management (Section 20)  
+- Automated final output manifest including file sizes and types.  
+- Verified successful execution and completeness of all generated artifacts.
+
+---
+
+Key Insights:  
+- The system exhibits strong departures from equilibrium during close encounters, captured clearly by the Jeans residual and score.  
+- Tidal streams are most prominent at large radii and during dynamically active phases.  
+- Kinematic mixing progresses steadily, with overlap scores approaching unity post-merger.  
+- NFW fits degrade during violent phases but recover as the system relaxes, validating expected structural evolution.
+
+---
+
+Next Steps:  
+- Incorporate particle tracking for definitive stream identification.  
+- Extend analysis to phase-space distributions (f(E, L)).  
+- Compare against cosmological simulation benchmarks.  
+- Investigate angular momentum redistribution in greater detail.
+
+---
+
+Status:  
+All sections successfully implemented and executed. Outputs generated and validated.
