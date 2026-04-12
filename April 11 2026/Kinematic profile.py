@@ -3,8 +3,6 @@
 # MW–M31 MERGER KINEMATIC PROFILES PIPELINE
 
 Author  : Abhinav Vatsa
-Date    : March 2026
-Runtime : ~6–8 hours on a standard workstation (CPU-only)
 
 ## Overview
 
