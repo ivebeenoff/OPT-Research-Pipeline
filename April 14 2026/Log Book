@@ -1,1 +1,9 @@
-
+Hours Worked: 13 hours
+	•	Extended existing MW–M31 simulation pipeline to include full multi-epoch 2D surface density analysis (Σ(x,y)) for total, MW-only, and M31-only components using log-scaled projections and Gaussian smoothing.
+	•	Generated multi-epoch visualizations capturing morphological evolution of the merger across core and tidal halo regimes.
+	•	Implemented radial density comparison framework (ρ_MW vs. ρ_M31) and derived mass-mixing fraction f_mix(r,t) to quantify halo interpenetration and mixing front evolution.
+	•	Developed residual analysis module comparing simulated density profiles to analytic NFW model predictions, identifying spatial–temporal deviations linked to tidal disruption and merger progression.
+	•	Integrated analytic density profile fitting (NFW, Einasto, Hernquist) using log-space optimization, extracting time-dependent structural parameters (e.g., scale radius r_s, Einasto α).
+	•	Computed reduced χ² metrics for model comparison across epochs to evaluate structural evolution and best-fit halo behavior.
+	•	Produced publication-style multi-panel figures and animations summarizing density evolution, mixing dynamics, and model performance across ~800 snapshots.
+	•	Ensured consistency with existing kinematic pipeline outputs and maintained scalable processing across large simulation datasets.
