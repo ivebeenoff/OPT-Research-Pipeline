@@ -6,7 +6,6 @@ Some components were completed (but not fully implemented) on April 10th, the to
 Purpose
 Extension of the MW–M31 density analysis pipeline to include full multi-epoch structural diagnostics, 2D projections, mixing analysis, and analytic model fitting (NFW / Einasto / Hernquist). This builds on the existing kinematics and density framework to enable full morphological and structural interpretation of the merger evolution.
 
-print("[Extension] Density pipeline expansion ...")
 
 Work Summary
 - Extended 2D surface density pipeline Σ(x,y) for MW, M31, and total system
