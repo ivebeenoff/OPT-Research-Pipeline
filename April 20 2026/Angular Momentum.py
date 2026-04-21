@@ -3,8 +3,8 @@
 # SECTION 21 — ANGULAR MOMENTUM TRANSPORT & PHASE-SPACE DIAGNOSTICS
 
 Author  : Abhinav Vatsa
-Date    : March 2026
-Runtime : ~10 hours on a standard workstation (CPU-only)
+Date    : April 20th 2026
+
 
 Continuation of density_pipeline.py.  All globals (SNAPSHOTS, ns, R_BINS,
 nb_sph, r_mid_sph, OUT_DIR, MASS_UNIT_MSUN, MIN_PART_SHELL, PROFILE_INDICES,
