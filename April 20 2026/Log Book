@@ -1,1 +1,82 @@
+WORK LOG ENTRY
 
+Name: Abhinav Vatsa
+Date: April 20, 2026
+Duration: 10 hours
+Project: Galaxy Merger Angular Momentum & Phase-Space Diagnostics (Section 21)
+
+SUMMARY OF WORK COMPLETED:
+Today I implemented and extended Section 21 of a galaxy merger simulation pipeline focused on angular momentum transport, orbital structure, and phase-space evolution in MW–M31 style N-body systems.
+
+The work builds on the existing density and kinematics framework and introduces a full suite of angular momentum diagnostics across time and radius.
+
+KEY IMPLEMENTATIONS:
+
+1. Angular Momentum Computation Framework
+- Computed per-particle angular momentum using r × v
+- Extracted:
+  - Total angular momentum magnitude |j|
+  - z-component j_z (disk rotation axis)
+  - In-plane component j_perp
+- Established decomposition of rotational vs non-planar orbital structure
+
+2. Radial Profiling System
+- Implemented mass-weighted binning over radial shells
+- Computed:
+  - j(r, t)
+  - j_z(r, t)
+  - j_perp(r, t)
+  - Angular momentum dispersion σ_j(r, t)
+- Ensured statistical robustness with particle-count thresholds per shell
+
+3. Angular Momentum Transport Diagnostics
+- Implemented flux proxy ⟨j v_r⟩ to track angular momentum transport
+- Constructed cumulative enclosed angular momentum L(<r, t)
+- Derived scalar time series for inner and outer halo angular momentum evolution
+
+4. Orbital Structure Analysis
+- Computed circular velocity profile v_c(r)
+- Derived orbital circularity:
+  ε = j_z / j_c(r)
+- Tracked prograde vs retrograde orbital populations over time
+
+5. Phase-Space Diagnostics
+- Built 2D (r, j) histograms for phase-space structure
+- Computed Shannon entropy S(t) as a measure of mixing
+- Estimated mixing length λ_mix from angular momentum autocorrelation
+
+6. Temporal Evolution
+- Computed time derivatives:
+  - ∂j/∂t (angular momentum transport rate)
+  - ∂L/∂t (enclosed angular momentum evolution)
+- Quantified global transport intensity over time
+
+OUTPUTS GENERATED:
+
+Figures:
+- j(r,t) heatmap
+- ⟨j v_r⟩(r,t) flux heatmap
+- Flux profiles at key epochs
+- L(<r) enclosed angular momentum profiles
+- Inner vs outer j evolution
+- Component profiles (j_z, j_perp, ε)
+- j_z(r,t) heatmap
+- Circularity ε(r,t) heatmap
+- Circularity distribution plots
+- Phase-space entropy evolution
+- Mixing length evolution
+- Phase-space (r, j) snapshots
+- Angular momentum budget summary table
+- Master 6-panel summary figure
+
+Animations:
+- j(r) evolution with ghost-history visualization
+- Phase-space density evolution in (r, j)
+
+RESULT:
+Completed full Section 21 pipeline for angular momentum transport and phase-space diagnostics, enabling detailed analysis of:
+
+- Disk disruption and angular momentum stripping
+- Radial transport of orbital angular momentum
+- Phase-space mixing and entropy evolution
+- Virialization and structural relaxation of merger remnants
