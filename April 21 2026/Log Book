@@ -1,1 +1,85 @@
+LAB / COMPUTATIONAL LOGBOOK ENTRY
 
+Hours Worked: 11 hours 
+Name    : Abhinav Vatsa
+Date    : April 21, 2026
+Project : MW–M31 Merger Simulation Analysis
+Section : 22 — Tidal Field & Stripping Diagnostics
+──────────────────────────────────────────────────────────────────────────────
+
+OBJECTIVE
+Develop and execute a comprehensive tidal diagnostics framework for the
+Milky Way–Andromeda merger simulation, extending prior density and angular
+momentum analysis into full tidal field, stripping, and morphological
+deformation characterization.
+
+──────────────────────────────────────────────────────────────────────────────
+
+WORK COMPLETED
+
+- Implemented full Section 22 tidal diagnostic pipeline:
+  • Jacobi tidal radius evolution r_t(t)
+  • Bound vs unbound energy-based classification
+  • Mass stripping rate computation (dM_bound/dt)
+  • Radial density separation: ρ_bound(r,t), ρ_unbound(r,t)
+
+- Constructed multi-layer tidal response diagnostics:
+  • Tidal heating ΔE_kin(r,t) from finite differences
+  • Tidal tensor T_ij at MW–M31 midpoint
+  • Eigenvalue evolution (λ1, λ2, λ3)
+  • Tidal anisotropy measure
+
+- Performed morphological structure analysis:
+  • Inertia tensor computation across global and radial apertures
+  • Axis ratios (b/a, c/a) evolution vs time and radius
+  • Quantified progressive tidal elongation and deformation
+
+- Built stream formation diagnostics:
+  • (r, v_r) phase-space separation of bound/unbound particles
+  • 2D projected stream maps (x–y)
+  • Unbound fraction heatmaps f_unbound(r,t)
+
+- Generated full visualization suite (10 figures):
+  • Separation & tidal radius evolution
+  • Bound mass fraction evolution
+  • Stripping rate time series
+  • Bound/unbound density profiles
+  • Unbound fraction heatmaps
+  • Tidal heating maps & profiles
+  • Tidal tensor eigenvalues & anisotropy
+  • Phase-space structure plots
+  • Stream morphology maps
+
+──────────────────────────────────────────────────────────────────────────────
+
+PHYSICAL SUMMARY
+
+- Tidal radius decreases monotonically with orbital approach, consistent with
+  strengthening external tidal field during MW–M31 infall.
+- Stripping is episodic and strongly peaked at pericentre passages.
+- Mass loss is inside-out: outer halo layers become unbound first.
+- Tidal heating is impulsive and radially structured, strongest in outer halo.
+- Tidal tensor anisotropy peaks during closest approach, indicating highly
+  directional gravitational distortion.
+- Unbound particles form coherent tidal streams in both configuration and
+  phase space, consistent with classical merger dynamics.
+
+──────────────────────────────────────────────────────────────────────────────
+
+TECHNICAL NOTES
+
+- Enclosed-mass potential approximation introduces smoothing assumptions.
+- Tidal tensor computation is computationally expensive and noise-sensitive.
+- COM-frame velocity subtraction may degrade during late-stage merger overlap.
+- Time axis assumes uniform snapshot spacing; should be explicitly verified.
+
+──────────────────────────────────────────────────────────────────────────────
+
+STATUS
+
+✔ Full Section 22 pipeline implemented and executed
+✔ Diagnostic outputs successfully generated
+✔ Framework ready for refinement into higher-accuracy dynamical modeling
+
+──────────────────────────────────────────────────────────────────────────────
+END OF ENTRY
