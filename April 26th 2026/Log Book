@@ -1,1 +1,79 @@
+LOG BOOK ENTRY — SECTION 23: DARK MATTER SUBSTRUCTURE
 
+Hours Worked: 7 hours
+Date: April 26, 2026
+Author: Abhinav Vatsa
+
+--------------------------------------------
+OBJECTIVE
+--------------------------------------------
+Analyze dark matter substructure in the MW–M31 merger simulation using a Friends-of-Friends (FoF) clustering algorithm to identify, track, and quantify subhalos over time.
+
+--------------------------------------------
+WORK COMPLETED
+--------------------------------------------
+
+1. IMPLEMENTED FOF SUBHALO FINDER
+- Built grid-accelerated Friends-of-Friends algorithm
+- Linking length: 2.0 kpc
+- Minimum group size: 30 particles
+- Used union-find structure with path compression for efficiency
+
+2. SUBHALO IDENTIFICATION
+- Extracted subhalo candidates across multiple snapshots
+- Filtered physically meaningful structures (10^8–10^12 M☉)
+- Excluded dominant main halo contamination
+
+3. PHYSICAL QUANTITIES COMPUTED
+For each subhalo:
+- Total mass
+- Center-of-mass position
+- Radial distance from system COM
+- Velocity dispersion (mass-weighted 3D)
+
+4. TEMPORAL EVOLUTION TRACKING
+- Tracked subhalo population across ~80 snapshots
+- Measured:
+  • Subhalo count vs time
+  • Total and mean subhalo mass
+  • Velocity dispersion evolution
+
+5. SUBHALO MASS FUNCTION (SHMF)
+- Constructed cumulative distribution N(>M)
+- Fitted power-law slope α(t)
+- Compared with CDM expectation α ≈ -1
+- Observed temporal deviations during merger phases
+
+6. RADIAL DISTRIBUTION ANALYSIS
+- Computed n_sub(r) profiles
+- Confirmed strong radial anti-bias
+- Outer halo retains higher subhalo survival fraction
+
+7. KINEMATIC ANALYSIS
+- Compared subhalo vs field velocity dispersion
+- Identified tidal heating effects
+- Quantified kinematic bias in subhalo population
+
+8. SPATIAL STRUCTURE VISUALIZATION
+- Generated 2D x–y subhalo maps
+- Marker size scaled with log mass
+- Tracked morphological evolution over time
+
+9. OUTPUT PRODUCTS GENERATED
+- SHMF evolution plots
+- Radial density profiles
+- Subhalo survival curves
+- Mass + velocity evolution plots
+- 2D maps across epochs
+- Full animation (mp4)
+- Summary diagnostic panel
+
+--------------------------------------------
+KEY RESULTS
+--------------------------------------------
+- Subhalo population declines during merger pericenter passages
+- Low-mass subhalos are preferentially disrupted
+- SHMF slope steepens temporarily from CDM expectation
+- Strong radial dependence confirms tidal stripping dominance
+- Outer halo preserves long-lived substructure
+- Evidence of kinematic heating in surviving subhalos
