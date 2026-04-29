@@ -1,1 +1,139 @@
+# LOG BOOK ENTRY — SECTION 25: STELLAR MASS & STAR FORMATION PROXIES
+
+Hours Worked: 7 hours
+
+Author  : Abhinav Vatsa
+
+-------------------------------------------------------------------------------
+
+Work Summary
+
+Implemented Section 25 of the MW–M31 analysis pipeline, focusing on deriving
+stellar mass and star-formation proxies from a purely collisionless N-body
+simulation. Since no gas physics or explicit star formation is present, this
+section constructs physically motivated *surrogate diagnostics* from dark
+matter structure, kinematics, and density fields.
+
+The goal is to reconstruct where star formation *would occur* in a full
+hydrodynamic counterpart simulation using density thresholds, dynamical
+instability criteria, and structural evolution of the merger remnant.
+
+-------------------------------------------------------------------------------
+
+Key Physics Implemented
+
+- High-density thresholding (ρ > ρ_SF):
+  Identifies star-formation–eligible regions using local volumetric density
+  as a proxy for Schmidt–Kennicutt star formation triggering.
+
+- Toomre stability analysis:
+  Computed Q(R,t) using surface density, radial velocity dispersion, and
+  epicyclic frequency approximation.
+  → Q < 1 identifies gravitational instability regions.
+
+- Sérsic profile fitting:
+  Fit Σ(R) at multiple epochs to track structural evolution of the remnant.
+  Extracted:
+    • Sérsic index n(t)
+    • Effective radius R_e(t)
+    • Fit quality χ²
+
+- Star-forming mass fraction:
+  Defined as fraction of inner mass (r < 30 kpc) exceeding density threshold.
+
+- Star-forming radius:
+  Radius enclosing 90% of SF-eligible mass, tracking spatial contraction/
+  expansion of active regions.
+
+- Cumulative SF proxy:
+  Time-integrated M_SF(t) used as a proxy for stellar mass assembly history.
+
+-------------------------------------------------------------------------------
+
+Tasks Completed
+
+- Computed 3D density, projected surface density Σ(R), and velocity dispersion
+  σ_R(R) for all snapshots.
+
+- Built full Toomre Q(R) profiles across time and generated Q(R,t) heatmap.
+
+- Performed Sérsic fitting at selected epochs using nonlinear optimization in
+  log-density space.
+
+- Derived star-forming mass fraction and radial extent per snapshot.
+
+- Constructed cumulative star formation proxy via time-integrated M_SF(t).
+
+- Generated 2D spatial maps of SF-eligible regions at key merger epochs.
+
+-------------------------------------------------------------------------------
+
+Outputs Generated
+
+- section25_sf_fraction.png
+  Star-forming fraction and radius evolution
+
+- section25_sf_density_map.png
+  2D spatial distribution of SF-eligible mass
+
+- section25_toomre_profile.png
+  Radial Toomre stability profiles
+
+- section25_toomre_heatmap.png
+  Full Q(R,t) stability evolution map
+
+- section25_sersic_fit.png
+  Sérsic profile fits at selected epochs
+
+- section25_sersic_params.png
+  Time evolution of Sérsic n and R_e
+
+- section25_sf_radius.png
+  Evolution of star-forming radius
+
+- section25_cumulative_sfr.png
+  Integrated stellar mass proxy over time
+
+- section25_summary_panel.png
+  Multi-panel synthesis of all diagnostics
+
+-------------------------------------------------------------------------------
+
+Key Results / Physical Interpretation
+
+- Star-forming fraction peaks strongly during merger-driven pericentre
+  passages, consistent with tidal compression triggering collapse.
+
+- Toomre Q shows clear episodic instability (Q < 1) aligned with orbital
+  encounters, indicating bursty star formation conditions.
+
+- Sérsic index increases over time toward n ≈ 4, consistent with transition
+  from disk-like to elliptical-like remnant structure.
+
+- Effective radius evolution shows progressive compaction of the merger
+  remnant.
+
+- Cumulative SF proxy exhibits accelerated growth during interaction phases,
+  consistent with starburst-like behavior.
+
+-------------------------------------------------------------------------------
+
+Technical Notes
+
+- Fully consistent with PTYPE-based particle pipeline (DM or disk proxy).
+- Sérsic fitting performed in log-space for numerical stability.
+- Q(R,t) computation uses flat rotation curve approximation for κ.
+- SF thresholds are phenomenological, calibrated for DM proxy behavior.
+- Handles missing snapshots and low-particle-count bins robustly.
+
+-------------------------------------------------------------------------------
+
+Next Steps
+
+- Cross-correlate SF bursts with pericentre timings from Section 24.
+- Compare structural evolution (Sérsic n, R_e) with orbital decay metrics.
+- Extend to gas physics or semi-analytic star formation prescriptions.
+- Quantify starburst efficiency per merger passage.
+
+-------------------------------------------------------------------------------
 
