@@ -1,1 +1,103 @@
+# LOG BOOK ENTRY — SECTION 24: MERGER TIMELINE & PERICENTRE DETECTION
+
+Hours Worked: 7 hours
+
+Author  : Abhinav Vatsa
+
+-------------------------------------------------------------------------------
+
+Work Summary
+
+Completed implementation of Section 24 of the MW–M31 merger analysis pipeline.
+This section is designed to construct the full orbital timeline of the system
+and identify key dynamical milestones such as pericentre passages, apocentres,
+coalescence, and virialisation.
+
+Note: The code has been fully written and structured but has NOT yet been run.
+All results described below refer to expected functionality, not verified output.
+
+-------------------------------------------------------------------------------
+
+Tasks Completed
+
+- Implemented centre-of-mass (COM) tracking for both galaxies across all
+  snapshots using existing pipeline utilities.
+
+- Computed time-dependent separation d(t) and relative velocity v_rel(t)
+  using finite-difference methods.
+
+- Applied Savitzky–Golay smoothing to separation data to enable stable
+  peak detection.
+
+- Developed automated detection logic for:
+  • Pericentre passages (local minima in separation)
+  • Apocentre passages (local maxima)
+  • Coalescence epoch (persistent threshold crossing)
+  • Virialisation epoch (based on Jeans disequilibrium threshold)
+
+- Built a structured event catalogue storing:
+  • Snapshot index
+  • Physical time
+  • Separation distance
+  • Relative velocity
+  • Event type and ordering
+
+- Implemented computation of dynamical quantities:
+  • Specific orbital energy E_orb
+  • Specific angular momentum L_orb
+
+- Designed and coded full visualization suite for diagnostic outputs.
+
+-------------------------------------------------------------------------------
+
+Planned Outputs (not yet generated)
+
+- section24_separation.png
+  Orbital separation with annotated merger events
+
+- section24_phase_diagram.png
+  Phase-space trajectory (d, |v_rel|)
+
+- section24_orbital_energy.png
+  Orbital energy and angular momentum evolution
+
+- section24_events_table.png
+  Event catalogue table figure
+
+- section24_timeline_banner.png
+  Horizontal merger timeline visualization
+
+- section24_summary_panel.png
+  Multi-panel summary figure
+
+-------------------------------------------------------------------------------
+
+Expected Physical Behavior (to be verified upon execution)
+
+- Multiple pericentre–apocentre cycles forming a decaying orbit
+- Inward spiral in phase space due to dynamical friction
+- Negative orbital energy indicating a bound system
+- Stepwise decrease in angular momentum at close passages
+- Clear identification of coalescence and late-time virialisation
+
+-------------------------------------------------------------------------------
+
+Technical Notes
+
+- Peak detection controlled via prominence thresholds to suppress noise
+- Robust handling of missing or invalid snapshot data included
+- Event annotation standardized across all figure outputs
+- Fully compatible with upstream pipeline sections and shared globals
+
+-------------------------------------------------------------------------------
+
+Next Steps
+
+- Execute the full section and validate outputs
+- Cross-check event timings against earlier pipeline diagnostics
+- Compare orbital decay with theoretical dynamical friction predictions
+- Integrate results with dark matter substructure analysis
+
+-------------------------------------------------------------------------------
+
 
