@@ -1,1 +1,134 @@
+Hours Worked: 10.5 hours 
+Project: Section 26 — Lagrangian Particle Tracking (MW–M31 Merger Simulation)
 
+Objective:
+Implement and execute a full Lagrangian particle tracking pipeline on MW–M31 N-body simulation snapshots to study:
+- radial migration (Δr)
+- MW vs M31 mixing evolution
+- particle trajectory morphology
+- dynamical heating via path length and phase-space evolution
+
+---------------------------------------------------------------------
+
+WORK COMPLETED
+
+1. Pipeline Integration
+- Adapted a pre-built GenAI (Claude) template into a working analysis pipeline
+- Integrated MW and M31 snapshot data across full time series (801 snapshots)
+- Ensured compatibility with COM-centered coordinate system and simulation file structure
+- Connected with earlier Eulerian diagnostics framework
+
+---------------------------------------------------------------------
+
+2. Particle Tracking System
+Implemented dual-mode tracking:
+
+A) ID-based tracking (if particle IDs exist in snapshots)
+B) Phase-space KD-tree fallback tracking:
+   - 6D space: (x, y, z, vx, vy, vz)
+   - velocity scaling applied for distance metric consistency
+   - nearest-neighbour matching between consecutive snapshots
+
+Added robustness features:
+- missing particle detection ("lost" particles via distance threshold)
+- continuity via previous-state tracking buffer
+- reduced dataset via sampling (~1200 tracked particles total)
+
+---------------------------------------------------------------------
+
+3. Sampling Strategy
+Defined stratified initial-condition sampling at snapshot 0:
+
+- Inner region: r₀ < 10 kpc (disk/bulge)
+- Mid region: 10–50 kpc (inner halo)
+- Outer region: r₀ > 50 kpc (outer halo)
+- M31-origin tagged particles
+
+Purpose: ensure representation across dynamical regimes.
+
+---------------------------------------------------------------------
+
+4. Trajectory Construction
+Built full time-series arrays:
+
+- r(t), x(t), y(t), z(t)
+- v(t), radial velocity v_r(t)
+Derived metrics:
+- Δr = r_f − r₀
+- path length L = ∫|dr|
+- phase-space trajectories (r, v_r)
+
+Optimized memory via incremental path length computation.
+
+---------------------------------------------------------------------
+
+5. Physical Diagnostics Implemented
+
+- Radial displacement distribution P(Δr)
+- r(t) trajectory evolution (inspiral vs chaotic motion)
+- Final spatial origin map (r₀ → (x_f, y_f))
+- MW vs M31 mixing fraction f(r_f)
+- Path length vs initial radius (dynamical heating proxy)
+- Phase-space tracks (r, v_r)
+- ⟨Δr⟩(r₀, t) heatmap (time-resolved migration)
+- 2D trajectory “spaghetti” plots
+- Full animation of particle evolution
+
+---------------------------------------------------------------------
+
+6. Visualization Pipeline
+Generated:
+- 8 static diagnostic figures
+- 1 animation (MP4)
+- 1 summary panel
+
+Styling:
+- dark theme
+- group-based color encoding
+- log scaling for wide dynamical ranges
+
+---------------------------------------------------------------------
+
+KEY OBSERVATIONS (PRELIMINARY)
+
+- Strong radial redistribution of particles over time
+- Outer halo shows highest dispersion and outward migration
+- Inner regions remain more bound but experience measurable heating
+- MW–M31 mixing increases significantly at intermediate radii
+- Phase-space evolution shows coexistence of:
+  (i) smooth inspiral orbits
+  (ii) chaotic scattering during interaction phases
+
+---------------------------------------------------------------------
+
+TECHNICAL NOTES
+
+- KD-tree fallback introduces small matching uncertainty but preserves continuity
+- Path length sensitive to snapshot cadence (PATHLENGTH_STEP used for smoothing)
+- Memory usage controlled via sampled particle tracking (~20–30 MB total storage)
+
+---------------------------------------------------------------------
+
+TIME SUMMARY
+
+Total duration: ~10 hours
+
+Breakdown:
+- Template adaptation: ~2–3 hours
+- Tracking implementation: ~3–4 hours
+- Debugging / stability fixes: ~2 hours
+- Visualization + analysis outputs: ~2–3 hours
+
+---------------------------------------------------------------------
+
+OUTCOME
+
+Successfully constructed a full Lagrangian analysis module for MW–M31 merger simulation.
+
+Enables direct particle-level interpretation of:
+- mass redistribution
+- dynamical mixing
+- orbital evolution
+- phase-space structure evolution
+
+All Section 26 outputs generated successfully.
