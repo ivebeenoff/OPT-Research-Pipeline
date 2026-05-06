@@ -1,1 +1,104 @@
+Log Book Entry — Section 27: Dark Matter Close Encounters & Collision Tracking  
+Author: Abhinav Vatsa  
+Date: March 2026  
+Duration: ~10.5 hours  
 
+---
+
+### Objective  
+Extend the MW–M31 merger analysis pipeline to quantify dark matter close encounters as a proxy for interaction dynamics in a collisionless N-body system. The aim was to extract encounter-driven statistics (rates, kinematics, energy exchange, relaxation) while remaining consistent with the physical assumption that dark matter does not undergo literal collisions.
+
+---
+
+### Development Notes  
+- Initial code template generated using Claude, then significantly modified, extended, and integrated into the existing pipeline  
+- Substantial effort spent on:
+  - Adapting template structure to match pipeline globals and data flow  
+  - Ensuring physical consistency of derived quantities  
+  - Optimizing performance and memory usage  
+  - Building full visualization and animation suite  
+
+---
+
+### Conceptual Framework  
+Close encounters defined via threshold distance ( d_{\text{enc}} = 1 ,\text{kpc} ), representing gravitationally significant interactions. These encode:
+
+- Two-body scattering and dynamical friction analogues  
+- Local density enhancements without radial binning  
+- Relative velocity regimes (cold vs. hot encounters)  
+- Time-dependent interaction rate ( \Gamma(t) \sim n^2 \sigma v_{\text{rel}} )
+
+---
+
+### Methodology  
+
+1. Encounter Detection  
+- Implemented KD-tree radius search (scipy.spatial.cKDTree)  
+- Subsampled ( N_{\text{probe}} = 5000 ) particles per snapshot  
+- For each encounter computed:
+  - Separation ( d )  
+  - Relative velocity ( v_{\text{rel}} )  
+  - Deflection angle ( \theta )  
+  - Energy transfer ( |\Delta E| )  
+  - Encounter midpoint  
+
+2. Performance Strategy  
+- Avoided ( \mathcal{O}(N^2) ) scaling  
+- Combined statistical sampling with exact neighbor queries  
+- Achieved efficient runtime (~1–2 s per snapshot)
+
+3. Derived Diagnostics  
+- Total encounter rate ( \Gamma(t) )  
+- Radial encounter profile ( \Gamma(r,t) )  
+- Velocity distribution ( P(v_{\text{rel}}) )  
+- Cold encounter fraction (( v_{\text{rel}} < 50 ,\text{km/s} ))  
+- Mean deflection angle and energy transfer  
+- Two-body relaxation timescale ( t_{\text{relax}}(r) )
+
+4. Relaxation Analysis  
+Used:
+[
+t_{\text{relax}} = \frac{0.34 \sigma^3}{G^2 m \rho \ln \Lambda}
+]
+to quantify numerical relaxation effects across radial shells.
+
+---
+
+### Outputs  
+
+Generated the following artifacts:
+
+- section27_encounter_rate.png  
+- section27_encounter_spatial.png  
+- section27_vrel_dist.png  
+- section27_encounter_radius.png  
+- section27_energy_transfer.png  
+- section27_deflection_angle.png  
+- section27_two_body_relaxation.png  
+- section27_animation_encounters.mp4  
+- section27_summary_panel.png  
+
+---
+
+### Key Observations  
+
+- Strong peak in ( \Gamma(t) ) at pericentric passage, consistent with density and velocity coupling  
+- Persistent cold population (bound substructures) alongside transient hot tail during merger  
+- Encounter maps clearly trace halo overlap and density amplification  
+- Inner halo shows artificially reduced ( t_{\text{relax}} ), confirming expected finite-N effects  
+
+---
+
+### Reflections  
+
+- Claude-generated template accelerated initial development, but required substantial restructuring and physical validation  
+- KD-tree + probe sampling proved to be an effective scalable solution  
+- Encounter-based diagnostics provide a powerful, non-parametric view of the evolving density field  
+- This section bridges microscopic interaction physics and macroscopic merger evolution more directly than prior analyses  
+
+---
+
+### Status  
+Section 27 complete and fully integrated into the MW–M31 pipeline. All diagnostics, figures, and animations successfully generated and validated.
+
+---
