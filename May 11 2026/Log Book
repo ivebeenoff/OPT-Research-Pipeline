@@ -1,1 +1,128 @@
+Hours Worked: 10.5 hours
+Project: MW–M31 Merger Simulation Pipeline
+Section: §27 — Dark Matter Close Encounters & Collision Tracking
+Author: Abhinav Vatsa
 
+Summary
+-------
+Developed and integrated a new dark matter close-encounter analysis
+module into the MW–M31 merger simulation pipeline. The work focused on
+building the theoretical framework, numerical architecture, encounter
+search algorithms, diagnostic systems, and visualization infrastructure
+for tracking gravitational close encounters between collisionless
+dark matter particles in an N-body simulation environment.
+
+NOTE:
+This work session focused on implementation and integration.
+The full section has not yet been executed end-to-end on simulation data,
+so runtime validation, debugging under production loads, and physical
+verification of outputs remain pending.
+
+Development Workflow
+--------------------
+Started from a Claude-generated structural template and then
+substantially expanded, reorganized, corrected, and integrated the
+section manually into the larger research pipeline.
+
+Primary work completed:
+- Rewriting and refining theoretical documentation
+- Implementing encounter-search architecture
+- Integrating KD-tree neighbour searches
+- Building encounter-statistics infrastructure
+- Implementing relaxation-time calculations
+- Constructing radial and temporal diagnostic systems
+- Designing plotting and animation pipelines
+- Integrating COM-frame transformations
+- Adding numerical safeguards and runtime protections
+- Connecting the section to inherited pipeline globals and loaders
+
+Core Systems Implemented
+------------------------
+1. Close-Encounter Formalism
+   - Defined statistical “close encounters” for collisionless
+     dark matter particles
+   - Added theoretical treatment of:
+       • gravitational focusing
+       • encounter-rate evolution
+       • density enhancement tracing
+       • relative-velocity populations
+       • dynamical-friction analogues
+
+2. Encounter Search Infrastructure
+   - Implemented cKDTree-based neighbour searches
+   - Added probe-particle subsampling framework
+   - Reduced computational complexity relative to naive O(N²) scaling
+   - Added reproducible RNG sampling
+
+3. Interaction Diagnostics
+   - Implemented calculations for:
+       • pair separations
+       • relative velocities
+       • deflection angles
+       • perturbative energy transfer
+       • encounter midpoint localization
+
+4. Dynamical Halo Analysis
+   - Added radial encounter-rate profiles Γ(r,t)
+   - Added cold-encounter fraction statistics
+   - Implemented two-body relaxation-time calculations
+   - Added shell-based density and velocity-dispersion analysis
+
+5. Visualization & Output Framework
+   Prepared generation systems for:
+   - Encounter-rate evolution plots
+   - Spatial encounter-density maps
+   - Relative-velocity distributions
+   - Radial encounter heatmaps
+   - Energy-transfer diagnostics
+   - Deflection-angle evolution plots
+   - Two-body relaxation profiles
+   - Encounter-density animations
+   - Master summary dashboard panel
+
+6. Pipeline Integration
+   - Integrated with existing MW–M31 merger infrastructure
+   - Reused inherited radial bins, snapshot loaders,
+     COM calculations, and plotting utilities
+   - Added snapshot stepping and encounter-map storage logic
+   - Structured for CPU-only execution
+
+Technical Notes
+---------------
+- Encounter analysis uses probe subsets to maintain tractable runtime
+- Added Gaussian smoothing for spatial-density visualization
+- Implemented logarithmic scaling for sparse encounter fields
+- Added finite-value and low-particle-count safeguards
+- Included detailed inline derivations and unit-consistency comments
+- Runtime and memory behavior still need empirical validation
+
+Planned Next Steps
+------------------
+- Run full end-to-end execution on merger snapshots
+- Benchmark runtime scaling across snapshot counts
+- Validate encounter statistics against expected merger epochs
+- Check numerical stability of deflection-angle and ΔE estimates
+- Tune probe-particle count and encounter-radius thresholds
+- Verify animation generation and output integrity
+- Inspect relaxation-time profiles for numerical artefacts
+
+Expected Outputs
+----------------
+- section27_encounter_rate.png
+- section27_encounter_spatial.png
+- section27_vrel_dist.png
+- section27_encounter_radius.png
+- section27_energy_transfer.png
+- section27_deflection_angle.png
+- section27_two_body_relaxation.png
+- section27_animation_encounters.mp4
+- section27_summary_panel.png
+
+Research Significance
+---------------------
+This section extends the MW–M31 merger pipeline beyond conventional
+density-profile analysis into statistical dynamical-interaction
+tracking. The framework is designed to study encounter-driven mixing,
+relaxation processes, and gravitational scattering signatures during
+the merger while remaining consistent with the collisionless nature
+of dark matter in cosmological N-body simulations.
