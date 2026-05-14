@@ -1,0 +1,43 @@
+Research Logbook Entry — Section 28: Dark Matter Density Evolution Tracking
+Researcher: Abhinav Vatsa
+Project: MW–M31 Merger Analysis Pipeline
+Section: 28 — Dark Matter Density Evolution Tracking
+Date: May 13, 2026
+Time Worked: 10.5 hours
+
+Today’s work focused on the construction and integration of Section 28 of the MW–M31 merger pipeline, dedicated entirely to the evolution of dark matter density structure during the interaction and merger process. The primary goal of this section was to build a comprehensive framework capable of tracking density evolution across multiple complementary physical diagnostics rather than relying solely on conventional radial density profiles.
+
+A skeletal framework and organizational scaffold for the section were initially generated using Claude￼, after which substantial manual development, restructuring, debugging, scientific refinement, and implementation work were carried out. Considerable time was spent adapting the generated structure into a physically coherent and computationally integrated module compatible with the existing MW–M31 analysis architecture.
+
+The completed section now performs several major analyses simultaneously:
+
+* Computation of spherical dark matter density profiles \rho(r,t) across all snapshots.
+* NFW profile fitting for extraction of evolving scale radius r_s and characteristic density \rho_s.
+* Construction of full 3D density grids for selected epochs using volumetric particle binning.
+* Calculation of coarse-grained phase-space density f = \rho / \sigma_r^3 to study irreversible mixing and violent relaxation effects.
+* Evaluation of overdensity evolution \delta(r,t).
+* Fourier-space analysis through computation of the density power spectrum P(k,t) via 3D FFT methods.
+* Generation of multiple high-resolution figures, heatmaps, summary panels, and animations documenting temporal density evolution.
+
+A large portion of the session was devoted to ensuring numerical stability and physical consistency in the implementation. This included:
+
+* Building reusable utility functions for NFW fitting and 3D density-grid generation.
+* Implementing FFT-based power spectrum calculations with proper mean-density subtraction and spherical shell averaging in k-space.
+* Designing memory-conscious pre-allocation structures for large multidimensional datasets.
+* Integrating COM-frame velocity corrections for radial velocity dispersion calculations.
+* Constructing automated visualization pipelines for both static figures and MP4 animations.
+* Adding extensive documentation blocks and scientific commentary explaining the physical interpretation of each diagnostic.
+
+Additional effort was spent refining plotting aesthetics and producing publication-style visualization outputs using logarithmic scaling, custom dark-theme formatting, and multi-panel summary layouts.
+
+By the end of the session, Section 28 successfully produced the following outputs:
+
+* Radial density profile evolution plots with NFW overlays.
+* Density heatmaps in r-t space.
+* Central density and NFW parameter evolution diagnostics.
+* Phase-space density profiles and heatmaps.
+* Overdensity evolution maps.
+* 2D density slice visualizations.
+* Density power spectrum evolution plots and heatmaps.
+* Two full animations tracking density evolution through time.
+* A consolidated master summary panel.
