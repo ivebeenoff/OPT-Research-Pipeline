@@ -12,9 +12,7 @@ are inherited and must be defined before this section is executed.
 
 Physical motivation
 -------------------
-This is an N-body dark matter simulation — there are no stars and therefore
-no luminosity in the strict observational sense.  However, luminosity profile
-fitting is still directly applicable here for two reasons:
+Luminosity profile fitting is applicable here for two reasons:
 
   1. MASS-TO-LIGHT RATIO PROXY
      Under a constant (or radially varying) stellar mass-to-light ratio
