@@ -1,1 +1,52 @@
+Section 30 — Luminosity Profile Fitting Pipeline
 
+Author: Abhinav Vatsa
+Date: March 2026
+Work time: ~10.5 hours personal implementation/debugging after initial scaffold generation by Anthropic Claude
+
+Summary
+
+Implemented and expanded a full luminosity-profile fitting subsystem for the MW–M31 merger simulation pipeline. The initial structural scaffold and documentation template were generated with Claude, after which extensive manual development, scientific validation, debugging, parameter tuning, and visualization work were completed.
+
+Major Contributions
+
+* Implemented and validated:
+    * Sérsic profile fitting
+    * de Vaucouleurs profile fitting
+    * Exponential disk fitting
+    * Double-Sérsic decomposition
+    * Core-Sérsic fitting
+    * King profile fitting
+* Developed:
+    * log-space nonlinear fitting framework using scipy.optimize.curve_fit
+    * parameter initialization and bounded optimization logic
+    * residual analysis infrastructure
+    * projected surface density reconstruction from N-body particles
+    * temporal evolution tracking for structural parameters
+* Built:
+    * automated figure-generation system (10 publication-style figures)
+    * residual heatmaps
+    * multi-epoch comparison panels
+    * morphology-evolution diagnostics
+    * bulge/halo decomposition visualizations
+
+Scientific Focus
+
+This section connects dark matter merger simulations to observational galaxy morphology diagnostics through surface-density analogues of luminosity profiles under an assumed mass-to-light ratio.
+
+Primary scientific objective:
+
+* track merger-driven morphology evolution using Sérsic index evolution:
+    * n \sim 1 → disk-like structure
+    * n \sim 4 → elliptical-like merger remnant
+
+Technical Notes
+
+Key engineering work included:
+
+* stabilization of nonlinear fits,
+* handling failed optimizer convergence,
+* constructing reusable plotting utilities,
+* managing numerical overflow/underflow regions,
+* implementing residual-grid storage,
+* coordinating integration with prior density-pipeline globals and cached snapshots.
