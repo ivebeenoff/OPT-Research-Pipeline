@@ -1,0 +1,40 @@
+Section 31 — Merger Event Detection & Coalescence Tracking
+
+Author: Abhinav Vatsa
+Work time: ~10.5 hours handwritten implementation
+
+Implemented a fully manual merger-event detection subsystem for the MW–M31 N-body simulation pipeline to determine the physical coalescence time of the Milky Way and Andromeda halos.
+
+No AI-generated code was used in this section. Development was based structurally on patterns and architecture established in previous pipeline sections, but all merger-detection logic, diagnostics, tracking systems, thresholds, analysis routines, and visualization code were written manually.
+
+Developed:
+
+* center-of-mass separation tracking,
+* relative velocity evolution analysis,
+* dense-core overlap diagnostics,
+* density-peak convergence detection,
+* merger-threshold logic,
+* automated final-coalescence identification.
+
+Implemented physically motivated merger criteria requiring:
+
+* persistent COM separation below a critical radius,
+* irreversible orbital decay,
+* substantial dense-core overlap,
+* suppression of false-positive flyby detections.
+
+Built visualization and diagnostics infrastructure for:
+
+* separation evolution,
+* orbital energy dissipation,
+* merger phase-space trajectories,
+* dense-core overlap evolution,
+* dynamical merger-state analysis.
+
+Key engineering work included:
+
+* KD-tree nearest-neighbor overlap calculations,
+* snapshot-by-snapshot merger-state validation,
+* numerical stabilization of particle-selection routines,
+* integration with existing MW–M31 analysis infrastructure,
+* automated merger-epoch extraction.
