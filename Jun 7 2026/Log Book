@@ -1,1 +1,90 @@
+LOG BOOK ENTRY — JUNE 7
 
+Hours Worked: 10.5 hours
+
+===============================================================================
+SECTION 34 — SHANNON ENTROPY OF VELOCITY & ANISOTROPY DISTRIBUTIONS
+===============================================================================
+
+This section was developed using a scaffold generated with assistance from Claude,
+then expanded and completed with additional implementation detail and theoretical
+refinement.
+
+The work extends the existing diagnostic framework from Sections 31–33
+(Lyapunov exponents, spectral complexity, and phase-space mixing) into a
+distribution-level, information-theoretic description of velocity space.
+
+-------------------------------------------------------------------------------
+KEY COMPONENTS
+-------------------------------------------------------------------------------
+
+• Differential entropy estimators
+  - KDE-based Monte Carlo entropy estimator for low-N shells
+  - Histogram-based entropy estimator with proper density normalization
+  - Gaussian reference entropy and excess entropy relative to Maxwellian
+
+• Information-theoretic measures
+  - KL divergence from a fixed Maxwellian baseline (initial conditions)
+  - Jensen–Shannon divergence for time-resolved distribution evolution
+
+• Velocity decomposition
+  - Radial velocity v_r
+  - Tangential speed v_t
+  - Azimuthal velocity v_φ
+
+• Radial shell diagnostics
+  - H_r(r,t), H_t(r,t), H_φ(r,t)
+  - Entropy anisotropy: ΔH = H_r − H_t
+  - Excess entropy relative to Gaussian expectation
+
+• Structure detection
+  - KDE peak finding via scipy.signal.find_peaks
+  - Identification of multi-modal velocity distributions
+    (associated with tidal streams and merger substructure)
+
+• Global + group-level statistics
+  - Global entropy evolution over time
+  - Group-resolved entropy (inner, mid, outer halo, M31 debris)
+
+• Visualization framework
+  - 9 planned figures including:
+    • entropy heatmaps
+    • KL profiles
+    • JS divergence evolution
+    • multimodality fraction
+    • global entropy time series
+    • master summary panel
+
+• Animation design
+  - Time-evolving velocity PDFs
+  - Entropy anisotropy bar evolution across shells
+  - Synchronized diagnostic time-series display
+
+-------------------------------------------------------------------------------
+CONCEPTUAL OUTCOME
+-------------------------------------------------------------------------------
+
+This section shifts analysis from particle-level chaos diagnostics to
+distribution-level information theory.
+
+It enables detection of:
+  - multi-stream tidal structure not visible in σ or β
+  - non-Gaussian velocity features during mergers
+  - phase-mixing processes invisible to second-moment statistics
+
+-------------------------------------------------------------------------------
+IMPLEMENTATION STATUS
+-------------------------------------------------------------------------------
+
+• Core entropy + divergence framework: COMPLETE
+• Shell + group structure: COMPLETE (scaffolded)
+• Visualization + animation system: FULLY SPECIFIED
+• Integration with trajectory pipeline: PENDING
+
+-------------------------------------------------------------------------------
+SUMMARY
+-------------------------------------------------------------------------------
+
+This section establishes an information-theoretic extension of earlier dynamical
+diagnostics, using entropy, KL divergence, and multimodality to characterize
+velocity-space structure in a way that complements classical chaos measures.
