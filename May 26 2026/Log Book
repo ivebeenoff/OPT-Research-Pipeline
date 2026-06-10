@@ -1,1 +1,134 @@
+LAB NOTEBOOK ENTRY — SECTION 31: LYAPUNOV EXPONENTS & ORBITAL CHAOS
+Author: Abhinav Vatsa
+Time spent: 10.5 hours
 
+OBJECTIVE
+----------
+Quantify orbital chaos during the MW–M31 merger using finite-time Lyapunov exponents (FTLE),
+and map how dynamical instability evolves across time, radius, and phase space structure.
+
+SYSTEM STUDIED
+--------------
+Milky Way–Andromeda merger system:
+- Milky Way (MW)
+- Andromeda Galaxy (M31)
+
+CORE METHODOLOGY
+-----------------
+1. Finite-Time Lyapunov Exponents (FTLE)
+   - δ(t) = |x_i(t) - x_j(t)| (trajectory separation)
+   - ln(δ(t)/δ(0)) used to estimate exponential divergence
+   - λ_W(t,i) = (ln δ(t+W) - ln δ(t)) / W
+   - Window size: W = 30 snapshots
+   - Chaos threshold: λ > 0.02 snap⁻¹
+
+2. Shadow Particle Method
+   - Each particle paired with nearest neighbour in initial phase space
+   - KD-tree used for efficient nearest-neighbour search
+   - Tracks divergence of initially close trajectories
+
+3. Full FTLE Estimation
+   - Endpoint finite difference (sliding window)
+   - Global regression fit per particle (best λ estimate)
+
+IMPLEMENTATION DETAILS
+----------------------
+- Trajectory inheritance from Section 26 (Lagrangian tracking arrays)
+- Fallback reconstruction using phase-space nearest-neighbour tracking if missing
+- Sample size: N = 800 particles (subsampled if larger dataset exists)
+- Group structure preserved:
+  * Inner halo
+  * Mid halo
+  * Outer halo
+  * M31 component
+
+CHAOS METRICS COMPUTED
+----------------------
+Particle-level:
+- λ_total (global FTLE per particle)
+- ln(δ/δ0) evolution curves
+- λ vs initial radius r0
+- λ vs final radius rf
+
+System-level:
+- Chaos fraction f(t) = fraction(λ > threshold)
+- Mean FTLE ⟨λ⟩(t)
+- Radial-bin FTLE evolution ⟨λ⟩(r0, t)
+
+Phase-space structure:
+- (r, v_r) scatter coloured by λ
+- Stochastic layer identification
+
+Spatial chaos field:
+- 2D FTLE maps via deformation gradient tensor:
+    F ≈ ∂x(t)/∂x(0)
+- λ_FTLE = (1/t) ln(σ_max(F))
+- Reveals Lagrangian Coherent Structures (LCS)
+
+KEY DIAGNOSTICS OUTPUTS
+-----------------------
+1. log-separation trajectories (chaotic vs regular)
+2. FTLE distribution P(λ) over time
+3. λ vs initial radius r0 (radial dependence)
+4. Chaos fraction evolution f(t)
+5. ⟨λ⟩(r0, t) heatmap (chaos propagation front)
+6. 2D FTLE spatial maps (LCS boundaries)
+7. λ vs final radius rf (chaos–stripping correlation)
+8. (r, v_r) stochastic layer visualization
+9. Full chaos evolution animation
+10. Master summary panel
+
+PHYSICAL INTERPRETATION
+-----------------------
+- Positive λ indicates exponential orbital divergence → chaotic motion
+- Outer halo particles exhibit stronger chaotic behavior
+- Chaos onset correlates with merger pericentre passages
+- Violent relaxation produces rapid growth in phase-space mixing
+- FTLE ridges correspond to transport barriers (tidal structure boundaries)
+- Stochastic layer appears around separatrix in (r, v_r) space
+
+KEY RESULTS (QUALITATIVE)
+-------------------------
+- Clear bifurcation between regular and chaotic orbits
+- Strong spike in chaos fraction during merger events
+- Outer regions more dynamically unstable than inner halo
+- Evidence for inward propagation of chaos after pericentre
+- FTLE maps show filamentary coherent structures (LCS)
+- Partial correlation between chaos and stripping efficiency
+
+NUMERICAL / TECHNICAL NOTES
+---------------------------
+- KD-tree nearest neighbour search in phase space (6D)
+- NaN-safe filtering for incomplete trajectories
+- Gaussian smoothing for FTLE visualization stability
+- Least-squares deformation gradient estimation for 2D FTLE maps
+- Snapshot-based time normalization (snap⁻¹ units)
+
+OUTPUT FILES GENERATED
+----------------------
+section31_lyapunov_trajectories.png
+section31_lambda_distribution.png
+section31_lambda_vs_r.png
+section31_chaos_fraction.png
+section31_lambda_heatmap.png
+section31_ftle_map.png
+section31_chaos_vs_stripping.png
+section31_stochastic_layer.png
+section31_animation_chaos.mp4
+section31_summary_panel.png
+
+TIME BREAKDOWN
+--------------
+- Implementation & debugging        : 6.0 hrs
+- FTLE formulation & validation     : 2.0 hrs
+- Visualization pipeline            : 1.5 hrs
+- Analysis & interpretation         : 1.0 hr
+
+TOTAL TIME: 10.5 hours
+
+NEXT STEPS
+----------
+- Compare FTLE with energy/action diffusion measures
+- Extend to multi-mass-ratio merger simulations
+- Quantify entropy production during violent relaxation
+- Cross-validate chaos diagnostics with alternative stability metrics
