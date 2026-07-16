@@ -4,7 +4,6 @@
 # ==============================================================================
 #
 # Author  : Abhinav Vatsa
-# Date    : April 20th 2026
 #
 # DESCRIPTION:
 # Extension module built on density_pipeline.py. Inherits and requires all core 
