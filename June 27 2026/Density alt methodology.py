@@ -699,4 +699,149 @@ BG_COLOR = "#0d0d18"
 MUTED_TX = "#7070a0"
 
 def _sax_styled(fig, gs, r, c, log_x=True, log_y=True):
-    ax
+    ax = fig.add_subplot(gs[r, c])
+    ax.set_facecolor(BG_COLOR)
+    for sp in ax.spines.values():
+        sp.set_edgecolor("#2a2a4a")
+    ax.tick_params(colors="#9090b0", labelsize=8)
+    if log_x: ax.set_xscale("log")
+    if log_y: ax.set_yscale("log")
+    return ax
+
+# ── Panel (0,0): Radial Spherical Densities ──
+ax00 = _sax_styled(fig35, gs35, 0, 0)
+for k_idx, color, label in zip(PROFILE_INDICES, PROFILE_COLORS, PROFILE_LABELS):
+    y = rho_ts[k_idx, :]
+    v = np.isfinite(y) & (y > 0)
+    if v.any():
+        ax00.plot(r_mid_sph[v], y[v], color=color, lw=1.5, label=label)
+ax00.set_xlabel("r [kpc]", fontsize=8, color=MUTED_TX)
+ax00.set_ylabel(r"$\rho$ [M$_\odot$/kpc³]", fontsize=8, color=MUTED_TX)
+ax00.set_title(r"$\rho(r)$ Evolution (3D)", fontsize=9)
+ax00.set_xlim(R_BINS[0], R_BINS[-1])
+ax00.legend(fontsize=6)
+
+# ── Panel (0,1): Radial Surface Densities ──
+ax01 = _sax_styled(fig35, gs35, 0, 1)
+for k_idx, color, label in zip(PROFILE_INDICES, PROFILE_COLORS, PROFILE_LABELS):
+    y = Sigma_ts[k_idx, :]
+    v = np.isfinite(y) & (y > 0)
+    if v.any():
+        ax01.plot(r_mid_proj[v], y[v], color=color, lw=1.5, label=label)
+ax01.set_xlabel("R [kpc]", fontsize=8, color=MUTED_TX)
+ax01.set_ylabel(r"$\Sigma$ [M$_\odot$/kpc²]", fontsize=8, color=MUTED_TX)
+ax01.set_title(r"$\Sigma(R)$ Evolution (Projected)", fontsize=9)
+ax01.set_xlim(R_PROJ_BINS[0], R_PROJ_BINS[-1])
+ax01.legend(fontsize=6)
+
+# ── Panel (1,0): Local Gradient Index Gamma ──
+ax10 = _sax_styled(fig35, gs35, 1, 0, log_x=False, log_y=False)
+im10 = ax10.imshow(
+    gamma_interp_map, aspect="auto", origin="lower",
+    extent=[t_min, t_max, np.log10(R_BINS[0]), np.log10(R_BINS[-1])],
+    cmap="bwr", vmin=-4.0, vmax=0.5
+)
+ax10.set_yticks(np.log10(np.array([0.1, 1.0, 10.0, 100.0, 400.0])))
+ax10.set_yticklabels(["0.1", "1.0", "10.0", "100.0", "400.0"])
+ax10.set_xlabel(time_label, fontsize=8, color=MUTED_TX)
+ax10.set_ylabel("r [kpc]", fontsize=8, color=MUTED_TX)
+ax10.set_title(r"$\Gamma(r,t)$ Slope Local Indices", fontsize=9)
+fig35.colorbar(im10, ax=ax10, label=r"$\Gamma$", shrink=0.8)
+
+# ── Panel (1,1): Mass-Mixing Boundaries ──
+ax11 = _sax_styled(fig35, gs35, 1, 1, log_x=False, log_y=False)
+im11 = ax11.imshow(
+    f_mix_interp_map, aspect="auto", origin="lower",
+    extent=[t_min, t_max, np.log10(R_BINS[0]), np.log10(R_BINS[-1])],
+    cmap="viridis", vmin=0.0, vmax=0.5
+)
+ax11.set_yticks(np.log10(np.array([0.1, 1.0, 10.0, 100.0, 400.0])))
+ax11.set_yticklabels(["0.1", "1.0", "10.0", "100.0", "400.0"])
+ax11.set_xlabel(time_label, fontsize=8, color=MUTED_TX)
+ax11.set_ylabel("r [kpc]", fontsize=8, color=MUTED_TX)
+ax11.set_title(r"$f_{\rm mix}(r,t)$ Mass-Mixing Fronts", fontsize=9)
+fig35.colorbar(im11, ax=ax11, label=r"$f_{\rm mix}$", shrink=0.8)
+
+# ── Panel (2,0): Central Core Densities vs. Half-Mass Limits ──
+ax20 = _sax_styled(fig35, gs35, 2, 0, log_x=False, log_y=False)
+ax20_r = ax20.twinx()
+ax20_r.tick_params(colors="#9090b0", labelsize=8)
+
+ax20.plot(time_arr, np.log10(np.where(rho0_arr > 0, rho0_arr, np.nan)),
+          color="#e8673a", lw=1.5, label=r"$\log_{10}\rho_0$")
+ax20_r.plot(time_arr, r_half_3d_arr, color="#4a8fff", lw=1.5, ls="--",
+            label=r"$r_{1/2,\ 3D}$")
+ax20.set_xlabel(time_label, fontsize=8, color=MUTED_TX)
+ax20.set_ylabel(r"$\log_{10}\rho_0$ [M$_\odot$ kpc$^{-3}$]", fontsize=8, color="#e8673a")
+ax20_r.set_ylabel(r"$r_{\rm half}$ [kpc]", fontsize=8, color="#4a8fff")
+ax20.set_title("Core Compaction vs. Global Core Radius", fontsize=9)
+
+# ── Panel (2,1): Model chi-squared evolution comparison ──
+ax21 = _sax_styled(fig35, gs35, 2, 1, log_x=False, log_y=True)
+ax21.plot(time_fit_axis, chi2_nfw_arr,  color="#ff9944", lw=1.2, label="NFW")
+ax21.plot(time_fit_axis, chi2_ein_arr,  color="#00d4aa", lw=1.2, label="Einasto")
+ax21.plot(time_fit_axis, chi2_her_arr,  color="#aa55ff", lw=1.2, label="Hernquist")
+ax21.axhline(1.0, color="#ffffff", lw=0.6, ls="--", alpha=0.4)
+ax21.set_xlabel(time_label, fontsize=8, color=MUTED_TX)
+ax21.set_ylabel(r"Reduced $\chi^2$", fontsize=8, color=MUTED_TX)
+ax21.set_title("Analytical Model Profiling Fit Accuracy", fontsize=9)
+ax21.legend(fontsize=6)
+
+# ── Panel (3,0): Initial 2D Morphological Projections ──
+ax30 = fig35.add_subplot(gs35[3, 0])
+ax30.set_facecolor(BG_COLOR)
+early_mi = 0
+ax30.imshow(_log10_smooth(maps_3d[early_mi]).T, origin="lower", aspect="equal",
+            extent=MAP_EXTENT, cmap="inferno", vmin=vmin_2d, vmax=vmax_2d)
+ax30.set_title(f"Early Epoch Morphology (t={time_maps[early_mi]:.2f} Gyr)" if time_is_gyr else "Early Epoch Topology", fontsize=9)
+ax30.set_xlabel("x [kpc]", fontsize=8, color=MUTED_TX)
+ax30.set_ylabel("y [kpc]", fontsize=8, color=MUTED_TX)
+ax30.tick_params(colors="#9090b0", labelsize=8)
+
+# ── Panel (3,1): Final Coalesced 2D Morphological Projections ──
+ax31 = fig35.add_subplot(gs35[3, 1])
+ax31.set_facecolor(BG_COLOR)
+late_mi = n_maps - 1
+ax31.imshow(_log10_smooth(maps_3d[late_mi]).T, origin="lower", aspect="equal",
+            extent=MAP_EXTENT, cmap="inferno", vmin=vmin_2d, vmax=vmax_2d)
+ax31.set_title(f"Post-Coalescence Morphology (t={time_maps[late_mi]:.2f} Gyr)" if time_is_gyr else "Post-Coalescence Topology", fontsize=9)
+ax31.set_xlabel("x [kpc]", fontsize=8, color=MUTED_TX)
+ax31.tick_params(colors="#9090b0", labelsize=8)
+
+fig35.suptitle("MW–M31 Spatial Coalescence Diagnostics Summary Panel",
+               fontsize=14, color="#c8c8e8", fontweight="bold")
+fig35.savefig(os.path.join(OUT_DIR, "density_summary_panel.png"),
+              dpi=200, bbox_inches="tight", facecolor=fig35.get_facecolor())
+plt.close(fig35)
+print("  Saved: density_summary_panel.png")
+
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 36 — FILE SYSTEM DESTRUCTION & PIPELINE MANIFEST                    ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# Clears the active virtual filesystem workspace memory allocations.
+# Deferring execution to this point ensures all spatial projections are fully written.
+#
+
+shutil.rmtree(tmpdir, ignore_errors=True)
+print(f"\n[cleanup] Dereferencing dynamic local file system: {tmpdir}")
+
+print("\n" + "="*80)
+print("  SYSTEM RUN OUTPUT FILESYSTEM MANIFEST")
+print("="*80)
+print(f"  {'File Identifier':<48} {'Memory (MB)':>12}  Component Classification")
+print(f"  {'-'*48} {'-'*12}  {'-'*24}")
+
+total_mb = 0.0
+for fn in sorted(os.listdir(OUT_DIR)):
+    fp = os.path.join(OUT_DIR, fn)
+    mb = os.path.getsize(fp) / 1e6
+    total_mb += mb
+    kind = "Stream Media (mp4)" if fn.endswith(".mp4") else "Static Image (png)"
+    print(f"  {fn:<48} {mb:12.2f}  {kind}")
+
+print(f"  {'-'*48} {'-'*12}")
+print(f"  {'TOTAL WRITE VOLUME':<48} {total_mb:12.2f}")
+print("="*80)
+print("\n[SUCCESS] Profile & spatial density diagnostics engine complete.")
