@@ -1,1 +1,69 @@
+HOURS WORKED: 10.5 hours
+PROJECT: MW–M31 Merger Density Analysis Pipeline
+
+SECTION: Section 27 — Dark Matter Close Encounters & Collision Tracking
+
+
+DESCRIPTION OF WORK:
+
+Developed and integrated Section 27 of the MW–M31 merger analysis framework, focused on resolving localized dark matter particle interaction statistics during galaxy merger evolution. The objective of this module was to extend the existing structural density pipeline beyond global radial profiles by introducing small-scale phase-space encounter diagnostics.
+
+The primary scaffold for this module was generated using Claude as an initial structural framework. I then extensively modified, expanded, and customized the implementation by incorporating my own physical interpretations, diagnostic methodology, optimization strategies, and visualization architecture.
+
+Implemented a specialized close-encounter tracking engine using cKDTree spatial indexing to replace computationally prohibitive O(N²) particle-pair searches. The algorithm samples representative dark matter tracer populations and identifies particles within a configurable interaction radius, allowing statistical measurement of localized gravitational encounters across simulation snapshots.
+
+Developed encounter diagnostics including:
+
+- Dark matter particle close-approach frequency evolution.
+- Relative velocity distributions P(v_rel) across merger stages.
+- Localized encounter concentration maps in Cartesian projection space.
+- Radial encounter density profiles Γ(r,t).
+- Approximate gravitational scattering deflection angles.
+- Perturbative energy transfer estimates.
+- Two-body relaxation timescale calculations.
+
+Implemented a vectorized neighborhood processing system that converts individual particle interactions into statistical phase-space observables. This included computation of:
+
+- Pairwise separations.
+- Relative velocity magnitudes.
+- Encounter midpoint locations.
+- Scattering-angle estimates using gravitational deflection analogies.
+- Localized energy perturbation quantities.
+
+Designed a temporal processing framework that evaluates the merger evolution across selected simulation snapshots. Created preallocated diagnostic tensors for efficient storage of encounter rates, velocity statistics, relaxation profiles, and spatial interaction maps.
+
+Integrated center-of-mass velocity corrections to ensure encounter statistics were measured in a physically meaningful merger reference frame. Constructed localized density and velocity dispersion estimates through radial shell binning to evaluate two-body relaxation behavior throughout the evolving halo structures.
+
+Generated a complete visualization suite including:
+
+- Encounter rate evolution plots.
+- Spatial encounter concentration maps.
+- Relative velocity probability distributions.
+- Radius-time interaction heatmaps.
+- Energy-transfer evolution diagnostics.
+- Scattering deflection tracking.
+- Relaxation lifetime profiles.
+- Multi-dimensional encounter evolution animation.
+- Compact summary diagnostic dashboard.
+
+Created an animated phase-space evolution visualization combining:
+
+- Spatial encounter topology.
+- Integrated encounter frequency history.
+- Relative velocity distribution evolution.
+
+The final module produced a complete collision phenomenology extension for the MW–M31 merger pipeline, enabling analysis of how discrete N-body dark matter particles sample otherwise collisionless gravitational environments. The diagnostic framework provides a bridge between idealized Vlasov dynamics and finite-resolution simulation effects, allowing investigation of numerical relaxation, local density structures, and merger-driven phase-space restructuring.
+
+TECHNICAL CONTRIBUTIONS:
+
+- Designed a KD-tree accelerated encounter-search methodology.
+- Converted particle-level interactions into statistical merger diagnostics.
+- Developed vectorized computation pathways to improve performance.
+- Integrated relaxation physics using density and velocity dispersion fields.
+- Built publication-style visualization outputs and animation pipelines.
+- Expanded the merger analysis framework from global structure measurements into local interaction phenomenology.
+
+TOOLS / METHODS USED:
+
+Python, NumPy, SciPy cKDTree, Matplotlib, statistical binning methods, N-body particle analysis, phase-space diagnostics, gravitational scattering approximations, computational astrophysics visualization.
 
