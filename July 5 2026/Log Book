@@ -1,1 +1,201 @@
+===============================================================================
+WORK LOG ENTRY — SECTION 21 DEVELOPMENT
+===============================================================================
 
+Author      : Abhinav Vatsa
+Hours Worked: 10.5 hours
+
+Project:
+MW–M31 Merger Dynamical Analysis Pipeline — Angular Momentum Transport &
+Phase-Space Diagnostics Module
+
+Development Summary:
+Implemented and expanded Section 21 of the MW–M31 merger simulation analysis
+framework. The module was developed as an extension of the existing density
+pipeline architecture and integrated angular momentum evolution, transport
+mechanisms, orbital structure, and phase-space mixing diagnostics into a unified
+time-dependent analysis engine.
+
+The primary scaffold structure was initially generated using Claude as a coding
+assistant. The resulting framework was then extensively modified, expanded, and
+re-engineered with custom scientific methodology, additional diagnostics,
+performance optimizations, and visualization systems based on my own analytical
+design.
+
+Technical Objectives:
+- Quantify angular momentum redistribution throughout the MW–M31 interaction.
+- Track the evolution of specific angular momentum fields j(r,t).
+- Measure radial transport through angular momentum flux channels.
+- Characterize orbital circularity and rotational coherence.
+- Quantify phase-space mixing and dynamical relaxation.
+- Generate publication-quality diagnostic figures and time-evolution media.
+
+Major Development Components:
+
+1. Angular Momentum Vector Framework
+--------------------------------------------------
+Developed a complete particle-level angular momentum analysis system:
+
+- Computed 3D specific angular momentum vectors:
+      j = r × v
+
+- Extracted:
+      |j|      → total orbital momentum magnitude
+      j_z      → coherent rotational component
+      j_perp   → non-planar orbital dispersion
+
+- Implemented mass-weighted radial profiles to preserve spatial structure
+  during merger evolution.
+
+Purpose:
+Track how gravitational interactions redistribute ordered disk rotation into
+randomized halo motion and tidal structures.
+
+--------------------------------------------------
+
+2. Radial Angular Momentum Transport Diagnostics
+--------------------------------------------------
+Implemented transport-field calculations using:
+
+      <j v_r>(r,t)
+
+to measure directional momentum exchange.
+
+Developed diagnostics for:
+
+- Inward angular momentum migration.
+- Outward tidal transport.
+- Momentum exchange between inner cores and extended envelopes.
+- Time-dependent instability signatures.
+
+The framework identifies when merger-driven torques cause angular momentum
+loss from central regions and deposition into outer halo structures.
+
+--------------------------------------------------
+
+3. Enclosed Angular Momentum Budget Analysis
+--------------------------------------------------
+Created cumulative momentum profiles:
+
+      L(<r,t)
+
+using optimized binned cumulative integration.
+
+Implemented:
+
+- Total enclosed angular momentum tracking.
+- Fractional angular momentum distribution.
+- Evolution of radial momentum reservoirs.
+
+This provides a conservation-based view of how orbital momentum is redistributed
+throughout the interacting galaxy system.
+
+--------------------------------------------------
+
+4. Orbital Circularity Analysis
+--------------------------------------------------
+Developed orbital classification diagnostics using:
+
+      ε = j_z / j_c(r)
+
+where:
+
++1  → perfectly circular prograde orbit
+ 0  → radial orbit
+-1  → perfectly retrograde orbit
+
+Implemented:
+
+- Circularity radial profiles.
+- Circularity evolution heatmaps.
+- Raw particle circularity distributions.
+- Orbital alignment chronology.
+
+Purpose:
+Measure the transition from coherent stellar disk rotation into dynamically
+heated merger remnants.
+
+--------------------------------------------------
+
+5. Phase-Space Entropy and Mixing Diagnostics
+--------------------------------------------------
+Implemented coarse-grained Shannon entropy measurements:
+
+      S(r,j)
+
+using two-dimensional phase-space histograms.
+
+Tracked:
+
+- Total system entropy growth.
+- Individual MW and M31 entropy contributions.
+- Dynamical mixing during merger evolution.
+
+Additionally developed angular-momentum autocorrelation diagnostics to estimate:
+
+      λ_mix
+
+the spatial coherence length of angular momentum structures.
+
+This quantifies how rapidly initially ordered structures become phase mixed.
+
+--------------------------------------------------
+
+6. High-Performance Computational Optimization
+--------------------------------------------------
+Improved runtime efficiency through:
+
+- Vectorized NumPy operations.
+- Preallocated time-series tensors.
+- Optimized cumulative sorting methods.
+- Efficient binned statistical calculations.
+- Reduced repeated memory allocation.
+- Snapshot-based phase-space storage.
+
+Designed the pipeline to handle large particle datasets across hundreds of
+simulation snapshots.
+
+--------------------------------------------------
+
+7. Time-Dependent Visualization Framework
+--------------------------------------------------
+Created an extensive visualization suite consisting of:
+
+Static Diagnostics:
+- Specific angular momentum heatmaps.
+- Angular momentum flux maps.
+- Enclosed momentum profiles.
+- Rotational coherence maps.
+- Circularity evolution maps.
+- Entropy evolution curves.
+- Phase-space density landscapes.
+- Quantitative summary tables.
+
+Dynamic Media:
+- Angular momentum profile evolution animations.
+- Phase-space density evolution movies.
+- Ghost-trail temporal profile tracking.
+
+All outputs were formatted into publication-style dark-background panels.
+
+--------------------------------------------------
+
+8. Scientific Interpretation Goals
+--------------------------------------------------
+This module provides a complete dynamical characterization of the MW–M31
+interaction by connecting:
+
+Density evolution +
+Velocity evolution +
+Angular momentum transport +
+Orbital heating +
+Phase-space relaxation
+
+The diagnostic framework allows investigation of how major mergers transform
+galactic disks into dynamically mixed stellar systems.
+
+--------------------------------------------------
+
+===============================================================================
+END OF LOG ENTRY
+===============================================================================
