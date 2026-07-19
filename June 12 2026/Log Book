@@ -1,1 +1,21 @@
+Hours Worked: 10.5 hours
 
+Work Performed:
+
+• Continued development of Section 36 (Multipole Expansion & Minkowski Functional Morphology) for the MW–M31 merger analysis pipeline.
+
+• Began with a Claude-generated scaffold to establish the overall structure, then expanded and refined the section by developing the scientific methodology, implementation strategy and pipeline architecture.
+
+• Designed the multipole expansion framework, including spherical harmonic coefficient estimation, multipole power spectra, normalized mode strengths, phase extraction, and radial profile analysis.
+
+• Implemented core utility functions for spherical harmonic coefficient computation and multipole phase estimation.
+
+• Designed and implemented the density-grid construction routine using Cloud-In-Cell (CIC) mass assignment with Gaussian smoothing for subsequent morphological analysis.
+
+• Implemented the core Minkowski functional framework, including volume, surface area, Euler characteristic, shapefinder calculations, planarity, and filamentarity diagnostics.
+
+• Planned memory allocation, computational workflow, threshold-scanning methodology, morphology summary statistics, and cross-analysis diagnostics.
+
+• Produced comprehensive technical documentation covering the physical motivation, mathematical formulations, numerical considerations, computational complexity, implementation guidance, and planned visualization outputs.
+
+• Established the analytical framework necessary for future implementation and integration of the multipole and morphological diagnostics into the broader MW–M31 merger analysis pipeline.
